@@ -1,16 +1,17 @@
 #!/usr/bin/env python3
 """patch-bubble-info.py — 让桌宠头顶的任务气泡显示更丰富的信息
 
-宿主推给桌宠的数据里没有时间戳,但页面能自己记录:
-  - 任务开始运行的时间 → 气泡追加"已工作 X 分钟 / X 秒";
-  - 最近一次调用的工具名 → 思考阶段也能看到"刚用过 Bash"。
+宿主(Electron)推给桌宠的数据里没有时间戳,但页面能自己记录:
+  - 任务开始运行的时间 → 气泡追加"已工作 X 分钟 / X 秒"(每 15 秒自动刷新);
+  - 最近一次调用的工具名 → 思考阶段也能看到刚做过什么;
+  - 按回合累计用过的工具种类 → "已用 N 种工具(Bash、WebSearch、Read…)"。
 
 效果示例(运行中):
-    正在调用 Bash… · 已工作 2 分钟
-    正在思考… · 刚用过 WebSearch · 已工作 35 秒
+    正在调用 Bash… · 已用 5 种工具(Bash、WebSearch、Read…) · 已工作 2 分钟
+    正在思考… · 已用 2 种工具(Bash、Grep) · 已工作 35 秒
 
-只在 runState === 'running' 时计时,任务结束自动清理;每 20 秒自动刷新一次
-气泡让计时走动。幂等(以 bubble-rich-info 标记判断)。
+只在 runState === 'running' 时计时,回合切换(turnId 变化)自动重置统计。
+幂等(以 bubble-rich-info 标记判断)。
 
 用法:
     python3 scripts/patch-bubble-info.py [--appdata <Kimi应用数据目录> | <index.html 路径>]
@@ -25,18 +26,43 @@ from petlib import blueprint_dir, bump_widget_updated_at, find_pet_widget_id
 MARKER = "bubble-rich-info"
 
 INJECTION = r"""
-    /* bubble-rich-info: elapsed work time + last used tool in the bubble */
+    /* bubble-rich-info: elapsed time + per-turn tool usage in the bubble */
     const bubbleInfoOriginalBodyText = activityBodyText;
-    const bubbleInfoOriginalProgressText = conversationStatusProgressText;
+    const bubbleInfoOriginalNormalize = normalizeConversationStatus;
     const bubbleInfoSince = new Map();
+    const bubbleInfoToolSets = new Map();
     let bubbleInfoLastTool = '';
 
-    conversationStatusProgressText = function (part) {
-      const label = bubbleInfoOriginalProgressText(part);
-      if (label && part && typeof part.toolName === 'string' && part.toolName.trim()) {
-        bubbleInfoLastTool = part.toolName.trim();
-      }
-      return label;
+    normalizeConversationStatus = function (status) {
+      const feed = bubbleInfoOriginalNormalize(status);
+      try {
+        const conversations =
+          status && Array.isArray(status.conversations) ? status.conversations : [];
+        for (const conv of conversations) {
+          const part = conv && conv.latestPart;
+          if (
+            !part ||
+            part.kind !== 'tool-call' ||
+            typeof part.toolName !== 'string' ||
+            !part.toolName.trim()
+          ) {
+            continue;
+          }
+          const key = String(conv.id);
+          const turnId = typeof conv.turnId === 'string' ? conv.turnId : '';
+          let entry = bubbleInfoToolSets.get(key);
+          if (!entry || entry.turnId !== turnId) {
+            entry = { turnId: turnId, tools: [] };
+            bubbleInfoToolSets.set(key, entry);
+          }
+          const name = part.toolName.trim();
+          if (entry.tools.indexOf(name) < 0 && entry.tools.length < 8) {
+            entry.tools.push(name);
+          }
+          bubbleInfoLastTool = name;
+        }
+      } catch (bubbleInfoNormalizeErr) { /* noop */ }
+      return feed;
     };
 
     function bubbleInfoIsZh() {
@@ -57,7 +83,9 @@ INJECTION = r"""
 
     activityBodyText = function (activity) {
       const baseText = bubbleInfoOriginalBodyText(activity);
-      const key = String(activity && activity.id);
+      const key =
+        String(activity && activity.id) + ':' +
+        String((activity && activity.turnId) || '');
       const nowTime = Date.now();
       if (!activity || activity.runState !== 'running') {
         bubbleInfoSince.delete(key);
@@ -69,7 +97,20 @@ INJECTION = r"""
         Math.floor((nowTime - bubbleInfoSince.get(key)) / 1000)
       );
       const parts = [baseText];
-      if (
+      const entry = bubbleInfoToolSets.get(String(activity.id));
+      if (entry && entry.tools.length > 0) {
+        const names = entry.tools.slice(0, 3).join(bubbleInfoIsZh() ? '、' : ', ');
+        const more = entry.tools.length > 3 ? '…' : '';
+        parts.push(
+          entry.tools.length === 1
+            ? bubbleInfoIsZh()
+              ? '已用工具 ' + names
+              : 'tool: ' + names
+            : bubbleInfoIsZh()
+              ? '已用 ' + entry.tools.length + ' 种工具 ' + names + more
+              : entry.tools.length + ' tools: ' + names + more
+        );
+      } else if (
         bubbleInfoLastTool &&
         baseText.indexOf(bubbleInfoLastTool) < 0
       ) {
