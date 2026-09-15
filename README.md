@@ -8,7 +8,10 @@ awesome-codex-pet 等)的素材格式同源。本仓库提供一键转换与安�
 [CodexPets.net](https://codexpets.net/) 上现成的几百只社区宠物(罗小黑、刻晴、
 派蒙、Hello Kitty、PotatOS……)都可以尝试装进 Kimi Work。
 
-内置示例:**Dimo(迪莫)**,蓝色星尾小猫。
+内置示例:**Dimo(迪莫)**——腾讯《洛克王国》的光属性明星宠物,蓝白相间、
+额带黄色光之印,是主角洛克的伙伴(名字取自英文 "Dream" 的谐音)。
+本仓库内置的是社区二创的迪莫桌宠精灵图,角色背景见
+[百度百科](https://baike.baidu.com/item/%E8%BF%AA%E8%8E%AB/10570042)。
 
 | 预览 | 状态演示 |
 | --- | --- |
@@ -98,7 +101,8 @@ assets/                    # README 预览图与演示 GIF(由 generate_previews
 
 - `pets/dimo/spritesheet.webp` 为社区粉丝二创作品,原作者 **swrited**,经由
   [CodexPets.net](https://codexpets.net/gallery/dimo) 获取,通常以 CC BY-NC 或类似
-  协议发布,**仅供个人非商业使用**;形象权利归原版权方所有。
+  协议发布,**仅供个人非商业使用**;
+  迪莫(Dimo)形象来自腾讯《洛克王国》,相关权利归原版权方所有。
 - 其他社区宠物素材的版权以各自来源页面声明为准。
 - 本仓库与 Moonshot AI(月之暗面)、OpenAI 均无任何隶属或授权关系;Kimi 相关商标
   归其各自所有者。
@@ -120,7 +124,8 @@ bash scripts/install.sh <pet-dir>                # install (auto-backups your cu
 bash scripts/restore-default.sh                  # restore the default Kimi pet
 ```
 
-`pets/dimo/` is a built-in example (Dimo, a blue star-tailed cat, fan art by
+`pets/dimo/` is a built-in example: **Dimo**, the light-attribute star pet from Tencent's
+*Roco Kingdom* (洛克王国) — here as a community-made spritesheet (fan art by
 [swrited](https://codexpets.net/gallery/dimo), CC BY-NC or similar — personal,
-non-commercial use only). See `docs/how-kimi-work-pet-works.md` for the manifest format
+non-commercial use only; character rights belong to the original rights holder). See `docs/how-kimi-work-pet-works.md` for the manifest format
 and host-state mapping. Code is MIT; assets are not. Not affiliated with Moonshot AI or OpenAI.

@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "id": "dimo",
   "name": "Dimo",
-  "description": "迪莫：蓝色星尾小猫桌宠，来自 CodexPets.net 社区（作者 swrited）",
+  "description": "迪莫:腾讯《洛克王国》光属性明星宠物(社区精灵图 by swrited)",
   "spritesheet": "spritesheet.webp",
   "atlas": {
     "frameWidth": 192,
