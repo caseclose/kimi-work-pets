@@ -48,18 +48,20 @@ python3 scripts/install.py pets/dimo   # 内置示例:迪莫
 布局不符时,用 `scripts/inspect_spritesheet.py` 逐行确认动作后手动调整 `pet.json`;
 manifest 字段与宿主状态映射详见 [docs/how-kimi-work-pet-works.md](docs/how-kimi-work-pet-works.md)。
 
-## 交互增强
+## 交互行为
 
-安装时自动注入两个补丁(`restore.py` 会一并还原页面、全部撤销):
+安装即自带,无需额外操作(`restore.py` 会一并还原页面、全部撤销):
 
 - **悬停招手**:鼠标悬停桌宠时,播放招手动作(`idle_random_1`)一个循环后回到待机,
   6 秒冷却,不影响工作/等待等状态。
-  实现:[scripts/patch-hover-interaction.py](scripts/patch-hover-interaction.py)。
-- **视线跟随**:鼠标在桌宠附近移动时,宠物会平滑地向光标方向倾斜、偏移,离开后回正
-  (用 CSS transform 近似"脑袋偏向";仅精灵图宠物,Rive 宠物自带眼动状态机会自动跳过)。
-  实现:[scripts/patch-look-at-cursor.py](scripts/patch-look-at-cursor.py)。
+- **视线跟随**:鼠标在桌宠附近移动时,宠物平滑地向光标方向倾斜、偏移,离开后回正
+  (CSS transform 近似"脑袋偏向";仅精灵图宠物,Rive 宠物自带眼动状态机会自动跳过)。
+- **拖动奔跑**:拖动桌宠时朝拖动方向奔跑(应用原生行为)。
 
-两个补丁均幂等、可单独重复运行,也可加 `--appdata` 指定应用数据目录。
+交互由两个安装时自动注入的补丁实现(均幂等,可单独重复运行,
+可加 `--appdata` 指定应用数据目录):
+[patch-hover-interaction.py](scripts/patch-hover-interaction.py) ·
+[patch-look-at-cursor.py](scripts/patch-look-at-cursor.py)。
 
 ## 版权
 
