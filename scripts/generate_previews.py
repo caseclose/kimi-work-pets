@@ -2,7 +2,7 @@
 """generate_previews.py — 从精灵图生成 README 用预览素材
 
 用法:
-    python3 scripts/generate_previews.py [--spritesheet pet/dimo/spritesheet.webp] [--out assets]
+    python3 scripts/generate_previews.py [--spritesheet pets/dimo/spritesheet.webp] [--out assets]
 
 输出:
     dimo-preview.png   待机帧 2x 预览图
@@ -127,7 +127,7 @@ def make_rows_png(sheet: Image.Image, out: Path, scale: float = 0.5) -> None:
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--spritesheet", default=str(Path(__file__).parent.parent / "pet/dimo/spritesheet.webp"))
+    parser.add_argument("--spritesheet", default=str(Path(__file__).parent.parent / "pets/dimo/spritesheet.webp"))
     parser.add_argument("--out", default=str(Path(__file__).parent.parent / "assets"))
     args = parser.parse_args()
 
