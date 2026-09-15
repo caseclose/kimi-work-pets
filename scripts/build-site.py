@@ -259,15 +259,20 @@ def main() -> None:
     build_assets()
     DOCS.mkdir(exist_ok=True)
     (DOCS / "index.html").write_text(build_index(), encoding="utf-8")
+    pages = [f"{SITE}/", f"{SITE}/how-kimi-work-pet-works.html"]
     (DOCS / "robots.txt").write_text(
-        f"User-agent: *\nAllow: /\n\nSitemap: {SITE}/sitemap.xml\n", encoding="utf-8"
+        "User-agent: *\nAllow: /\n\n"
+        f"Sitemap: {SITE}/sitemap.txt\n"
+        f"Sitemap: {SITE}/sitemap.xml\n",
+        encoding="utf-8",
     )
+    (DOCS / "sitemap.txt").write_text("\n".join(pages) + "\n", encoding="utf-8")
     today = date.today().isoformat()
     (DOCS / "sitemap.xml").write_text(
         '<?xml version="1.0" encoding="UTF-8"?>\n'
         '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
-        f"  <url>\n    <loc>{SITE}/</loc>\n    <lastmod>{today}</lastmod>\n  </url>\n"
-        f"  <url>\n    <loc>{SITE}/how-kimi-work-pet-works.html</loc>\n    <lastmod>{today}</lastmod>\n  </url>\n"
+        f"  <url>\n    <loc>{pages[0]}</loc>\n    <lastmod>{today}</lastmod>\n  </url>\n"
+        f"  <url>\n    <loc>{pages[1]}</loc>\n    <lastmod>{today}</lastmod>\n  </url>\n"
         "</urlset>\n",
         encoding="utf-8",
     )

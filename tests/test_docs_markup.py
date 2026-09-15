@@ -7,6 +7,8 @@ ROOT = Path(__file__).resolve().parents[1]
 INDEX = (ROOT / "docs" / "index.html").read_text(encoding="utf-8")
 GUIDE = ROOT / "docs" / "how-kimi-work-pet-works.html"
 SITEMAP = (ROOT / "docs" / "sitemap.xml").read_text(encoding="utf-8")
+SITEMAP_TXT = (ROOT / "docs" / "sitemap.txt").read_text(encoding="utf-8")
+ROBOTS = (ROOT / "docs" / "robots.txt").read_text(encoding="utf-8")
 
 
 class DocsMarkupTests(unittest.TestCase):
@@ -48,6 +50,11 @@ class DocsMarkupTests(unittest.TestCase):
         )
         self.assertNotIn("#", SITEMAP)
         self.assertIn("<lastmod>", SITEMAP)
+        self.assertEqual(
+            [line for line in SITEMAP_TXT.splitlines() if line],
+            locs,
+        )
+        self.assertIn("Sitemap: https://caseclose.github.io/kimi-work-pets/sitemap.txt", ROBOTS)
 
     def test_index_title_and_jsonld_use_kimi_work_pet_name(self):
         self.assertIn("<title>Kimi Work 桌宠", INDEX)
