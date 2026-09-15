@@ -1,0 +1,7 @@
+{
+  "id": "flamy",
+  "displayName": "Flamy",
+  "description": "A tiny friendly flame-tailed red dragon companion who types on a W-logo laptop while wearing broken nerd glasses.",
+  "spritesheetPath": "spritesheet.webp",
+  "kind": "object"
+}
