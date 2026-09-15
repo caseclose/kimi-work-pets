@@ -38,7 +38,7 @@ STATE_ROWS = {
     "failed": 5,
     "waiting": 6,
     "working": 7,         # codex "running"
-    # row 8 "review"(完成庆祝)Kimi Work 无对应宿主状态,不映射
+    "idle_random_3": 8,   # codex "review"/react,互动彩蛋(眨眼/庆祝)
 }
 
 FPS = {
@@ -50,6 +50,7 @@ FPS = {
     "failed": 6,
     "idle_random_1": 3,
     "idle_random_2": 6,
+    "idle_random_3": 4,
 }
 
 

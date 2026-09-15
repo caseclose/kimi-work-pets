@@ -62,7 +62,7 @@ python3 scripts/install.py pets/dimo   # 换成 pets/ 下任意目录名即可
 | 5 | failed | 失败 |
 | 6 | waiting | 等待确认 |
 | 7 | running | 工作中 |
-| 8 | review | (未映射) |
+| 8 | react/review | 空闲彩蛋 3(互动,全部宠物已映射) |
 
 布局不符时,用 `scripts/inspect_spritesheet.py` 逐行确认动作后手动调整 `pet.json`;
 manifest 字段与宿主状态映射详见 [Kimi Work 桌宠机制调研](https://caseclose.github.io/kimi-work-pets/how-kimi-work-pet-works.html)。

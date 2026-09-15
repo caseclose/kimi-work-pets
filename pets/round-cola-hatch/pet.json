@@ -41,6 +41,12 @@
       "fps": 6,
       "loop": true
     },
+    "idle_random_3": {
+      "row": 8,
+      "frames": 8,
+      "fps": 4,
+      "loop": true
+    },
     "failed": {
       "row": 5,
       "frames": 8,

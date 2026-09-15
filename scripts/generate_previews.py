@@ -38,7 +38,7 @@ ROW_META = [
     ("row 5", "failed 失败大哭", "failed"),
     ("row 6", "waiting 等待张望", "waiting"),
     ("row 7", "running 工作奔跑", "working"),
-    ("row 8", "review 完成庆祝", "未映射"),
+    ("row 8", "react 互动彩蛋", "idle_random_3"),
 ]
 
 # 演示 GIF 中依次展示的状态: (行, 实际帧数, fps, 标注)
@@ -50,6 +50,7 @@ DEMO_STATES = [
     (5, 8, 6, "failed 任务失败"),
     (3, 4, 3, "idle 彩蛋 · 招手"),
     (4, 5, 6, "idle 彩蛋 · 跳跃"),
+    (8, 8, 4, "idle 彩蛋 · 互动"),
 ]
 
 
@@ -86,6 +87,15 @@ def make_states_gif(sheet: Image.Image, out: Path, scale: int = 2) -> None:
     bar = 40
     font_bar = font(22)
 
+    def valid_frames(row: int) -> int:
+        """该行实际有内容的帧数(裁剪 DEMO_STATES 里超出的空帧)。"""
+        n = 0
+        for c in range(COLS):
+            cell = sheet.crop((c * FW, row * FH, (c + 1) * FW, (row + 1) * FH))
+            if cell.getchannel("A").getextrema()[1] > 10:
+                n = c + 1
+        return n
+
     def labeled(label: str) -> Image.Image:
         canvas = Image.new("RGB", (wf, hf + bar), LABEL_BG)
         draw = ImageDraw.Draw(canvas)
@@ -94,6 +104,9 @@ def make_states_gif(sheet: Image.Image, out: Path, scale: int = 2) -> None:
 
     frames, durations = [], []
     for row, count, fps, label in DEMO_STATES:
+        count = min(count, valid_frames(row))
+        if count == 0:
+            continue
         holder = labeled(label)
         for c in range(count):
             cell = sheet.crop((c * FW, row * FH, (c + 1) * FW, (row + 1) * FH))
