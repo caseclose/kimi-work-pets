@@ -151,7 +151,7 @@
     }
     .brand {
       display: flex; align-items: center; gap: 10px; flex-shrink: 0;
-      color: var(--text); font-weight: 750; letter-spacing: -0.03em;
+      color: var(--text); font-weight: 700; letter-spacing: -0.03em;
       text-decoration: none;
     }
     .brand:hover { text-decoration: none; }
@@ -164,7 +164,7 @@
     .nav-actions { display: flex; align-items: center; gap: 8px; margin-left: 8px; }
     .nav-links { display: flex; align-items: center; gap: 4px; flex-wrap: wrap; justify-content: flex-end; margin-left: auto; }
     .nav-links a {
-      color: var(--muted); font-weight: 650; font-size: 0.88rem;
+      color: var(--muted); font-weight: 600; font-size: 0.88rem;
       padding: 6px 10px; border-radius: 9px; text-decoration: none;
     }
     .nav-links a:hover { color: var(--text); background: var(--accent-soft); }
@@ -190,7 +190,7 @@
       display: inline-flex; align-items: center; gap: 8px;
       padding: 6px 12px; border-radius: 999px; margin-bottom: 16px;
       background: var(--accent-soft); color: var(--accent);
-      border: 1px solid var(--border); font-size: 0.8rem; font-weight: 750;
+      border: 1px solid var(--border); font-size: 0.8rem; font-weight: 700;
     }
     .hero h1 {
       font-size: clamp(2.3rem, 5vw, 3.6rem);
@@ -203,7 +203,7 @@
       display: inline-flex; align-items: center; justify-content: center;
       min-height: 46px; padding: 10px 20px; border-radius: 13px;
       border: 1px solid var(--border); background: var(--panel);
-      color: var(--text); font-weight: 750; text-decoration: none;
+      color: var(--text); font-weight: 700; text-decoration: none;
       box-shadow: var(--shadow);
     }
     .btn:hover { text-decoration: none; transform: translateY(-1px); }
@@ -273,7 +273,10 @@
       border: 1px solid var(--border); background: var(--chip); color: var(--muted);
       border-radius: 999px; padding: 7px 12px; font-weight: 700; font-size: 0.82rem; cursor: pointer;
     }
-    .chip.active, .chip:hover { color: var(--accent-fg); background: var(--accent); border-color: transparent; }
+    .chip:hover { color: var(--text); border-color: var(--accent); }
+    .chip.active, .chip.active:hover {
+      color: var(--accent-fg); background: var(--accent); border-color: transparent;
+    }
     .search {
       min-width: 220px; height: 40px; padding: 0 14px; border-radius: 999px;
       border: 1px solid var(--border); background: var(--panel); color: var(--text);
@@ -516,14 +519,14 @@
         <div class="section-head">
           <p class="kicker">Gallery</p>
           <h2>宠物画廊</h2>
-          <p>14 款预置形象。可按来源筛选，或搜索名字与作者。右侧均为动作 GIF。</p>
+          <p>14 款预置形象。可按来源筛选，或搜索名字与作者。右侧进入视口后才播放动作 GIF。</p>
         </div>
         <div class="toolbar">
-          <div class="filters" role="tablist" aria-label="按来源筛选">
-            <button class="chip active" type="button" data-filter="all">全部</button>
-            <button class="chip" type="button" data-filter="original">社区原创</button>
-            <button class="chip" type="button" data-filter="ip">IP 二创</button>
-            <button class="chip" type="button" data-filter="parody">戏仿</button>
+          <div class="filters" role="group" aria-label="按来源筛选">
+            <button class="chip active" type="button" data-filter="all" aria-pressed="true">全部</button>
+            <button class="chip" type="button" data-filter="original" aria-pressed="false">社区原创</button>
+            <button class="chip" type="button" data-filter="ip" aria-pressed="false">IP 二创</button>
+            <button class="chip" type="button" data-filter="parody" aria-pressed="false">戏仿</button>
           </div>
           <input class="search" id="pet-search" type="search" placeholder="搜索宠物、作者或作品…" aria-label="搜索宠物">
         </div>
@@ -532,7 +535,7 @@
           <article class="card" id="dimo" data-cat="ip" data-search="dimo 迪莫 洛克王国 swrited">
             <div class="card-media">
               <img class="preview" src="assets/dimo/pet-preview.png" alt="Dimo(迪莫) 桌宠预览图" loading="lazy">
-              <img class="states" src="assets/dimo/pet-states.gif" alt="Dimo(迪莫) 逐行动作演示" loading="lazy">
+              <img class="states" src="assets/dimo/pet-preview.png" data-gif="assets/dimo/pet-states.gif" data-static="assets/dimo/pet-preview.png" alt="Dimo(迪莫) 逐行动作演示" loading="lazy">
             </div>
             <div class="tags"><span class="tag">IP 二创</span><span class="tag">洛克王国</span></div>
             <h3>Dimo(迪莫)</h3>
@@ -544,7 +547,7 @@
           <article class="card" id="siam" data-cat="original" data-search="siam 暹罗猫 allen">
             <div class="card-media">
               <img class="preview" src="assets/siam/pet-preview.png" alt="Siam(暹罗猫) 桌宠预览图" loading="lazy">
-              <img class="states" src="assets/siam/pet-states.gif" alt="Siam(暹罗猫) 逐行动作演示" loading="lazy">
+              <img class="states" src="assets/siam/pet-preview.png" data-gif="assets/siam/pet-states.gif" data-static="assets/siam/pet-preview.png" alt="Siam(暹罗猫) 逐行动作演示" loading="lazy">
             </div>
             <div class="tags"><span class="tag">社区原创</span></div>
             <h3>Siam(暹罗猫)</h3>
@@ -555,7 +558,7 @@
           <article class="card" id="maomao" data-cat="original" data-search="maomao 大开门 三花猫 kyle">
             <div class="card-media">
               <img class="preview" src="assets/maomao/pet-preview.png" alt="Maomao(大开门) 桌宠预览图" loading="lazy">
-              <img class="states" src="assets/maomao/pet-states.gif" alt="Maomao(大开门) 逐行动作演示" loading="lazy">
+              <img class="states" src="assets/maomao/pet-preview.png" data-gif="assets/maomao/pet-states.gif" data-static="assets/maomao/pet-preview.png" alt="Maomao(大开门) 逐行动作演示" loading="lazy">
             </div>
             <div class="tags"><span class="tag">社区原创</span></div>
             <h3>Maomao(大开门)</h3>
@@ -566,7 +569,7 @@
           <article class="card" id="hiyuki" data-cat="original" data-search="hiyuki foxibu 冰剑">
             <div class="card-media">
               <img class="preview" src="assets/hiyuki/pet-preview.png" alt="Hiyuki 桌宠预览图" loading="lazy">
-              <img class="states" src="assets/hiyuki/pet-states.gif" alt="Hiyuki 逐行动作演示" loading="lazy">
+              <img class="states" src="assets/hiyuki/pet-preview.png" data-gif="assets/hiyuki/pet-states.gif" data-static="assets/hiyuki/pet-preview.png" alt="Hiyuki 逐行动作演示" loading="lazy">
             </div>
             <div class="tags"><span class="tag">社区原创</span></div>
             <h3>Hiyuki</h3>
@@ -577,7 +580,7 @@
           <article class="card" id="feixue" data-cat="original" data-search="feixue 绯雪 akira97 巫女">
             <div class="card-media">
               <img class="preview" src="assets/feixue/pet-preview.png" alt="Feixue(绯雪) 桌宠预览图" loading="lazy">
-              <img class="states" src="assets/feixue/pet-states.gif" alt="Feixue(绯雪) 逐行动作演示" loading="lazy">
+              <img class="states" src="assets/feixue/pet-preview.png" data-gif="assets/feixue/pet-states.gif" data-static="assets/feixue/pet-preview.png" alt="Feixue(绯雪) 逐行动作演示" loading="lazy">
             </div>
             <div class="tags"><span class="tag">社区原创</span></div>
             <h3>Feixue(绯雪)</h3>
@@ -588,7 +591,7 @@
           <article class="card" id="endminguga" data-cat="original" data-search="gugugaga endminguga hibik1 企鹅">
             <div class="card-media">
               <img class="preview" src="assets/endminguga/pet-preview.png" alt="GUGUGAGA 桌宠预览图" loading="lazy">
-              <img class="states" src="assets/endminguga/pet-states.gif" alt="GUGUGAGA 逐行动作演示" loading="lazy">
+              <img class="states" src="assets/endminguga/pet-preview.png" data-gif="assets/endminguga/pet-states.gif" data-static="assets/endminguga/pet-preview.png" alt="GUGUGAGA 逐行动作演示" loading="lazy">
             </div>
             <div class="tags"><span class="tag">社区原创</span></div>
             <h3>GUGUGAGA</h3>
@@ -599,7 +602,7 @@
           <article class="card" id="round-cola-hatch" data-cat="original" data-search="round cola hatch tsang 可乐 机器人">
             <div class="card-media">
               <img class="preview" src="assets/round-cola-hatch/pet-preview.png" alt="Round Cola Hatch 桌宠预览图" loading="lazy">
-              <img class="states" src="assets/round-cola-hatch/pet-states.gif" alt="Round Cola Hatch 逐行动作演示" loading="lazy">
+              <img class="states" src="assets/round-cola-hatch/pet-preview.png" data-gif="assets/round-cola-hatch/pet-states.gif" data-static="assets/round-cola-hatch/pet-preview.png" alt="Round Cola Hatch 逐行动作演示" loading="lazy">
             </div>
             <div class="tags"><span class="tag">社区原创</span></div>
             <h3>Round Cola Hatch</h3>
@@ -610,7 +613,7 @@
           <article class="card" id="hu-tao-pet" data-cat="ip" data-search="胡桃 hu tao 原神 barometer">
             <div class="card-media">
               <img class="preview" src="assets/hu-tao-pet/pet-preview.png" alt="胡桃(Hu Tao) 桌宠预览图" loading="lazy">
-              <img class="states" src="assets/hu-tao-pet/pet-states.gif" alt="胡桃(Hu Tao) 逐行动作演示" loading="lazy">
+              <img class="states" src="assets/hu-tao-pet/pet-preview.png" data-gif="assets/hu-tao-pet/pet-states.gif" data-static="assets/hu-tao-pet/pet-preview.png" alt="胡桃(Hu Tao) 逐行动作演示" loading="lazy">
             </div>
             <div class="tags"><span class="tag">IP 二创</span><span class="tag">原神</span></div>
             <h3>胡桃(Hu Tao)</h3>
@@ -622,7 +625,7 @@
           <article class="card" id="flamy" data-cat="original" data-search="flamy inwizzy 火龙">
             <div class="card-media">
               <img class="preview" src="assets/flamy/pet-preview.png" alt="Flamy 桌宠预览图" loading="lazy">
-              <img class="states" src="assets/flamy/pet-states.gif" alt="Flamy 逐行动作演示" loading="lazy">
+              <img class="states" src="assets/flamy/pet-preview.png" data-gif="assets/flamy/pet-states.gif" data-static="assets/flamy/pet-preview.png" alt="Flamy 逐行动作演示" loading="lazy">
             </div>
             <div class="tags"><span class="tag">社区原创</span></div>
             <h3>Flamy</h3>
@@ -633,7 +636,7 @@
           <article class="card" id="kimlet-move-wave" data-cat="parody" data-search="kimlet move wave kimehwa">
             <div class="card-media">
               <img class="preview" src="assets/kimlet-move-wave/pet-preview.png" alt="Kimlet Move Wave 桌宠预览图" loading="lazy">
-              <img class="states" src="assets/kimlet-move-wave/pet-states.gif" alt="Kimlet Move Wave 逐行动作演示" loading="lazy">
+              <img class="states" src="assets/kimlet-move-wave/pet-preview.png" data-gif="assets/kimlet-move-wave/pet-states.gif" data-static="assets/kimlet-move-wave/pet-preview.png" alt="Kimlet Move Wave 逐行动作演示" loading="lazy">
             </div>
             <div class="tags"><span class="tag warn">戏仿</span></div>
             <h3>Kimlet Move Wave</h3>
@@ -645,7 +648,7 @@
           <article class="card" id="kimlet" data-cat="parody" data-search="kimlet kimehwa">
             <div class="card-media">
               <img class="preview" src="assets/kimlet/pet-preview.png" alt="Kimlet 桌宠预览图" loading="lazy">
-              <img class="states" src="assets/kimlet/pet-states.gif" alt="Kimlet 逐行动作演示" loading="lazy">
+              <img class="states" src="assets/kimlet/pet-preview.png" data-gif="assets/kimlet/pet-states.gif" data-static="assets/kimlet/pet-preview.png" alt="Kimlet 逐行动作演示" loading="lazy">
             </div>
             <div class="tags"><span class="tag warn">戏仿</span></div>
             <h3>Kimlet</h3>
@@ -657,7 +660,7 @@
           <article class="card" id="miyabi" data-cat="ip" data-search="星见雅 miyabi 绝区零 eric-terminal">
             <div class="card-media">
               <img class="preview" src="assets/miyabi/pet-preview.png" alt="星见雅(Miyabi) 桌宠预览图" loading="lazy">
-              <img class="states" src="assets/miyabi/pet-states.gif" alt="星见雅(Miyabi) 逐行动作演示" loading="lazy">
+              <img class="states" src="assets/miyabi/pet-preview.png" data-gif="assets/miyabi/pet-states.gif" data-static="assets/miyabi/pet-preview.png" alt="星见雅(Miyabi) 逐行动作演示" loading="lazy">
             </div>
             <div class="tags"><span class="tag">IP 二创</span><span class="tag">绝区零</span></div>
             <h3>星见雅(Miyabi)</h3>
@@ -669,7 +672,7 @@
           <article class="card" id="violet" data-cat="ip" data-search="薇尔莉特 violet 紫罗兰永恒花园 lazenca">
             <div class="card-media">
               <img class="preview" src="assets/violet/pet-preview.png" alt="薇尔莉特(Violet) 桌宠预览图" loading="lazy">
-              <img class="states" src="assets/violet/pet-states.gif" alt="薇尔莉特(Violet) 逐行动作演示" loading="lazy">
+              <img class="states" src="assets/violet/pet-preview.png" data-gif="assets/violet/pet-states.gif" data-static="assets/violet/pet-preview.png" alt="薇尔莉特(Violet) 逐行动作演示" loading="lazy">
             </div>
             <div class="tags"><span class="tag">IP 二创</span><span class="tag">京阿尼</span></div>
             <h3>薇尔莉特(Violet)</h3>
@@ -681,7 +684,7 @@
           <article class="card" id="guga" data-cat="original" data-search="咕嘎 guga circus 企鹅">
             <div class="card-media">
               <img class="preview" src="assets/guga/pet-preview.png" alt="咕嘎(Guga) 桌宠预览图" loading="lazy">
-              <img class="states" src="assets/guga/pet-states.gif" alt="咕嘎(Guga) 逐行动作演示" loading="lazy">
+              <img class="states" src="assets/guga/pet-preview.png" data-gif="assets/guga/pet-states.gif" data-static="assets/guga/pet-preview.png" alt="咕嘎(Guga) 逐行动作演示" loading="lazy">
             </div>
             <div class="tags"><span class="tag">社区原创</span></div>
             <h3>咕嘎(Guga)</h3>
@@ -751,7 +754,7 @@
             </tbody>
           </table>
         </div>
-        <p class="section-head" style="margin-top:18px">布局不符时，用 <code>scripts/inspect_spritesheet.py</code> 逐行确认后再改 <code>pet.json</code>。机制说明见 <a href="how-kimi-work-pet-works.md">how-kimi-work-pet-works.md</a>。</p>
+        <p class="section-head" style="margin-top:18px">布局不符时，用 <code>scripts/inspect_spritesheet.py</code> 逐行确认后再改 <code>pet.json</code>。机制说明见 <a href="how-kimi-work-pet-works.html">桌宠机制调研</a>。</p>
       </section>
 
       <section id="faq">
@@ -818,7 +821,7 @@
         <a href="#pets">画廊</a>
         <a href="#quickstart">安装</a>
         <a href="#custom">自定义</a>
-        <a href="how-kimi-work-pet-works.md">机制说明</a>
+        <a href="how-kimi-work-pet-works.html">机制说明</a>
       </div>
       <div>
         <strong>链接</strong>
@@ -837,6 +840,8 @@
       var toast = document.getElementById("toast");
       var toastTimer;
       var filter = "all";
+      var menu = document.getElementById("menu-toggle");
+      var links = document.getElementById("site-nav");
 
       function currentTheme() {
         return root.getAttribute("data-theme") === "dark" ? "dark" : "light";
@@ -849,20 +854,6 @@
         if (toggle) toggle.setAttribute("aria-label", theme === "dark" ? "切换到亮色模式" : "切换到暗色模式");
       }
       applyTheme(currentTheme());
-      var menu = document.getElementById("menu-toggle");
-      var links = document.getElementById("site-nav");
-      if (menu && links) {
-        menu.addEventListener("click", function () {
-          var open = links.classList.toggle("open");
-          menu.setAttribute("aria-expanded", open ? "true" : "false");
-        });
-        links.querySelectorAll("a").forEach(function (a) {
-          a.addEventListener("click", function () {
-            links.classList.remove("open");
-            menu.setAttribute("aria-expanded", "false");
-          });
-        });
-      }
       if (toggle) {
         toggle.addEventListener("click", function () {
           applyTheme(currentTheme() === "dark" ? "light" : "dark");
@@ -873,6 +864,62 @@
           if (!localStorage.getItem("kimi-pets-theme")) applyTheme(event.matches ? "dark" : "light");
         } catch (e) {}
       });
+
+      function menuOpen() {
+        return !!(links && links.classList.contains("open"));
+      }
+      function closeMenu(restore) {
+        if (!menu || !links || !menuOpen()) return;
+        links.classList.remove("open");
+        menu.setAttribute("aria-expanded", "false");
+        if (restore) menu.focus();
+      }
+      function openMenu() {
+        if (!menu || !links) return;
+        links.classList.add("open");
+        menu.setAttribute("aria-expanded", "true");
+      }
+      function menuFocusables() {
+        var items = [];
+        if (menu) items.push(menu);
+        if (links && menuOpen()) {
+          links.querySelectorAll("a").forEach(function (a) { items.push(a); });
+        }
+        return items;
+      }
+      if (menu && links) {
+        menu.addEventListener("click", function () {
+          if (menuOpen()) closeMenu(false);
+          else openMenu();
+        });
+        links.querySelectorAll("a").forEach(function (a) {
+          a.addEventListener("click", function () { closeMenu(false); });
+        });
+        document.addEventListener("click", function (event) {
+          if (!menuOpen()) return;
+          if (links.contains(event.target) || menu.contains(event.target)) return;
+          closeMenu(true);
+        });
+        document.addEventListener("keydown", function (event) {
+          if (event.key === "Escape" && menuOpen()) {
+            event.preventDefault();
+            closeMenu(true);
+            return;
+          }
+          if (event.key !== "Tab" || !menuOpen()) return;
+          var items = menuFocusables();
+          if (!items.length) return;
+          var first = items[0];
+          var last = items[items.length - 1];
+          if (event.shiftKey && document.activeElement === first) {
+            event.preventDefault();
+            last.focus();
+          } else if (!event.shiftKey && document.activeElement === last) {
+            event.preventDefault();
+            first.focus();
+          }
+        });
+      }
 
       function showToast(message) {
         if (!toast) return;
@@ -925,14 +972,60 @@
         });
         if (count) count.textContent = "显示 " + shown + " / " + cards.length + " 款";
       }
+      function setFilter(next) {
+        filter = next || "all";
+        chips.forEach(function (chip) {
+          var on = (chip.getAttribute("data-filter") || "") === filter;
+          chip.classList.toggle("active", on);
+          chip.setAttribute("aria-pressed", on ? "true" : "false");
+        });
+        applyFilter();
+      }
       chips.forEach(function (chip) {
         chip.addEventListener("click", function () {
-          filter = chip.getAttribute("data-filter") || "all";
-          chips.forEach(function (c) { c.classList.toggle("active", c === chip); });
-          applyFilter();
+          setFilter(chip.getAttribute("data-filter") || "all");
         });
       });
       if (search) search.addEventListener("input", applyFilter);
+
+      function revealHashTarget() {
+        var id = (location.hash || "").replace(/^#/, "");
+        if (!id) return;
+        var card = document.getElementById(id);
+        if (!card || !card.classList.contains("card")) return;
+        if (search) search.value = "";
+        setFilter("all");
+        card.scrollIntoView({ block: "center" });
+      }
+      window.addEventListener("hashchange", revealHashTarget);
+      revealHashTarget();
+
+      function setupGifs() {
+        var imgs = document.querySelectorAll("img.states[data-gif]");
+        var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        if (reduced) return;
+        if (!("IntersectionObserver" in window)) {
+          imgs.forEach(function (img) {
+            var gif = img.getAttribute("data-gif");
+            if (gif) img.setAttribute("src", gif);
+          });
+          return;
+        }
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            var img = entry.target;
+            var gif = img.getAttribute("data-gif");
+            var fallback = img.getAttribute("data-static");
+            if (entry.isIntersecting) {
+              if (gif && img.getAttribute("src") !== gif) img.setAttribute("src", gif);
+            } else if (fallback && img.getAttribute("src") !== fallback) {
+              img.setAttribute("src", fallback);
+            }
+          });
+        }, { rootMargin: "120px 0px", threshold: 0.01 });
+        imgs.forEach(function (img) { io.observe(img); });
+      }
+      setupGifs();
     })();
   </script>
 </body>
