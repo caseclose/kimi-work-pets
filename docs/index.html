@@ -3,328 +3,1074 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Kimi Work Pets — Kimi Work 桌面宠物合集(迪莫、Hiyuki、胡桃等 14 款)</title>
+  <title>Kimi Work 桌宠 — 把 Codex Pets 装进 Kimi Work（迪莫等 14 款）</title>
   <meta name="description" content="把 Codex Pets 社区桌宠装进 Kimi Work 桌面端:一键安装迪莫、Hiyuki、绯雪、胡桃、星见雅、薇尔莉特等 14 款桌面宠物,支持悬停互动、视线跟随、macOS 与 Windows。">
-  <meta name="keywords" content="Kimi Work,桌面宠物,桌宠,Codex Pets,迪莫,Hiyuki,胡桃,星见雅,薇尔莉特,desktop pet">
+  <meta name="keywords" content="Kimi Work,Kimi Work 桌宠,桌面宠物,桌宠,Codex Pets,迪莫,Hiyuki,胡桃,星见雅,薇尔莉特,desktop pet">
   <meta name="robots" content="index, follow">
   <meta name="google-site-verification" content="3O-yG5hm8o7yswYRIP9tyr6y5vBBJ4chKsrCtE2VOIg">
   <link rel="canonical" href="https://caseclose.github.io/kimi-work-pets/">
+  <link rel="sitemap" type="application/xml" href="https://caseclose.github.io/kimi-work-pets/sitemap.xml">
   <meta property="og:type" content="website">
-  <meta property="og:site_name" content="Kimi Work Pets">
-  <meta property="og:title" content="Kimi Work Pets — Kimi Work 桌面宠物合集">
+  <meta property="og:locale" content="zh_CN">
+  <meta property="og:site_name" content="Kimi Work 桌宠">
+  <meta property="og:title" content="Kimi Work 桌宠 — 把 Codex Pets 装进 Kimi Work">
   <meta property="og:description" content="14 款 Codex Pets 社区桌宠一键装进 Kimi Work 桌面端,支持悬停互动与视线跟随。">
   <meta property="og:url" content="https://caseclose.github.io/kimi-work-pets/">
-  <meta property="og:image" content="https://caseclose.github.io/kimi-work-pets/assets/dimo/pet-preview.png">
+  <meta property="og:image" content="https://caseclose.github.io/kimi-work-pets/assets/brand.png">
+  <meta property="og:image:alt" content="Kimi Work 桌宠品牌图标">
   <meta name="twitter:card" content="summary_large_image">
-  <link rel="icon" href="assets/dimo/pet-preview.png">
+  <meta name="twitter:title" content="Kimi Work 桌宠">
+  <meta name="twitter:description" content="14 款 Codex Pets 社区桌宠一键装进 Kimi Work 桌面端。">
+  <meta name="twitter:image" content="https://caseclose.github.io/kimi-work-pets/assets/brand.png">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#f4efe4">
+  <link rel="icon" href="assets/favicon.png">
+  <link rel="apple-touch-icon" href="assets/brand.png">
+  <script>
+    (function () {
+      try {
+        var stored = localStorage.getItem("kimi-pets-theme");
+        var theme = stored === "light" || stored === "dark"
+          ? stored
+          : (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+        document.documentElement.setAttribute("data-theme", theme);
+        document.documentElement.style.colorScheme = theme;
+      } catch (e) {
+        document.documentElement.setAttribute("data-theme", "light");
+      }
+    })();
+  </script>
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "SoftwareApplication",
-    "name": "Kimi Work Pets",
-    "url": "https://caseclose.github.io/kimi-work-pets/",
-    "description": "把 Codex Pets 社区桌宠装进 Kimi Work 桌面端的安装器与素材合集,含 14 款桌面宠物,支持悬停互动、视线跟随,兼容 macOS 与 Windows。",
-    "applicationCategory": "UtilitiesApplication",
-    "operatingSystem": "macOS, Windows",
-    "offers": {"@type": "Offer", "price": "0", "priceCurrency": "CNY"},
-    "codeRepository": "https://github.com/caseclose/kimi-work-pets",
-    "license": "https://opensource.org/licenses/MIT",
-    "hasPart": [
-    {"@type": "ListItem", "position": 1, "name": "Dimo", "url": "https://caseclose.github.io/kimi-work-pets/#dimo"},
-    {"@type": "ListItem", "position": 2, "name": "Siam", "url": "https://caseclose.github.io/kimi-work-pets/#siam"},
-    {"@type": "ListItem", "position": 3, "name": "Maomao", "url": "https://caseclose.github.io/kimi-work-pets/#maomao"},
-    {"@type": "ListItem", "position": 4, "name": "Hiyuki", "url": "https://caseclose.github.io/kimi-work-pets/#hiyuki"},
-    {"@type": "ListItem", "position": 5, "name": "Feixue", "url": "https://caseclose.github.io/kimi-work-pets/#feixue"},
-    {"@type": "ListItem", "position": 6, "name": "GUGUGAGA", "url": "https://caseclose.github.io/kimi-work-pets/#endminguga"},
-    {"@type": "ListItem", "position": 7, "name": "Round Cola Hatch", "url": "https://caseclose.github.io/kimi-work-pets/#round-cola-hatch"},
-    {"@type": "ListItem", "position": 8, "name": "\u80e1\u6843", "url": "https://caseclose.github.io/kimi-work-pets/#hu-tao-pet"},
-    {"@type": "ListItem", "position": 9, "name": "Flamy", "url": "https://caseclose.github.io/kimi-work-pets/#flamy"},
-    {"@type": "ListItem", "position": 10, "name": "Kimlet Move Wave", "url": "https://caseclose.github.io/kimi-work-pets/#kimlet-move-wave"},
-    {"@type": "ListItem", "position": 11, "name": "Kimlet", "url": "https://caseclose.github.io/kimi-work-pets/#kimlet"},
-    {"@type": "ListItem", "position": 12, "name": "\u661f\u89c1\u96c5", "url": "https://caseclose.github.io/kimi-work-pets/#miyabi"},
-    {"@type": "ListItem", "position": 13, "name": "\u8587\u5c14\u8389\u7279", "url": "https://caseclose.github.io/kimi-work-pets/#violet"},
-    {"@type": "ListItem", "position": 14, "name": "\u5495\u560e", "url": "https://caseclose.github.io/kimi-work-pets/#guga"}
+    "@graph": [
+      {
+        "@type": "WebSite",
+        "@id": "https://caseclose.github.io/kimi-work-pets/#website",
+        "name": "Kimi Work 桌宠",
+        "alternateName": "Kimi Work Pets",
+        "url": "https://caseclose.github.io/kimi-work-pets/",
+        "inLanguage": "zh-CN",
+        "publisher": {
+          "@type": "Person",
+          "name": "caseclose",
+          "url": "https://github.com/caseclose"
+        }
+      },
+      {
+        "@type": "SoftwareApplication",
+        "@id": "https://caseclose.github.io/kimi-work-pets/#app",
+        "name": "Kimi Work 桌宠",
+        "alternateName": "Kimi Work Pets",
+        "url": "https://caseclose.github.io/kimi-work-pets/",
+        "image": "https://caseclose.github.io/kimi-work-pets/assets/brand.png",
+        "description": "把 Codex Pets 社区桌宠装进 Kimi Work 桌面端的安装器与素材合集,含 14 款桌面宠物,支持悬停互动、视线跟随,兼容 macOS 与 Windows。",
+        "applicationCategory": "UtilitiesApplication",
+        "operatingSystem": "macOS, Windows",
+        "offers": {"@type": "Offer", "price": "0", "priceCurrency": "CNY"},
+        "codeRepository": "https://github.com/caseclose/kimi-work-pets",
+        "license": "https://opensource.org/licenses/MIT",
+        "isPartOf": {"@id": "https://caseclose.github.io/kimi-work-pets/#website"}
+      },
+      {
+        "@type": "ItemList",
+        "name": "Kimi Work 桌宠画廊",
+        "numberOfItems": 14,
+        "itemListElement": [
+          {"@type": "ListItem", "position": 1, "name": "Dimo", "url": "https://caseclose.github.io/kimi-work-pets/#dimo"},
+          {"@type": "ListItem", "position": 2, "name": "Siam", "url": "https://caseclose.github.io/kimi-work-pets/#siam"},
+          {"@type": "ListItem", "position": 3, "name": "Maomao", "url": "https://caseclose.github.io/kimi-work-pets/#maomao"},
+          {"@type": "ListItem", "position": 4, "name": "Hiyuki", "url": "https://caseclose.github.io/kimi-work-pets/#hiyuki"},
+          {"@type": "ListItem", "position": 5, "name": "Feixue", "url": "https://caseclose.github.io/kimi-work-pets/#feixue"},
+          {"@type": "ListItem", "position": 6, "name": "GUGUGAGA", "url": "https://caseclose.github.io/kimi-work-pets/#endminguga"},
+          {"@type": "ListItem", "position": 7, "name": "Round Cola Hatch", "url": "https://caseclose.github.io/kimi-work-pets/#round-cola-hatch"},
+          {"@type": "ListItem", "position": 8, "name": "胡桃", "url": "https://caseclose.github.io/kimi-work-pets/#hu-tao-pet"},
+          {"@type": "ListItem", "position": 9, "name": "Flamy", "url": "https://caseclose.github.io/kimi-work-pets/#flamy"},
+          {"@type": "ListItem", "position": 10, "name": "Kimlet Move Wave", "url": "https://caseclose.github.io/kimi-work-pets/#kimlet-move-wave"},
+          {"@type": "ListItem", "position": 11, "name": "Kimlet", "url": "https://caseclose.github.io/kimi-work-pets/#kimlet"},
+          {"@type": "ListItem", "position": 12, "name": "星见雅", "url": "https://caseclose.github.io/kimi-work-pets/#miyabi"},
+          {"@type": "ListItem", "position": 13, "name": "薇尔莉特", "url": "https://caseclose.github.io/kimi-work-pets/#violet"},
+          {"@type": "ListItem", "position": 14, "name": "咕嘎", "url": "https://caseclose.github.io/kimi-work-pets/#guga"}
+        ]
+      }
     ]
   }
   </script>
   <style>
-    :root {
-      --bg: #0f1115;
-      --panel: #171a21;
-      --text: #e8eaf0;
-      --muted: #9aa1b0;
-      --accent: #6ee7b7;
-      --accent2: #7dd3fc;
-      --border: #262b36;
+    :root, [data-theme="light"] {
+      --bg: #f4efe4;
+      --bg-soft: #ebe3d2;
+      --panel: #fffaf2;
+      --text: #1a1612;
+      --muted: #6c6459;
+      --accent: #0c7c6e;
+      --accent-hover: #096359;
+      --accent-fg: #ffffff;
+      --accent-soft: rgba(12, 124, 110, 0.11);
+      --link: #0b6a93;
+      --border: #ddd3c2;
+      --code-bg: #efe7d8;
+      --code: #0a5f55;
+      --ip: #9a6700;
+      --shadow: 0 1px 2px rgba(26, 22, 18, 0.04), 0 18px 40px rgba(26, 22, 18, 0.07);
+      --shadow-hover: 0 14px 36px rgba(26, 22, 18, 0.12);
+      --nav: rgba(244, 239, 228, 0.82);
+      --hero-a: rgba(12, 124, 110, 0.16);
+      --hero-b: rgba(214, 143, 58, 0.14);
+      --preview-bg: #f7f2e8;
+      --ring: rgba(12, 124, 110, 0.35);
+      --chip: #fffdf8;
+      --line: #e6dccb;
+    }
+    [data-theme="dark"] {
+      --bg: #0c1017;
+      --bg-soft: #131925;
+      --panel: #161c28;
+      --text: #eef2f7;
+      --muted: #9aa3b5;
+      --accent: #5eead4;
+      --accent-hover: #99f6e4;
+      --accent-fg: #042f2e;
+      --accent-soft: rgba(94, 234, 212, 0.12);
+      --link: #7dd3fc;
+      --border: #2a3344;
+      --code-bg: #0b0f16;
+      --code: #5eead4;
+      --ip: #fbbf24;
+      --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 18px 44px rgba(0, 0, 0, 0.36);
+      --shadow-hover: 0 16px 40px rgba(0, 0, 0, 0.46);
+      --nav: rgba(12, 16, 23, 0.8);
+      --hero-a: rgba(94, 234, 212, 0.12);
+      --hero-b: rgba(125, 211, 252, 0.08);
+      --preview-bg: #10151e;
+      --ring: rgba(94, 234, 212, 0.4);
+      --chip: #1a2130;
+      --line: #2a3344;
     }
     * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
     body {
       margin: 0;
-      background: var(--bg);
+      background:
+        radial-gradient(900px 420px at 12% -10%, var(--hero-a), transparent 60%),
+        radial-gradient(720px 380px at 92% 8%, var(--hero-b), transparent 58%),
+        var(--bg);
       color: var(--text);
-      font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", "Segoe UI", sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Segoe UI", sans-serif;
       line-height: 1.7;
+      min-height: 100vh;
     }
-    a { color: var(--accent2); text-decoration: none; }
-    a:hover { text-decoration: underline; }
-    .wrap { max-width: 1080px; margin: 0 auto; padding: 0 20px; }
-    header.hero {
-      padding: 72px 0 40px;
-      text-align: center;
-      background: radial-gradient(ellipse at top, rgba(110,231,183,.08), transparent 60%);
+    a { color: var(--link); text-decoration: none; }
+    a:hover { text-decoration: underline; text-underline-offset: 3px; }
+    :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+    .wrap { max-width: 1160px; margin: 0 auto; padding: 0 24px; }
+    .skip {
+      position: absolute; left: -999px; top: 8px; z-index: 80;
+      background: var(--accent); color: var(--accent-fg);
+      padding: 8px 12px; border-radius: 8px;
     }
-    .hero h1 { font-size: 2.4rem; margin: 0 0 12px; }
-    .hero h1 .em { color: var(--accent); }
-    .hero p { color: var(--muted); max-width: 640px; margin: 0 auto 24px; }
-    .hero .cta a {
-      display: inline-block; margin: 0 6px; padding: 10px 22px;
-      border-radius: 10px; border: 1px solid var(--border);
-      background: var(--panel); color: var(--text); font-weight: 600;
+    .skip:focus { left: 12px; }
+
+    .nav {
+      position: sticky; top: 0; z-index: 40;
+      backdrop-filter: blur(18px) saturate(1.2);
+      -webkit-backdrop-filter: blur(18px) saturate(1.2);
+      background: var(--nav);
+      border-bottom: 1px solid var(--border);
     }
-    .hero .cta a.primary { background: var(--accent); color: #06251b; border-color: transparent; }
-    section { padding: 40px 0; }
-    h2 { font-size: 1.5rem; border-left: 4px solid var(--accent); padding-left: 12px; margin-bottom: 20px; }
-    .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; }
-    .feature {
+    .nav-inner {
+      display: flex; align-items: center; justify-content: flex-start;
+      min-height: 68px; gap: 16px;
+    }
+    .brand {
+      display: flex; align-items: center; gap: 10px; flex-shrink: 0;
+      color: var(--text); font-weight: 700; letter-spacing: -0.03em;
+      text-decoration: none;
+    }
+    .brand:hover { text-decoration: none; }
+    .brand img {
+      width: 38px; height: 38px; border-radius: 11px;
+      background: #111; border: 1px solid var(--border);
+      object-fit: cover;
+    }
+    .brand span { color: var(--accent); }
+    .nav-actions { display: flex; align-items: center; gap: 8px; margin-left: 8px; }
+    .nav-links { display: flex; align-items: center; gap: 4px; flex-wrap: wrap; justify-content: flex-end; margin-left: auto; }
+    .nav-links a {
+      color: var(--muted); font-weight: 600; font-size: 0.88rem;
+      padding: 6px 10px; border-radius: 9px; text-decoration: none;
+    }
+    .nav-links a:hover { color: var(--text); background: var(--accent-soft); }
+    .menu-toggle {
+      display: none; width: 40px; height: 40px; border-radius: 12px;
+      border: 1px solid var(--border); background: var(--panel);
+      color: var(--text); cursor: pointer; font-weight: 800;
+    }
+    .theme-toggle {
+      width: 40px; height: 40px; border-radius: 12px;
+      border: 1px solid var(--border); background: var(--panel);
+      color: var(--text); cursor: pointer; display: grid; place-items: center;
+    }
+    .theme-toggle:hover { border-color: var(--accent); }
+    .theme-toggle svg { width: 18px; height: 18px; }
+    [data-theme="light"] .icon-sun, [data-theme="dark"] .icon-moon { display: none; }
+
+    .hero { padding: 56px 0 28px; }
+    .hero-grid {
+      display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 36px; align-items: center;
+    }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 6px 12px; border-radius: 999px; margin-bottom: 16px;
+      background: var(--accent-soft); color: var(--accent);
+      border: 1px solid var(--border); font-size: 0.8rem; font-weight: 700;
+    }
+    .hero h1 {
+      font-size: clamp(2.3rem, 5vw, 3.6rem);
+      line-height: 1.12; letter-spacing: -0.04em; margin: 0 0 16px;
+    }
+    .hero h1 em { color: var(--accent); font-style: normal; }
+    .lead { color: var(--muted); font-size: 1.08rem; margin: 0 0 26px; max-width: 540px; }
+    .cta { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 28px; }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      min-height: 46px; padding: 10px 20px; border-radius: 13px;
+      border: 1px solid var(--border); background: var(--panel);
+      color: var(--text); font-weight: 700; text-decoration: none;
+      box-shadow: var(--shadow);
+    }
+    .btn:hover { text-decoration: none; transform: translateY(-1px); }
+    .btn.primary { background: var(--accent); color: var(--accent-fg); border-color: transparent; }
+    .btn.primary:hover { background: var(--accent-hover); }
+    .stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+    .stat {
+      padding: 12px 12px 10px; border-radius: 14px;
       background: var(--panel); border: 1px solid var(--border);
-      border-radius: 12px; padding: 16px 18px;
     }
-    .feature strong { color: var(--accent); }
-    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
+    .stat b { display: block; font-size: 1.2rem; letter-spacing: -0.03em; }
+    .stat span { color: var(--muted); font-size: 0.78rem; }
+    .showcase {
+      background: var(--panel); border: 1px solid var(--border);
+      border-radius: 28px; padding: 18px; box-shadow: var(--shadow);
+    }
+    .showcase-media {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+      padding: 16px; border-radius: 20px; background: var(--preview-bg);
+      border: 1px solid var(--border); margin-bottom: 14px;
+    }
+    .showcase-media img {
+      width: 100%; border-radius: 16px; background: #fff; object-fit: contain; max-height: 240px;
+    }
+    .showcase-media img.states { image-rendering: pixelated; }
+    .showcase h2 { font-size: 1.2rem; margin: 0 0 4px; border: 0; padding: 0; }
+    .showcase p { margin: 0; color: var(--muted); font-size: 0.92rem; }
+
+    section { padding: 56px 0 8px; }
+    .section-head { margin-bottom: 24px; max-width: 720px; }
+    .kicker {
+      color: var(--accent); font-size: 0.75rem; font-weight: 800;
+      letter-spacing: 0.1em; text-transform: uppercase; margin: 0 0 8px;
+    }
+    h2 {
+      font-size: clamp(1.5rem, 3vw, 2rem); letter-spacing: -0.03em;
+      margin: 0 0 8px;
+    }
+    .section-head p { margin: 0; color: var(--muted); }
+
+    .flow { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    .flow article, .feature, .faq, .license-card {
+      background: var(--panel); border: 1px solid var(--border);
+      border-radius: 18px; padding: 20px; box-shadow: var(--shadow);
+    }
+    .flow .num {
+      width: 32px; height: 32px; border-radius: 999px; margin-bottom: 12px;
+      display: grid; place-items: center;
+      background: var(--accent); color: var(--accent-fg); font-weight: 800;
+    }
+    .flow h3, .feature h3, .faq h3, .license-card h3 { margin: 0 0 6px; font-size: 1.05rem; }
+    .flow p, .feature p, .faq p, .license-card p { margin: 0; color: var(--muted); font-size: 0.94rem; }
+
+    .features { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+    .feature .ico {
+      width: 38px; height: 38px; border-radius: 11px; margin-bottom: 12px;
+      display: grid; place-items: center;
+      background: var(--accent-soft); color: var(--accent); font-weight: 800;
+    }
+
+    .toolbar {
+      display: flex; flex-wrap: wrap; gap: 10px; align-items: center;
+      justify-content: space-between; margin-bottom: 18px;
+    }
+    .filters { display: flex; flex-wrap: wrap; gap: 8px; }
+    .chip {
+      border: 1px solid var(--border); background: var(--chip); color: var(--muted);
+      border-radius: 999px; padding: 7px 12px; font-weight: 700; font-size: 0.82rem; cursor: pointer;
+    }
+    .chip:hover { color: var(--text); border-color: var(--accent); }
+    .chip.active, .chip.active:hover {
+      color: var(--accent-fg); background: var(--accent); border-color: transparent;
+    }
+    .search {
+      min-width: 220px; height: 40px; padding: 0 14px; border-radius: 999px;
+      border: 1px solid var(--border); background: var(--panel); color: var(--text);
+    }
+    .count { color: var(--muted); font-size: 0.88rem; }
+
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(330px, 100%), 1fr)); gap: 18px; }
     .card {
       background: var(--panel); border: 1px solid var(--border);
-      border-radius: 14px; padding: 18px;
+      border-radius: 20px; padding: 16px; box-shadow: var(--shadow);
+      display: flex; flex-direction: column; min-width: 0;
     }
-    .card-media { display: flex; gap: 12px; align-items: flex-start; margin-bottom: 12px; }
-    .card-media .preview { width: 46%; border-radius: 8px; background: #fff; }
-    .card-media .states { width: 50%; border-radius: 8px; image-rendering: pixelated; }
-    .card h3 { margin: 0 0 4px; font-size: 1.1rem; }
-    .card .desc { margin: 0 0 6px; color: var(--muted); font-size: .92rem; }
-    .card .author { margin: 0 0 4px; font-size: .85rem; }
-    .card .ip { margin: 0 0 8px; font-size: .82rem; color: #fbbf24; }
-    .card .install code {
-      display: block; background: #0b0d11; border: 1px solid var(--border);
-      border-radius: 8px; padding: 8px 10px; font-size: .8rem;
-      color: var(--accent); overflow-x: auto; white-space: nowrap;
+    .card:hover { transform: translateY(-3px); box-shadow: var(--shadow-hover); }
+    .card:target { box-shadow: 0 0 0 3px var(--ring), var(--shadow); }
+    .card.hidden { display: none; }
+    .card-media {
+      display: flex; gap: 10px; margin-bottom: 14px; padding: 10px;
+      background: var(--preview-bg); border-radius: 16px; border: 1px solid var(--border);
     }
-    .steps { counter-reset: step; padding-left: 0; list-style: none; }
+    .card-media .preview, .card-media .states {
+      width: 50%; border-radius: 12px; background: #fff; object-fit: contain; max-height: 168px;
+    }
+    .card-media .states { image-rendering: pixelated; }
+    .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; }
+    .tag {
+      font-size: 0.72rem; font-weight: 800; padding: 3px 8px; border-radius: 999px;
+      background: var(--accent-soft); color: var(--accent);
+    }
+    .tag.warn { background: rgba(245, 158, 11, 0.16); color: var(--ip); }
+    .card h3 { margin: 0 0 4px; font-size: 1.12rem; }
+    .card .desc, .card .author { margin: 0 0 6px; color: var(--muted); font-size: .9rem; }
+    .card .ip { margin: 0 0 8px; font-size: .82rem; color: var(--ip); }
+    .install, .terminal {
+      display: flex; align-items: center; gap: 8px;
+      margin-top: auto; padding: 6px 6px 6px 12px;
+      background: var(--code-bg); border: 1px solid var(--border); border-radius: 12px;
+      min-width: 0;
+    }
+    .install code, .terminal code {
+      flex: 1 1 0; min-width: 0; color: var(--code); font-size: .78rem;
+      overflow-x: auto; white-space: nowrap;
+    }
+    .copy-btn {
+      flex: 0 0 auto; height: 28px; padding: 0 10px; border-radius: 8px;
+      border: 1px solid var(--border); background: var(--panel);
+      color: var(--muted); font-size: 0.75rem; font-weight: 700; cursor: pointer;
+    }
+    .copy-btn:hover, .copy-btn.copied { color: var(--accent-fg); background: var(--accent); border-color: transparent; }
+
+    .split { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 18px; }
+    .steps { counter-reset: step; padding: 0; margin: 0; list-style: none; }
     .steps li {
-      counter-increment: step; margin: 0 0 14px; padding: 14px 16px 14px 56px;
-      background: var(--panel); border: 1px solid var(--border); border-radius: 12px;
-      position: relative;
+      counter-increment: step; margin: 0 0 12px; padding: 16px 18px 16px 60px;
+      background: var(--panel); border: 1px solid var(--border); border-radius: 16px;
+      position: relative; box-shadow: var(--shadow);
     }
     .steps li::before {
-      content: counter(step); position: absolute; left: 16px; top: 14px;
-      width: 26px; height: 26px; border-radius: 50%;
-      background: var(--accent); color: #06251b; font-weight: 700;
-      display: flex; align-items: center; justify-content: center; font-size: .9rem;
+      content: counter(step); position: absolute; left: 16px; top: 16px;
+      width: 28px; height: 28px; border-radius: 50%;
+      background: var(--accent); color: var(--accent-fg); font-weight: 800;
+      display: flex; align-items: center; justify-content: center;
     }
-    .steps code { background: #0b0d11; border: 1px solid var(--border); border-radius: 6px; padding: 2px 8px; font-size: .88rem; color: var(--accent2); }
+    .aside {
+      background: var(--panel); border: 1px solid var(--border);
+      border-radius: 18px; padding: 20px; box-shadow: var(--shadow);
+    }
+    .aside h3 { margin: 0 0 8px; }
+    .aside p, .aside li { color: var(--muted); }
+    .aside ul { margin: 0; padding-left: 18px; }
+
+    .table-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: 16px; box-shadow: var(--shadow); }
+    table { width: 100%; border-collapse: collapse; background: var(--panel); font-size: 0.92rem; }
+    th, td { padding: 12px 14px; text-align: left; border-bottom: 1px solid var(--line); }
+    th { color: var(--muted); font-size: 0.78rem; letter-spacing: 0.04em; text-transform: uppercase; }
+    tr:last-child td { border-bottom: 0; }
+
+    .faq-grid, .license-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
     footer {
-      border-top: 1px solid var(--border); margin-top: 40px; padding: 28px 0 48px;
-      color: var(--muted); font-size: .85rem; text-align: center;
+      margin-top: 64px; padding: 36px 0 48px;
+      border-top: 1px solid var(--border); color: var(--muted); font-size: 0.88rem;
+    }
+    .foot { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 24px; }
+    .foot strong { display: block; color: var(--text); margin-bottom: 8px; }
+    .foot a { display: inline-block; margin: 0 10px 6px 0; }
+    .toast {
+      position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%) translateY(16px);
+      background: var(--text); color: var(--bg); padding: 8px 14px;
+      border-radius: 999px; font-size: 0.85rem; font-weight: 700;
+      opacity: 0; pointer-events: none; z-index: 50;
+    }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    @media (max-width: 900px) {
+      .hero-grid, .flow, .features, .split, .faq-grid, .license-grid, .foot { grid-template-columns: 1fr; }
+      .stats { grid-template-columns: repeat(2, 1fr); }
+      .menu-toggle { display: grid; place-items: center; }
+      .nav-inner { flex-wrap: wrap; }
+      .nav-actions { margin-left: auto; }
+      .nav-links {
+        display: none; width: 100%; order: 3; margin-left: 0; padding-bottom: 12px;
+        justify-content: flex-start;
+      }
+      .nav-links.open { display: flex; }
+      .nav-links a:not(.nav-cta) { display: inline-flex; }
+    }
+    @media (max-width: 720px) {
+      .card-media, .showcase-media { grid-template-columns: 1fr; display: grid; }
+      .card-media .preview, .card-media .states { width: 100%; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .btn:hover, .card:hover { transform: none; }
+    }
+    @media (prefers-reduced-motion: no-preference) {
+      body, .nav, .card, .feature, .btn, .theme-toggle, .toast, .copy-btn, .chip {
+        transition: background-color .25s ease, color .25s ease, border-color .25s ease, box-shadow .25s ease, transform .2s ease, opacity .2s ease;
+      }
     }
   </style>
 </head>
 <body>
-  <header class="hero">
-    <div class="wrap">
-      <h1>Kimi Work <span class="em">Pets</span></h1>
-      <p>把 <a href="https://codexpets.net/" rel="noopener">Codex Pets</a> 社区桌宠一键装进 Kimi Work 桌面端。14 款精选宠物,自带悬停互动、视线跟随转头,兼容 macOS 与 Windows。</p>
-      <div class="cta">
-        <a class="primary" href="https://github.com/caseclose/kimi-work-pets">GitHub 仓库</a>
-        <a href="#pets">浏览宠物</a>
+  <a class="skip" href="#main">跳到主要内容</a>
+  <nav class="nav" aria-label="主导航">
+    <div class="wrap nav-inner">
+      <a class="brand" href="#">
+        <img src="assets/brand.png" alt="" width="38" height="38">
+        Kimi Work <span>Pets</span>
+      </a>
+      <div class="nav-links" id="site-nav">
+        <a href="#overview">概览</a>
+        <a href="#interact">互动</a>
+        <a href="#pets">画廊</a>
+        <a href="#quickstart">安装</a>
+        <a href="#custom">自定义</a>
+        <a href="#license">版权</a>
+        <a href="how-kimi-work-pet-works.html">机制</a>
+        <a class="nav-cta" href="https://github.com/caseclose/kimi-work-pets">GitHub</a>
       </div>
+      <div class="nav-actions">
+        <button class="menu-toggle" type="button" id="menu-toggle" aria-expanded="false" aria-controls="site-nav">菜单</button>
+        <button class="theme-toggle" type="button" id="theme-toggle" aria-label="切换到暗色模式">
+          <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <circle cx="12" cy="12" r="4"></circle>
+            <path d="M12 3v2M12 19v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M3 12h2M19 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"></path>
+          </svg>
+          <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="M20 14.5A8.5 8.5 0 1 1 9.5 4 7 7 0 0 0 20 14.5z"></path>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <div class="eyebrow">Codex Pets × Kimi Work · 开源安装器</div>
+        <h1>Kimi Work <em>桌宠</em></h1>
+        <p class="lead">精选 14 款 <a href="https://codexpets.net/" rel="noopener">Codex Pets</a> 社区形象，自动转换精灵表、注入悬停招手与视线跟随，兼容 macOS 与 Windows，随时回滚默认桌宠。</p>
+        <div class="cta">
+          <a class="btn primary" href="#quickstart">开始安装</a>
+          <a class="btn" href="#pets">浏览 14 款宠物</a>
+        </div>
+        <div class="stats" aria-label="项目数据">
+          <div class="stat"><b>14</b><span>内置宠物</span></div>
+          <div class="stat"><b>2</b><span>桌面平台</span></div>
+          <div class="stat"><b>1 条</b><span>命令安装</span></div>
+          <div class="stat"><b>MIT</b><span>代码开源</span></div>
+        </div>
+      </div>
+      <aside class="showcase">
+        <div class="showcase-media">
+          <img src="assets/dimo/pet-preview.png" alt="Dimo(迪莫) 预览">
+          <img class="states" src="assets/dimo/pet-states.gif" alt="Dimo(迪莫) 动作演示">
+        </div>
+        <h2>Dimo（迪莫）</h2>
+        <p>洛克王国光属性明星宠物的社区二创。安装后可悬停挥爪、跟随鼠标转头。</p>
+      </aside>
     </div>
   </header>
 
-  <main class="wrap">
-    <section id="features">
-      <h2>特性</h2>
-      <div class="features">
-        <div class="feature"><strong>一键安装</strong><br>一条命令完成转换与注入,自动备份原桌宠,可随时回滚。</div>
-        <div class="feature"><strong>悬停互动</strong><br>鼠标悬停时宠物主动打招呼(Hiyuki 挥剑、Dimo 挥爪)。</div>
-        <div class="feature"><strong>视线跟随</strong><br>宠物会根据鼠标位置转动头部,时刻「看」着你。</div>
-        <div class="feature"><strong>双平台</strong><br>支持 macOS 与 Windows,处理 Rive 动画与精灵表自动转换。</div>
-      </div>
-    </section>
+  <main id="main">
+    <div class="wrap">
+      <section id="overview">
+        <div class="section-head">
+          <p class="kicker">Overview</p>
+          <h2>从社区画廊到桌面伙伴</h2>
+          <p>Kimi Work 除默认 Rive 形象外，还支持与 Codex 同源的精灵表（8×9 网格、192×208 单元格）。本仓库补齐转换、安装、回滚与互动补丁。</p>
+        </div>
+        <div class="flow">
+          <article>
+            <div class="num">1</div>
+            <h3>取材社区</h3>
+            <p>从 Codex Pets 画廊挑选形象。仓库已预置 14 款，也可自行下载任意社区包。</p>
+          </article>
+          <article>
+            <div class="num">2</div>
+            <h3>一键注入</h3>
+            <p><code>install.py</code> 负责转换清单、写入应用数据、备份原桌宠，失败可随时 restore。</p>
+          </article>
+          <article>
+            <div class="num">3</div>
+            <h3>桌面互动</h3>
+            <p>安装即带悬停招手、视线跟随、拖动奔跑。重启 Kimi 后，桌宠会看向你。</p>
+          </article>
+        </div>
+      </section>
 
-    <section id="pets">
-      <h2>宠物画廊(14 款)</h2>
-      <div class="grid">
-      <article class="card" id="dimo">
-        <div class="card-media">
-          <img class="preview" src="assets/dimo/pet-preview.png" alt="Dimo(迪莫) 桌宠预览图" loading="lazy">
-          <img class="states" src="assets/dimo/pet-states.webp" alt="Dimo(迪莫) 逐行动作演示" loading="lazy">
+      <section id="interact">
+        <div class="section-head">
+          <p class="kicker">Interactions</p>
+          <h2>安装即用的六种互动</h2>
+          <p>由五个幂等补丁自动注入，无需额外配置；<code>restore.py</code> 会一并撤销。所有互动只在宠物空闲时触发，不影响工作/等待等任务状态。</p>
         </div>
-        <h3>Dimo(迪莫)</h3>
-        <p class="desc">《洛克王国》光属性明星宠物(社区二创)</p>
-        <p class="author">作者 <a href="https://codexpets.net/gallery/dimo" rel="noopener">swrited</a> · <a href="https://codexpets.net/gallery/dimo" rel="noopener">Codex Pets 画廊</a></p>
-        <p class="ip">形象源自腾讯《洛克王国》</p>
-        <div class="install"><code>python3 scripts/install.py pets/dimo</code></div>
-      </article>
-      <article class="card" id="siam">
-        <div class="card-media">
-          <img class="preview" src="assets/siam/pet-preview.png" alt="Siam(暹罗猫) 桌宠预览图" loading="lazy">
-          <img class="states" src="assets/siam/pet-states.webp" alt="Siam(暹罗猫) 逐行动作演示" loading="lazy">
+        <div class="features">
+          <article class="feature">
+            <div class="ico">01</div>
+            <h3>开机问候</h3>
+            <p>桌宠加载完成后，主动随机播放一个空闲彩蛋动作打招呼——Hiyuki 挥剑，Dimo 摇尾，胡桃眨眼逗幽灵。</p>
+          </article>
+          <article class="feature">
+            <div class="ico">02</div>
+            <h3>悬停回应</h3>
+            <p>鼠标悬停时，从素材拥有的空闲彩蛋里随机挑一个回应（招手 / 跳跃 / 眨眼互动），6 秒冷却。</p>
+          </article>
+          <article class="feature">
+            <div class="ico">03</div>
+            <h3>点击跳跃</h3>
+            <p>点击或轻点桌宠，它会兴奋地随机跳跃或眨眼，3 秒冷却；停留超过 2.6 秒不放，还会撒娇大哭。</p>
+          </article>
+          <article class="feature">
+            <div class="ico">04</div>
+            <h3>气泡信息</h3>
+            <p>任务运行时，头顶气泡追加"已工作 X 分钟"与"刚用过 某工具"，每 15 秒自动刷新，不再只有"正在思考…"。</p>
+          </article>
+          <article class="feature">
+            <div class="ico">05</div>
+            <h3>视线跟随</h3>
+            <p>鼠标在附近移动时，精灵图宠物平滑向光标倾斜；离开后回正。Rive 默认形象自带眼动，补丁会自动跳过。</p>
+          </article>
+          <article class="feature">
+            <div class="ico">06</div>
+            <h3>拖动奔跑</h3>
+            <p>拖动桌宠时沿方向播放左右奔跑帧；默认 2 倍显示，可点区域在轮廓外再扩 24px，不用对准像素。</p>
+          </article>
         </div>
-        <h3>Siam(暹罗猫)</h3>
-        <p class="desc">小体型暹罗猫</p>
-        <p class="author">作者 <a href="https://codexpets.net/gallery/siam" rel="noopener">allen</a> · <a href="https://codexpets.net/gallery/siam" rel="noopener">Codex Pets 画廊</a></p>
-        
-        <div class="install"><code>python3 scripts/install.py pets/siam</code></div>
-      </article>
-      <article class="card" id="maomao">
-        <div class="card-media">
-          <img class="preview" src="assets/maomao/pet-preview.png" alt="Maomao(大开门) 桌宠预览图" loading="lazy">
-          <img class="states" src="assets/maomao/pet-states.webp" alt="Maomao(大开门) 逐行动作演示" loading="lazy">
-        </div>
-        <h3>Maomao(大开门)</h3>
-        <p class="desc">戴蓝色钩针帽的三花猫</p>
-        <p class="author">作者 <a href="https://codexpets.net/gallery/maomao" rel="noopener">kyle</a> · <a href="https://codexpets.net/gallery/maomao" rel="noopener">Codex Pets 画廊</a></p>
-        
-        <div class="install"><code>python3 scripts/install.py pets/maomao</code></div>
-      </article>
-      <article class="card" id="hiyuki">
-        <div class="card-media">
-          <img class="preview" src="assets/hiyuki/pet-preview.png" alt="Hiyuki 桌宠预览图" loading="lazy">
-          <img class="states" src="assets/hiyuki/pet-states.webp" alt="Hiyuki 逐行动作演示" loading="lazy">
-        </div>
-        <h3>Hiyuki</h3>
-        <p class="desc">持冰剑的银发红瞳 Q 版少女</p>
-        <p class="author">作者 <a href="https://codexpets.net/gallery/hiyuki" rel="noopener">foxibu</a> · <a href="https://codexpets.net/gallery/hiyuki" rel="noopener">Codex Pets 画廊</a></p>
-        
-        <div class="install"><code>python3 scripts/install.py pets/hiyuki</code></div>
-      </article>
-      <article class="card" id="feixue">
-        <div class="card-media">
-          <img class="preview" src="assets/feixue/pet-preview.png" alt="Feixue(绯雪) 桌宠预览图" loading="lazy">
-          <img class="states" src="assets/feixue/pet-states.webp" alt="Feixue(绯雪) 逐行动作演示" loading="lazy">
-        </div>
-        <h3>Feixue(绯雪)</h3>
-        <p class="desc">冷艳巫女风 Q 版少女</p>
-        <p class="author">作者 <a href="https://codexpets.net/gallery/feixue" rel="noopener">Akira97</a> · <a href="https://codexpets.net/gallery/feixue" rel="noopener">Codex Pets 画廊</a></p>
-        
-        <div class="install"><code>python3 scripts/install.py pets/feixue</code></div>
-      </article>
-      <article class="card" id="endminguga">
-        <div class="card-media">
-          <img class="preview" src="assets/endminguga/pet-preview.png" alt="GUGUGAGA 桌宠预览图" loading="lazy">
-          <img class="states" src="assets/endminguga/pet-states.webp" alt="GUGUGAGA 逐行动作演示" loading="lazy">
-        </div>
-        <h3>GUGUGAGA</h3>
-        <p class="desc">企鹅装 Q 版少女</p>
-        <p class="author">作者 <a href="https://codexpets.net/gallery/endminguga" rel="noopener">Hibik1</a> · <a href="https://codexpets.net/gallery/endminguga" rel="noopener">Codex Pets 画廊</a></p>
-        
-        <div class="install"><code>python3 scripts/install.py pets/endminguga</code></div>
-      </article>
-      <article class="card" id="round-cola-hatch">
-        <div class="card-media">
-          <img class="preview" src="assets/round-cola-hatch/pet-preview.png" alt="Round Cola Hatch 桌宠预览图" loading="lazy">
-          <img class="states" src="assets/round-cola-hatch/pet-states.webp" alt="Round Cola Hatch 逐行动作演示" loading="lazy">
-        </div>
-        <h3>Round Cola Hatch</h3>
-        <p class="desc">喝可乐的蓝色圆滚滚机器人</p>
-        <p class="author">作者 <a href="https://codexpets.net/gallery/round-cola-hatch" rel="noopener">tsang</a> · <a href="https://codexpets.net/gallery/round-cola-hatch" rel="noopener">Codex Pets 画廊</a></p>
-        
-        <div class="install"><code>python3 scripts/install.py pets/round-cola-hatch</code></div>
-      </article>
-      <article class="card" id="hu-tao-pet">
-        <div class="card-media">
-          <img class="preview" src="assets/hu-tao-pet/pet-preview.png" alt="胡桃(Hu Tao) 桌宠预览图" loading="lazy">
-          <img class="states" src="assets/hu-tao-pet/pet-states.webp" alt="胡桃(Hu Tao) 逐行动作演示" loading="lazy">
-        </div>
-        <h3>胡桃(Hu Tao)</h3>
-        <p class="desc">《原神》往生堂堂主,带小幽灵</p>
-        <p class="author">作者 <a href="https://codexpets.net/gallery/hu-tao-pet" rel="noopener">Barometer</a> · <a href="https://codexpets.net/gallery/hu-tao-pet" rel="noopener">Codex Pets 画廊</a></p>
-        <p class="ip">形象版权归米哈游</p>
-        <div class="install"><code>python3 scripts/install.py pets/hu-tao-pet</code></div>
-      </article>
-      <article class="card" id="flamy">
-        <div class="card-media">
-          <img class="preview" src="assets/flamy/pet-preview.png" alt="Flamy 桌宠预览图" loading="lazy">
-          <img class="states" src="assets/flamy/pet-states.webp" alt="Flamy 逐行动作演示" loading="lazy">
-        </div>
-        <h3>Flamy</h3>
-        <p class="desc">戴破碎眼镜敲笔记本的红色小火龙</p>
-        <p class="author">作者 <a href="https://codexpets.net/gallery/flamy" rel="noopener">inwizzy</a> · <a href="https://codexpets.net/gallery/flamy" rel="noopener">Codex Pets 画廊</a></p>
-        
-        <div class="install"><code>python3 scripts/install.py pets/flamy</code></div>
-      </article>
-      <article class="card" id="kimlet-move-wave">
-        <div class="card-media">
-          <img class="preview" src="assets/kimlet-move-wave/pet-preview.png" alt="Kimlet Move Wave 桌宠预览图" loading="lazy">
-          <img class="states" src="assets/kimlet-move-wave/pet-states.webp" alt="Kimlet Move Wave 逐行动作演示" loading="lazy">
-        </div>
-        <h3>Kimlet Move Wave</h3>
-        <p class="desc">像素风挥手人物</p>
-        <p class="author">作者 <a href="https://codexpets.net/gallery/kimlet-move-wave" rel="noopener">kimehwa</a> · <a href="https://codexpets.net/gallery/kimlet-move-wave" rel="noopener">Codex Pets 画廊</a></p>
-        <p class="ip">⚠️ 真人形象戏仿,介意请勿安装</p>
-        <div class="install"><code>python3 scripts/install.py pets/kimlet-move-wave</code></div>
-      </article>
-      <article class="card" id="kimlet">
-        <div class="card-media">
-          <img class="preview" src="assets/kimlet/pet-preview.png" alt="Kimlet 桌宠预览图" loading="lazy">
-          <img class="states" src="assets/kimlet/pet-states.webp" alt="Kimlet 逐行动作演示" loading="lazy">
-        </div>
-        <h3>Kimlet</h3>
-        <p class="desc">带光环挥手人物</p>
-        <p class="author">作者 <a href="https://codexpets.net/gallery/kimlet" rel="noopener">kimehwa</a> · <a href="https://codexpets.net/gallery/kimlet" rel="noopener">Codex Pets 画廊</a></p>
-        <p class="ip">⚠️ 真人形象戏仿,介意请勿安装</p>
-        <div class="install"><code>python3 scripts/install.py pets/kimlet</code></div>
-      </article>
-      <article class="card" id="miyabi">
-        <div class="card-media">
-          <img class="preview" src="assets/miyabi/pet-preview.png" alt="星见雅(Miyabi) 桌宠预览图" loading="lazy">
-          <img class="states" src="assets/miyabi/pet-states.webp" alt="星见雅(Miyabi) 逐行动作演示" loading="lazy">
-        </div>
-        <h3>星见雅(Miyabi)</h3>
-        <p class="desc">《绝区零》对空六课狐耳剑士</p>
-        <p class="author">作者 <a href="https://codexpets.net/gallery/miyabi" rel="noopener">Eric-Terminal</a> · <a href="https://codexpets.net/gallery/miyabi" rel="noopener">Codex Pets 画廊</a></p>
-        <p class="ip">形象版权归米哈游</p>
-        <div class="install"><code>python3 scripts/install.py pets/miyabi</code></div>
-      </article>
-      <article class="card" id="violet">
-        <div class="card-media">
-          <img class="preview" src="assets/violet/pet-preview.png" alt="薇尔莉特(Violet) 桌宠预览图" loading="lazy">
-          <img class="states" src="assets/violet/pet-states.webp" alt="薇尔莉特(Violet) 逐行动作演示" loading="lazy">
-        </div>
-        <h3>薇尔莉特(Violet)</h3>
-        <p class="desc">《紫罗兰永恒花园》自动手记人偶</p>
-        <p class="author">作者 <a href="https://codexpets.net/gallery/violet" rel="noopener">Lazenca</a> · <a href="https://codexpets.net/gallery/violet" rel="noopener">Codex Pets 画廊</a></p>
-        <p class="ip">形象版权归京都动画</p>
-        <div class="install"><code>python3 scripts/install.py pets/violet</code></div>
-      </article>
-      <article class="card" id="guga">
-        <div class="card-media">
-          <img class="preview" src="assets/guga/pet-preview.png" alt="咕嘎(Guga) 桌宠预览图" loading="lazy">
-          <img class="states" src="assets/guga/pet-states.webp" alt="咕嘎(Guga) 逐行动作演示" loading="lazy">
-        </div>
-        <h3>咕嘎(Guga)</h3>
-        <p class="desc">圆润版企鹅装连帽少女</p>
-        <p class="author">作者 <a href="https://codexpets.net/gallery/guga" rel="noopener">CIRCUS</a> · <a href="https://codexpets.net/gallery/guga" rel="noopener">Codex Pets 画廊</a></p>
-        
-        <div class="install"><code>python3 scripts/install.py pets/guga</code></div>
-      </article>
-      </div>
-    </section>
+      </section>
 
-    <section id="quickstart">
-      <h2>快速开始</h2>
-      <ol class="steps">
-        <li>克隆仓库:<code>git clone https://github.com/caseclose/kimi-work-pets.git</code></li>
-        <li>安装宠物(以迪莫为例):<code>python3 scripts/install.py pets/dimo</code></li>
-        <li>重启 Kimi 应用,桌面上就会出现新桌宠;悬停试试它的互动动作。</li>
-      </ol>
-      <p>恢复默认桌宠:<code>python3 scripts/restore.py</code>(自动使用安装前的备份)。</p>
-    </section>
+      <section id="pets">
+        <div class="section-head">
+          <p class="kicker">Gallery</p>
+          <h2>宠物画廊</h2>
+          <p>14 款预置形象。可按来源筛选，或搜索名字与作者。右侧进入视口后才播放动作 GIF。</p>
+        </div>
+        <div class="toolbar">
+          <div class="filters" role="group" aria-label="按来源筛选">
+            <button class="chip active" type="button" data-filter="all" aria-pressed="true">全部</button>
+            <button class="chip" type="button" data-filter="original" aria-pressed="false">社区原创</button>
+            <button class="chip" type="button" data-filter="ip" aria-pressed="false">IP 二创</button>
+            <button class="chip" type="button" data-filter="parody" aria-pressed="false">戏仿</button>
+          </div>
+          <input class="search" id="pet-search" type="search" placeholder="搜索宠物、作者或作品…" aria-label="搜索宠物">
+        </div>
+        <p class="count" id="pet-count">显示 14 / 14 款</p>
+        <div class="grid" id="pet-grid">
+          <article class="card" id="dimo" data-cat="ip" data-search="dimo 迪莫 洛克王国 swrited">
+            <div class="card-media">
+              <img class="preview" src="assets/dimo/pet-preview.png" alt="Dimo(迪莫) 桌宠预览图" loading="lazy">
+              <img class="states" src="assets/dimo/pet-preview.png" data-gif="assets/dimo/pet-states.gif" data-static="assets/dimo/pet-preview.png" alt="Dimo(迪莫) 逐行动作演示" loading="lazy">
+            </div>
+            <div class="tags"><span class="tag">IP 二创</span><span class="tag">洛克王国</span></div>
+            <h3>Dimo(迪莫)</h3>
+            <p class="desc">《洛克王国》光属性明星宠物（社区二创）</p>
+            <p class="author">作者 <a href="https://codexpets.net/gallery/dimo" rel="noopener">swrited</a> · <a href="https://codexpets.net/gallery/dimo" rel="noopener">画廊</a></p>
+            <p class="ip">形象源自腾讯《洛克王国》</p>
+            <div class="install"><code>python3 scripts/install.py pets/dimo</code></div>
+          </article>
+          <article class="card" id="siam" data-cat="original" data-search="siam 暹罗猫 allen">
+            <div class="card-media">
+              <img class="preview" src="assets/siam/pet-preview.png" alt="Siam(暹罗猫) 桌宠预览图" loading="lazy">
+              <img class="states" src="assets/siam/pet-preview.png" data-gif="assets/siam/pet-states.gif" data-static="assets/siam/pet-preview.png" alt="Siam(暹罗猫) 逐行动作演示" loading="lazy">
+            </div>
+            <div class="tags"><span class="tag">社区原创</span></div>
+            <h3>Siam(暹罗猫)</h3>
+            <p class="desc">小体型暹罗猫</p>
+            <p class="author">作者 <a href="https://codexpets.net/gallery/siam" rel="noopener">allen</a> · <a href="https://codexpets.net/gallery/siam" rel="noopener">画廊</a></p>
+            <div class="install"><code>python3 scripts/install.py pets/siam</code></div>
+          </article>
+          <article class="card" id="maomao" data-cat="original" data-search="maomao 大开门 三花猫 kyle">
+            <div class="card-media">
+              <img class="preview" src="assets/maomao/pet-preview.png" alt="Maomao(大开门) 桌宠预览图" loading="lazy">
+              <img class="states" src="assets/maomao/pet-preview.png" data-gif="assets/maomao/pet-states.gif" data-static="assets/maomao/pet-preview.png" alt="Maomao(大开门) 逐行动作演示" loading="lazy">
+            </div>
+            <div class="tags"><span class="tag">社区原创</span></div>
+            <h3>Maomao(大开门)</h3>
+            <p class="desc">戴蓝色钩针帽的三花猫</p>
+            <p class="author">作者 <a href="https://codexpets.net/gallery/maomao" rel="noopener">kyle</a> · <a href="https://codexpets.net/gallery/maomao" rel="noopener">画廊</a></p>
+            <div class="install"><code>python3 scripts/install.py pets/maomao</code></div>
+          </article>
+          <article class="card" id="hiyuki" data-cat="original" data-search="hiyuki foxibu 冰剑">
+            <div class="card-media">
+              <img class="preview" src="assets/hiyuki/pet-preview.png" alt="Hiyuki 桌宠预览图" loading="lazy">
+              <img class="states" src="assets/hiyuki/pet-preview.png" data-gif="assets/hiyuki/pet-states.gif" data-static="assets/hiyuki/pet-preview.png" alt="Hiyuki 逐行动作演示" loading="lazy">
+            </div>
+            <div class="tags"><span class="tag">社区原创</span></div>
+            <h3>Hiyuki</h3>
+            <p class="desc">持冰剑的银发红瞳 Q 版少女</p>
+            <p class="author">作者 <a href="https://codexpets.net/gallery/hiyuki" rel="noopener">foxibu</a> · <a href="https://codexpets.net/gallery/hiyuki" rel="noopener">画廊</a></p>
+            <div class="install"><code>python3 scripts/install.py pets/hiyuki</code></div>
+          </article>
+          <article class="card" id="feixue" data-cat="original" data-search="feixue 绯雪 akira97 巫女">
+            <div class="card-media">
+              <img class="preview" src="assets/feixue/pet-preview.png" alt="Feixue(绯雪) 桌宠预览图" loading="lazy">
+              <img class="states" src="assets/feixue/pet-preview.png" data-gif="assets/feixue/pet-states.gif" data-static="assets/feixue/pet-preview.png" alt="Feixue(绯雪) 逐行动作演示" loading="lazy">
+            </div>
+            <div class="tags"><span class="tag">社区原创</span></div>
+            <h3>Feixue(绯雪)</h3>
+            <p class="desc">冷艳巫女风 Q 版少女</p>
+            <p class="author">作者 <a href="https://codexpets.net/gallery/feixue" rel="noopener">Akira97</a> · <a href="https://codexpets.net/gallery/feixue" rel="noopener">画廊</a></p>
+            <div class="install"><code>python3 scripts/install.py pets/feixue</code></div>
+          </article>
+          <article class="card" id="endminguga" data-cat="original" data-search="gugugaga endminguga hibik1 企鹅">
+            <div class="card-media">
+              <img class="preview" src="assets/endminguga/pet-preview.png" alt="GUGUGAGA 桌宠预览图" loading="lazy">
+              <img class="states" src="assets/endminguga/pet-preview.png" data-gif="assets/endminguga/pet-states.gif" data-static="assets/endminguga/pet-preview.png" alt="GUGUGAGA 逐行动作演示" loading="lazy">
+            </div>
+            <div class="tags"><span class="tag">社区原创</span></div>
+            <h3>GUGUGAGA</h3>
+            <p class="desc">企鹅装 Q 版少女</p>
+            <p class="author">作者 <a href="https://codexpets.net/gallery/endminguga" rel="noopener">Hibik1</a> · <a href="https://codexpets.net/gallery/endminguga" rel="noopener">画廊</a></p>
+            <div class="install"><code>python3 scripts/install.py pets/endminguga</code></div>
+          </article>
+          <article class="card" id="round-cola-hatch" data-cat="original" data-search="round cola hatch tsang 可乐 机器人">
+            <div class="card-media">
+              <img class="preview" src="assets/round-cola-hatch/pet-preview.png" alt="Round Cola Hatch 桌宠预览图" loading="lazy">
+              <img class="states" src="assets/round-cola-hatch/pet-preview.png" data-gif="assets/round-cola-hatch/pet-states.gif" data-static="assets/round-cola-hatch/pet-preview.png" alt="Round Cola Hatch 逐行动作演示" loading="lazy">
+            </div>
+            <div class="tags"><span class="tag">社区原创</span></div>
+            <h3>Round Cola Hatch</h3>
+            <p class="desc">喝可乐的蓝色圆滚滚机器人</p>
+            <p class="author">作者 <a href="https://codexpets.net/gallery/round-cola-hatch" rel="noopener">tsang</a> · <a href="https://codexpets.net/gallery/round-cola-hatch" rel="noopener">画廊</a></p>
+            <div class="install"><code>python3 scripts/install.py pets/round-cola-hatch</code></div>
+          </article>
+          <article class="card" id="hu-tao-pet" data-cat="ip" data-search="胡桃 hu tao 原神 barometer">
+            <div class="card-media">
+              <img class="preview" src="assets/hu-tao-pet/pet-preview.png" alt="胡桃(Hu Tao) 桌宠预览图" loading="lazy">
+              <img class="states" src="assets/hu-tao-pet/pet-preview.png" data-gif="assets/hu-tao-pet/pet-states.gif" data-static="assets/hu-tao-pet/pet-preview.png" alt="胡桃(Hu Tao) 逐行动作演示" loading="lazy">
+            </div>
+            <div class="tags"><span class="tag">IP 二创</span><span class="tag">原神</span></div>
+            <h3>胡桃(Hu Tao)</h3>
+            <p class="desc">《原神》往生堂堂主，带小幽灵</p>
+            <p class="author">作者 <a href="https://codexpets.net/gallery/hu-tao-pet" rel="noopener">Barometer</a> · <a href="https://codexpets.net/gallery/hu-tao-pet" rel="noopener">画廊</a></p>
+            <p class="ip">形象版权归米哈游</p>
+            <div class="install"><code>python3 scripts/install.py pets/hu-tao-pet</code></div>
+          </article>
+          <article class="card" id="flamy" data-cat="original" data-search="flamy inwizzy 火龙">
+            <div class="card-media">
+              <img class="preview" src="assets/flamy/pet-preview.png" alt="Flamy 桌宠预览图" loading="lazy">
+              <img class="states" src="assets/flamy/pet-preview.png" data-gif="assets/flamy/pet-states.gif" data-static="assets/flamy/pet-preview.png" alt="Flamy 逐行动作演示" loading="lazy">
+            </div>
+            <div class="tags"><span class="tag">社区原创</span></div>
+            <h3>Flamy</h3>
+            <p class="desc">戴破碎眼镜敲笔记本的红色小火龙</p>
+            <p class="author">作者 <a href="https://codexpets.net/gallery/flamy" rel="noopener">inwizzy</a> · <a href="https://codexpets.net/gallery/flamy" rel="noopener">画廊</a></p>
+            <div class="install"><code>python3 scripts/install.py pets/flamy</code></div>
+          </article>
+          <article class="card" id="kimlet-move-wave" data-cat="parody" data-search="kimlet move wave kimehwa">
+            <div class="card-media">
+              <img class="preview" src="assets/kimlet-move-wave/pet-preview.png" alt="Kimlet Move Wave 桌宠预览图" loading="lazy">
+              <img class="states" src="assets/kimlet-move-wave/pet-preview.png" data-gif="assets/kimlet-move-wave/pet-states.gif" data-static="assets/kimlet-move-wave/pet-preview.png" alt="Kimlet Move Wave 逐行动作演示" loading="lazy">
+            </div>
+            <div class="tags"><span class="tag warn">戏仿</span></div>
+            <h3>Kimlet Move Wave</h3>
+            <p class="desc">像素风挥手人物</p>
+            <p class="author">作者 <a href="https://codexpets.net/gallery/kimlet-move-wave" rel="noopener">kimehwa</a> · <a href="https://codexpets.net/gallery/kimlet-move-wave" rel="noopener">画廊</a></p>
+            <p class="ip">⚠️ 真人形象戏仿，介意请勿安装</p>
+            <div class="install"><code>python3 scripts/install.py pets/kimlet-move-wave</code></div>
+          </article>
+          <article class="card" id="kimlet" data-cat="parody" data-search="kimlet kimehwa">
+            <div class="card-media">
+              <img class="preview" src="assets/kimlet/pet-preview.png" alt="Kimlet 桌宠预览图" loading="lazy">
+              <img class="states" src="assets/kimlet/pet-preview.png" data-gif="assets/kimlet/pet-states.gif" data-static="assets/kimlet/pet-preview.png" alt="Kimlet 逐行动作演示" loading="lazy">
+            </div>
+            <div class="tags"><span class="tag warn">戏仿</span></div>
+            <h3>Kimlet</h3>
+            <p class="desc">带光环挥手人物</p>
+            <p class="author">作者 <a href="https://codexpets.net/gallery/kimlet" rel="noopener">kimehwa</a> · <a href="https://codexpets.net/gallery/kimlet" rel="noopener">画廊</a></p>
+            <p class="ip">⚠️ 真人形象戏仿，介意请勿安装</p>
+            <div class="install"><code>python3 scripts/install.py pets/kimlet</code></div>
+          </article>
+          <article class="card" id="miyabi" data-cat="ip" data-search="星见雅 miyabi 绝区零 eric-terminal">
+            <div class="card-media">
+              <img class="preview" src="assets/miyabi/pet-preview.png" alt="星见雅(Miyabi) 桌宠预览图" loading="lazy">
+              <img class="states" src="assets/miyabi/pet-preview.png" data-gif="assets/miyabi/pet-states.gif" data-static="assets/miyabi/pet-preview.png" alt="星见雅(Miyabi) 逐行动作演示" loading="lazy">
+            </div>
+            <div class="tags"><span class="tag">IP 二创</span><span class="tag">绝区零</span></div>
+            <h3>星见雅(Miyabi)</h3>
+            <p class="desc">《绝区零》对空六课狐耳剑士</p>
+            <p class="author">作者 <a href="https://codexpets.net/gallery/miyabi" rel="noopener">Eric-Terminal</a> · <a href="https://codexpets.net/gallery/miyabi" rel="noopener">画廊</a></p>
+            <p class="ip">形象版权归米哈游</p>
+            <div class="install"><code>python3 scripts/install.py pets/miyabi</code></div>
+          </article>
+          <article class="card" id="violet" data-cat="ip" data-search="薇尔莉特 violet 紫罗兰永恒花园 lazenca">
+            <div class="card-media">
+              <img class="preview" src="assets/violet/pet-preview.png" alt="薇尔莉特(Violet) 桌宠预览图" loading="lazy">
+              <img class="states" src="assets/violet/pet-preview.png" data-gif="assets/violet/pet-states.gif" data-static="assets/violet/pet-preview.png" alt="薇尔莉特(Violet) 逐行动作演示" loading="lazy">
+            </div>
+            <div class="tags"><span class="tag">IP 二创</span><span class="tag">京阿尼</span></div>
+            <h3>薇尔莉特(Violet)</h3>
+            <p class="desc">《紫罗兰永恒花园》自动手记人偶</p>
+            <p class="author">作者 <a href="https://codexpets.net/gallery/violet" rel="noopener">Lazenca</a> · <a href="https://codexpets.net/gallery/violet" rel="noopener">画廊</a></p>
+            <p class="ip">形象版权归京都动画</p>
+            <div class="install"><code>python3 scripts/install.py pets/violet</code></div>
+          </article>
+          <article class="card" id="guga" data-cat="original" data-search="咕嘎 guga circus 企鹅">
+            <div class="card-media">
+              <img class="preview" src="assets/guga/pet-preview.png" alt="咕嘎(Guga) 桌宠预览图" loading="lazy">
+              <img class="states" src="assets/guga/pet-preview.png" data-gif="assets/guga/pet-states.gif" data-static="assets/guga/pet-preview.png" alt="咕嘎(Guga) 逐行动作演示" loading="lazy">
+            </div>
+            <div class="tags"><span class="tag">社区原创</span></div>
+            <h3>咕嘎(Guga)</h3>
+            <p class="desc">圆润版企鹅装连帽少女</p>
+            <p class="author">作者 <a href="https://codexpets.net/gallery/guga" rel="noopener">CIRCUS</a> · <a href="https://codexpets.net/gallery/guga" rel="noopener">画廊</a></p>
+            <div class="install"><code>python3 scripts/install.py pets/guga</code></div>
+          </article>
+        </div>
+      </section>
+
+      <section id="quickstart">
+        <div class="section-head">
+          <p class="kicker">Install</p>
+          <h2>三步装上桌宠</h2>
+          <p>需要 Kimi Work 桌面端与 <code>python3</code>。Windows 按 Electron 惯例定位 <code>%APPDATA%\kimi-desktop</code>；找不到时加 <code>--appdata</code>。</p>
+        </div>
+        <div class="split">
+          <ol class="steps">
+            <li>克隆仓库
+              <div class="terminal"><code>git clone https://github.com/caseclose/kimi-work-pets.git</code></div>
+            </li>
+            <li>安装一只宠物（可换成 <code>pets/</code> 下任意目录）
+              <div class="terminal"><code>python3 scripts/install.py pets/dimo</code></div>
+            </li>
+            <li>重启 Kimi，或重新开关桌宠。悬停试试招手，移动鼠标看它转头。</li>
+          </ol>
+          <aside class="aside">
+            <h3>回滚与备份</h3>
+            <p>原配置自动备份在用户目录 <code>.kimi-work-pet-backup/</code>。</p>
+            <div class="terminal" style="margin:12px 0"><code>python3 scripts/restore.py</code></div>
+            <h3>平台说明</h3>
+            <ul>
+              <li>macOS：自动定位 Kimi 应用数据目录</li>
+              <li>Windows：路径按惯例推断，未经全面真机验证</li>
+              <li>所有脚本都接受 <code>--appdata &lt;目录&gt;</code></li>
+            </ul>
+          </aside>
+        </div>
+      </section>
+
+      <section id="custom">
+        <div class="section-head">
+          <p class="kicker">Bring your own pet</p>
+          <h2>安装画廊里的其他宠物</h2>
+          <p>社区包通常含 <code>pet.json</code> 与 <code>spritesheet.webp</code>。转换器会统计每行帧数，并把原清单备份为 <code>pet.codex.json</code>。</p>
+        </div>
+        <ol class="steps">
+          <li>从 <a href="https://codexpets.net/" rel="noopener">CodexPets.net</a> 或 petdex.dev 下载并解压宠物包。</li>
+          <li>转换：<div class="terminal"><code>python3 scripts/convert-codex-pet.py &lt;目录&gt;</code></div></li>
+          <li>安装：<div class="terminal"><code>python3 scripts/install.py &lt;目录&gt;</code></div></li>
+        </ol>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>行</th><th>社区语义</th><th>Kimi Work 状态</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>0</td><td>idle</td><td>空闲</td></tr>
+              <tr><td>1</td><td>running_right</td><td>向右拖动</td></tr>
+              <tr><td>2</td><td>running_left</td><td>向左拖动</td></tr>
+              <tr><td>3</td><td>waving</td><td>空闲彩蛋 1</td></tr>
+              <tr><td>4</td><td>jumping</td><td>空闲彩蛋 2</td></tr>
+              <tr><td>5</td><td>failed</td><td>失败</td></tr>
+              <tr><td>6</td><td>waiting</td><td>等待确认</td></tr>
+              <tr><td>7</td><td>running</td><td>工作中</td></tr>
+              <tr><td>8</td><td>react / review</td><td>空闲彩蛋 3（互动，全部宠物已映射）</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="section-head" style="margin-top:18px">布局不符时，用 <code>scripts/inspect_spritesheet.py</code> 逐行确认后再改 <code>pet.json</code>。机制说明见 <a href="how-kimi-work-pet-works.html">桌宠机制调研</a>。</p>
+      </section>
+
+      <section id="faq">
+        <div class="section-head">
+          <p class="kicker">FAQ</p>
+          <h2>常见问题</h2>
+        </div>
+        <div class="faq-grid">
+          <article class="faq">
+            <h3>装完没有变化？</h3>
+            <p>完全退出并重启 Kimi Work，或先关掉再打开桌宠。渲染器只在加载时读取配置。</p>
+          </article>
+          <article class="faq">
+            <h3>如何回到默认形象？</h3>
+            <p>运行 <code>python3 scripts/restore.py</code>。脚本会使用安装前自动备份，并撤销互动补丁。</p>
+          </article>
+          <article class="faq">
+            <h3>Windows 找不到目录？</h3>
+            <p>手动指定应用数据目录：<code>--appdata %APPDATA%\kimi-desktop</code>。各脚本均支持该参数。</p>
+          </article>
+          <article class="faq">
+            <h3>能装画廊里没预置的宠物吗？</h3>
+            <p>可以。先 <code>convert-codex-pet.py</code>，再 <code>install.py</code>。标准 9 行精灵表即可自动映射。</p>
+          </article>
+        </div>
+      </section>
+
+      <section id="license">
+        <div class="section-head">
+          <p class="kicker">License</p>
+          <h2>版权与使用边界</h2>
+          <p>本仓库与 Moonshot AI、OpenAI 无隶属或授权关系。素材仅供个人非商业使用。</p>
+        </div>
+        <div class="license-grid">
+          <article class="license-card">
+            <h3>代码 · MIT</h3>
+            <p>安装器、转换器与补丁脚本按 MIT 开源，详见仓库 LICENSE。</p>
+          </article>
+          <article class="license-card">
+            <h3>社区原创</h3>
+            <p>siam / maomao / hiyuki / feixue / endminguga / round-cola-hatch / flamy / guga 来自 Codex 社区，版权以各画廊页为准。</p>
+          </article>
+          <article class="license-card">
+            <h3>第三方 IP</h3>
+            <p>迪莫（腾讯《洛克王国》）、胡桃与星见雅（米哈游）、薇尔莉特（京都动画）均为二创展示，权利归原版权方。</p>
+          </article>
+          <article class="license-card">
+            <h3>戏仿内容</h3>
+            <p>kimlet 与 kimlet-move-wave 含真实公众人物形象。介意者请跳过，勿作商业使用。</p>
+          </article>
+        </div>
+      </section>
+    </div>
   </main>
 
   <footer>
-    <div class="wrap">
-      <p>本站素材来自 <a href="https://codexpets.net/" rel="noopener">Codex Pets</a> 社区,版权归各位原作者;含第三方 IP 形象(腾讯、米哈游、京都动画)的宠物仅作社区二创展示。仓库代码以 MIT 协议开源。</p>
-      <p><a href="https://github.com/caseclose/kimi-work-pets">GitHub</a> · <a href="https://caseclose.github.io/kimi-work-pets/sitemap.xml">Sitemap</a></p>
+    <div class="wrap foot">
+      <div>
+        <strong>Kimi Work Pets</strong>
+        把 Codex Pets 社区桌宠装进 Kimi Work。代码 MIT；素材版权归原作者。
+      </div>
+      <div>
+        <strong>页面</strong>
+        <a href="#pets">画廊</a>
+        <a href="#quickstart">安装</a>
+        <a href="#custom">自定义</a>
+        <a href="how-kimi-work-pet-works.html">机制说明</a>
+      </div>
+      <div>
+        <strong>链接</strong>
+        <a href="https://github.com/caseclose/kimi-work-pets">GitHub</a>
+        <a href="https://codexpets.net/" rel="noopener">Codex Pets</a>
+        <a href="https://caseclose.github.io/kimi-work-pets/sitemap.xml">Sitemap</a>
+      </div>
     </div>
   </footer>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script>
+    (function () {
+      var root = document.documentElement;
+      var toggle = document.getElementById("theme-toggle");
+      var themeMeta = document.querySelector('meta[name="theme-color"]');
+      var toast = document.getElementById("toast");
+      var toastTimer;
+      var filter = "all";
+      var menu = document.getElementById("menu-toggle");
+      var links = document.getElementById("site-nav");
+
+      function currentTheme() {
+        return root.getAttribute("data-theme") === "dark" ? "dark" : "light";
+      }
+      function applyTheme(theme) {
+        root.setAttribute("data-theme", theme);
+        root.style.colorScheme = theme;
+        try { localStorage.setItem("kimi-pets-theme", theme); } catch (e) {}
+        if (themeMeta) themeMeta.setAttribute("content", theme === "dark" ? "#0c1017" : "#f4efe4");
+        if (toggle) toggle.setAttribute("aria-label", theme === "dark" ? "切换到亮色模式" : "切换到暗色模式");
+      }
+      applyTheme(currentTheme());
+      if (toggle) {
+        toggle.addEventListener("click", function () {
+          applyTheme(currentTheme() === "dark" ? "light" : "dark");
+        });
+      }
+      window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", function (event) {
+        try {
+          if (!localStorage.getItem("kimi-pets-theme")) applyTheme(event.matches ? "dark" : "light");
+        } catch (e) {}
+      });
+
+      function menuOpen() {
+        return !!(links && links.classList.contains("open"));
+      }
+      function closeMenu(restore) {
+        if (!menu || !links || !menuOpen()) return;
+        links.classList.remove("open");
+        menu.setAttribute("aria-expanded", "false");
+        if (restore) menu.focus();
+      }
+      function openMenu() {
+        if (!menu || !links) return;
+        links.classList.add("open");
+        menu.setAttribute("aria-expanded", "true");
+      }
+      function menuFocusables() {
+        var items = [];
+        if (menu) items.push(menu);
+        if (links && menuOpen()) {
+          links.querySelectorAll("a").forEach(function (a) { items.push(a); });
+        }
+        return items;
+      }
+      if (menu && links) {
+        menu.addEventListener("click", function () {
+          if (menuOpen()) closeMenu(false);
+          else openMenu();
+        });
+        links.querySelectorAll("a").forEach(function (a) {
+          a.addEventListener("click", function () { closeMenu(false); });
+        });
+        document.addEventListener("click", function (event) {
+          if (!menuOpen()) return;
+          if (links.contains(event.target) || menu.contains(event.target)) return;
+          closeMenu(true);
+        });
+        document.addEventListener("keydown", function (event) {
+          if (event.key === "Escape" && menuOpen()) {
+            event.preventDefault();
+            closeMenu(true);
+            return;
+          }
+          if (event.key !== "Tab" || !menuOpen()) return;
+          var items = menuFocusables();
+          if (!items.length) return;
+          var first = items[0];
+          var last = items[items.length - 1];
+          if (event.shiftKey && document.activeElement === first) {
+            event.preventDefault();
+            last.focus();
+          } else if (!event.shiftKey && document.activeElement === last) {
+            event.preventDefault();
+            first.focus();
+          }
+        });
+      }
+
+      function showToast(message) {
+        if (!toast) return;
+        toast.textContent = message;
+        toast.classList.add("show");
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(function () { toast.classList.remove("show"); }, 1600);
+      }
+      function bindCopy(box) {
+        var code = box.querySelector("code");
+        if (!code || box.querySelector(".copy-btn")) return;
+        var button = document.createElement("button");
+        button.type = "button";
+        button.className = "copy-btn";
+        button.textContent = "复制";
+        button.addEventListener("click", function () {
+          var text = code.textContent || "";
+          var done = function () {
+            button.textContent = "已复制";
+            button.classList.add("copied");
+            showToast("命令已复制");
+            setTimeout(function () {
+              button.textContent = "复制";
+              button.classList.remove("copied");
+            }, 1400);
+          };
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(text).then(done).catch(function () { showToast("复制失败，请手动选择"); });
+          } else {
+            showToast("复制失败，请手动选择");
+          }
+        });
+        box.appendChild(button);
+      }
+      document.querySelectorAll(".install, .terminal").forEach(bindCopy);
+
+      var cards = Array.prototype.slice.call(document.querySelectorAll("#pet-grid .card"));
+      var chips = Array.prototype.slice.call(document.querySelectorAll(".chip[data-filter]"));
+      var search = document.getElementById("pet-search");
+      var count = document.getElementById("pet-count");
+      function applyFilter() {
+        var q = (search && search.value ? search.value : "").trim().toLowerCase();
+        var shown = 0;
+        cards.forEach(function (card) {
+          var cat = card.getAttribute("data-cat");
+          var hay = (card.getAttribute("data-search") || "").toLowerCase();
+          var ok = (filter === "all" || cat === filter) && (!q || hay.indexOf(q) !== -1);
+          card.classList.toggle("hidden", !ok);
+          if (ok) shown += 1;
+        });
+        if (count) count.textContent = "显示 " + shown + " / " + cards.length + " 款";
+      }
+      function setFilter(next) {
+        filter = next || "all";
+        chips.forEach(function (chip) {
+          var on = (chip.getAttribute("data-filter") || "") === filter;
+          chip.classList.toggle("active", on);
+          chip.setAttribute("aria-pressed", on ? "true" : "false");
+        });
+        applyFilter();
+      }
+      chips.forEach(function (chip) {
+        chip.addEventListener("click", function () {
+          setFilter(chip.getAttribute("data-filter") || "all");
+        });
+      });
+      if (search) search.addEventListener("input", applyFilter);
+
+      function revealHashTarget() {
+        var id = (location.hash || "").replace(/^#/, "");
+        if (!id) return;
+        var card = document.getElementById(id);
+        if (!card || !card.classList.contains("card")) return;
+        if (search) search.value = "";
+        setFilter("all");
+        card.scrollIntoView({ block: "center" });
+      }
+      window.addEventListener("hashchange", revealHashTarget);
+      revealHashTarget();
+
+      function setupGifs() {
+        var imgs = document.querySelectorAll("img.states[data-gif]");
+        var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        if (reduced) return;
+        if (!("IntersectionObserver" in window)) {
+          imgs.forEach(function (img) {
+            var gif = img.getAttribute("data-gif");
+            if (gif) img.setAttribute("src", gif);
+          });
+          return;
+        }
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            var img = entry.target;
+            var gif = img.getAttribute("data-gif");
+            var fallback = img.getAttribute("data-static");
+            if (entry.isIntersecting) {
+              if (gif && img.getAttribute("src") !== gif) img.setAttribute("src", gif);
+            } else if (fallback && img.getAttribute("src") !== fallback) {
+              img.setAttribute("src", fallback);
+            }
+          });
+        }, { rootMargin: "120px 0px", threshold: 0.01 });
+        imgs.forEach(function (img) { io.observe(img); });
+      }
+      setupGifs();
+    })();
+  </script>
 </body>
 </html>

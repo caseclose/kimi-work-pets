@@ -4,8 +4,12 @@
 用法: python3 scripts/build-site.py
 
 - 拷贝 assets/<pet>/pet-preview.png 到 docs/assets/<pet>/
-- 将 pet-states.gif 压缩为 docs/assets/<pet>/pet-states.webp(宽度上限 360px)
+- 将 pet-states.gif 压缩为 docs/assets/<pet>/pet-states.webp(宽度上限 360px,保留动画)
 - 生成 docs/index.html、docs/robots.txt、docs/sitemap.xml
+
+注意: docs/index.html 在初版生成后经过多轮手工打磨(主题切换、品牌图标、
+结构化数据等),本脚本的 build_index() 只会产出极简回退版。日常更新只应
+调用 build_assets();如需整页重建,先确认接受覆盖。
 """
 import html
 import json
@@ -54,10 +58,21 @@ def build_assets() -> None:
         src_gif = src_dir / "pet-states.gif"
         dst_webp = dst_dir / "pet-states.webp"
         im = Image.open(src_gif)
-        if im.width > MAX_GIF_WIDTH:
-            ratio = MAX_GIF_WIDTH / im.width
-            im = im.resize((MAX_GIF_WIDTH, max(1, round(im.height * ratio))), Image.LANCZOS)
-        im.save(dst_webp, "WEBP", quality=80, method=6)
+        frames, durations = [], []
+        for i in range(getattr(im, "n_frames", 1)):
+            im.seek(i)
+            frame = im.convert("RGB")
+            if frame.width > MAX_GIF_WIDTH:
+                ratio = MAX_GIF_WIDTH / frame.width
+                frame = frame.resize(
+                    (MAX_GIF_WIDTH, max(1, round(frame.height * ratio))), Image.LANCZOS
+                )
+            frames.append(frame)
+            durations.append(int(im.info.get("duration", 200) or 200))
+        frames[0].save(
+            dst_webp, "WEBP", save_all=True, append_images=frames[1:],
+            duration=durations, quality=80, method=6, loop=0,
+        )
 
 
 def esc(s: str) -> str:
