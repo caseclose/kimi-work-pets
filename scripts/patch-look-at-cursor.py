@@ -43,7 +43,7 @@ INJECTION = r"""
       pet.style.transform = lookBaseTransform + (settled
         ? ''
         : ' translate(' + lookCurrentX.toFixed(2) + 'px,' + lookCurrentY.toFixed(2) +
-          'px) rotate(' + (lookCurrentX * 0.45).toFixed(2) + 'deg)');
+          'px) rotate(' + (lookCurrentX * 0.22).toFixed(2) + 'deg)');
       if (!settled) lookRafId = requestAnimationFrame(lookApply);
     }
 
