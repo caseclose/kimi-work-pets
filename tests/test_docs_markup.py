@@ -16,6 +16,11 @@ class DocsMarkupTests(unittest.TestCase):
         self.assertTrue(GUIDE.is_file())
         self.assertIn('href="how-kimi-work-pet-works.html"', INDEX)
         self.assertNotIn("how-kimi-work-pet-works.md", INDEX)
+        self.assertFalse(
+            (ROOT / "docs" / "how-kimi-work-pet-works.md").exists(),
+            "markdown source must not be published on GitHub Pages",
+        )
+        self.assertIn('href="how-kimi-work-pet-works.html">机制</a>', INDEX)
         self.assertIn("how-kimi-work-pet-works.html", SITEMAP)
         self.assertTrue((ROOT / "docs" / ".nojekyll").is_file())
         self.assertTrue((ROOT / "docs" / "assets" / "dimo" / "pet-rows.png").is_file())

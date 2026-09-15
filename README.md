@@ -65,7 +65,7 @@ python3 scripts/install.py pets/dimo   # 换成 pets/ 下任意目录名即可
 | 8 | review | (未映射) |
 
 布局不符时,用 `scripts/inspect_spritesheet.py` 逐行确认动作后手动调整 `pet.json`;
-manifest 字段与宿主状态映射详见 [docs/how-kimi-work-pet-works.md](docs/how-kimi-work-pet-works.md)。
+manifest 字段与宿主状态映射详见 [Kimi Work 桌宠机制调研](https://caseclose.github.io/kimi-work-pets/how-kimi-work-pet-works.html)。
 
 ## 交互行为
 
@@ -108,6 +108,6 @@ Convert new pets with `scripts/convert-codex-pet.py`, roll back with `scripts/re
 Installation also injects hover interactions: the pet waves back when you hover over it,
 and sprite pets lean toward the cursor as you move the mouse around.
 All scripts accept `--appdata <dir>` if the app data folder is located elsewhere.
-Manifest format and host-state mapping: [docs/how-kimi-work-pet-works.md](docs/how-kimi-work-pet-works.md).
+Manifest format and host-state mapping: [how the Kimi Work pet works](https://caseclose.github.io/kimi-work-pets/how-kimi-work-pet-works.html).
 Code is MIT; bundled assets are community fan art (CC BY-NC, personal use only).
 Not affiliated with Moonshot AI or OpenAI.
