@@ -37,6 +37,31 @@ class DocsMarkupTests(unittest.TestCase):
         self.assertNotIn("font-weight: 750", INDEX)
         self.assertNotIn("font-weight: 650", INDEX)
 
+    def test_sitemap_lists_real_pages_without_fragments(self):
+        locs = re.findall(r"<loc>([^<]+)</loc>", SITEMAP)
+        self.assertEqual(
+            locs,
+            [
+                "https://caseclose.github.io/kimi-work-pets/",
+                "https://caseclose.github.io/kimi-work-pets/how-kimi-work-pet-works.html",
+            ],
+        )
+        self.assertNotIn("#", SITEMAP)
+        self.assertIn("<lastmod>", SITEMAP)
+
+    def test_index_title_and_jsonld_use_kimi_work_pet_name(self):
+        self.assertIn("<title>Kimi Work 桌宠", INDEX)
+        self.assertIn('"@graph"', INDEX)
+        self.assertIn('"@type": "WebSite"', INDEX)
+        self.assertIn('"@type": "ItemList"', INDEX)
+        self.assertIn("rel=\"sitemap\"", INDEX)
+
+    def test_mechanism_page_is_indexable(self):
+        guide = GUIDE.read_text(encoding="utf-8")
+        self.assertIn('name="robots" content="index, follow"', guide)
+        self.assertIn("application/ld+json", guide)
+        self.assertIn("og:title", guide)
+
     def test_hash_and_menu_and_gif_observers_exist(self):
         for needle in (
             "revealHashTarget",

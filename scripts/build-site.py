@@ -10,6 +10,7 @@
 import html
 import json
 import shutil
+from datetime import date
 import sys
 from pathlib import Path
 
@@ -261,13 +262,13 @@ def main() -> None:
     (DOCS / "robots.txt").write_text(
         f"User-agent: *\nAllow: /\n\nSitemap: {SITE}/sitemap.xml\n", encoding="utf-8"
     )
-    urls = "\n".join(
-        f"  <url><loc>{SITE}/#{pet['id']}</loc></url>" for pet in PETS
-    )
+    today = date.today().isoformat()
     (DOCS / "sitemap.xml").write_text(
         '<?xml version="1.0" encoding="UTF-8"?>\n'
         '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
-        f"  <url><loc>{SITE}/</loc></url>\n{urls}\n</urlset>\n",
+        f"  <url>\n    <loc>{SITE}/</loc>\n    <lastmod>{today}</lastmod>\n  </url>\n"
+        f"  <url>\n    <loc>{SITE}/how-kimi-work-pet-works.html</loc>\n    <lastmod>{today}</lastmod>\n  </url>\n"
+        "</urlset>\n",
         encoding="utf-8",
     )
     print(f"站点已生成: {DOCS}")
