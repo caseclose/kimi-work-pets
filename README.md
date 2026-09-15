@@ -15,6 +15,7 @@ Kimi Work 内置桌宠除默认 Rive 形象外,还支持精灵图(spritesheet)�
 | **Feixue(绯雪)**,冷艳巫女风的 Q 版少女,银发高马尾([来源](https://codexpets.net/gallery/feixue),作者 Akira97) | <img src="assets/feixue/pet-preview.png" width="150"> | <img src="assets/feixue/pet-states.gif" width="130"> |
 | **GUGUGAGA**,穿企鹅装的 Q 版少女,黑色波波头([来源](https://codexpets.net/gallery/endminguga),作者 Hibik1) | <img src="assets/endminguga/pet-preview.png" width="150"> | <img src="assets/endminguga/pet-states.gif" width="130"> |
 | **Round Cola Hatch**,喝可乐的蓝色圆滚滚机器人([来源](https://codexpets.net/gallery/round-cola-hatch),作者 tsang) | <img src="assets/round-cola-hatch/pet-preview.png" width="150"> | <img src="assets/round-cola-hatch/pet-states.gif" width="130"> |
+| **胡桃(Hu Tao)**,《原神》往生堂堂主,Q 版带小幽灵([来源](https://codexpets.net/gallery/hu-tao-pet),作者 Barometer;形象版权归米哈游) | <img src="assets/hu-tao-pet/pet-preview.png" width="150"> | <img src="assets/hu-tao-pet/pet-states.gif" width="130"> |
 
 ## 快速开始
 
@@ -32,6 +33,7 @@ python3 scripts/install.py pets/dimo   # 内置示例:迪莫
 # python3 scripts/install.py pets/feixue  # 或:绯雪 Feixue
 # python3 scripts/install.py pets/endminguga  # 或:企鹅装少女 GUGUGAGA
 # python3 scripts/install.py pets/round-cola-hatch  # 或:喝可乐的机器人 Cola Hatch
+# python3 scripts/install.py pets/hu-tao-pet  # 或:《原神》胡桃
 ```
 
 重启 Kimi 应用(或重新开关桌宠)后生效,桌宠已带悬停交互(见下节)。
@@ -95,6 +97,8 @@ manifest 字段与宿主状态映射详见 [docs/how-kimi-work-pet-works.md](doc
   版权以来源页面为准,**仅供个人非商业使用**。
 - `pets/round-cola-hatch/` 精灵图:社区分享素材,作者 [tsang](https://codexpets.net/gallery/round-cola-hatch),
   版权以来源页面为准,**仅供个人非商业使用**。
+- `pets/hu-tao-pet/` 精灵图:社区分享素材,作者 [Barometer](https://codexpets.net/gallery/hu-tao-pet);
+  胡桃形象来自米哈游《原神》,权利归原版权方,**仅供个人非商业使用**。
   其他社区素材的版权以各自来源页面为准。
 - 本仓库与 Moonshot AI、OpenAI 无任何隶属或授权关系。
 
@@ -107,7 +111,7 @@ Convert a Codex package with `scripts/convert-codex-pet.py`, install it with
 *Roco Kingdom*), `pets/siam` (a Siamese cat), `pets/maomao` (a calico cat) and
 `pets/hiyuki` (a chibi ice-sword girl), `pets/feixue` (a chibi miko-style girl) and
 `pets/endminguga` (a chibi girl in a penguin suit) and `pets/round-cola-hatch`
-(a round cola-drinking robot).
+(a round cola-drinking robot) and `pets/hu-tao-pet` (a chibi Hu Tao from *Genshin Impact*).
 Installation also injects
 hover interactions: the pet waves back when you hover over it, and sprite pets
 lean toward the cursor as you move the mouse around.
