@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kimi Work Pets — Kimi Work 桌面宠物合集(迪莫、Hiyuki、胡桃等 14 款)</title>
+  <meta name="description" content="把 Codex Pets 社区桌宠装进 Kimi Work 桌面端:一键安装迪莫、Hiyuki、绯雪、胡桃、星见雅、薇尔莉特等 14 款桌面宠物,支持悬停互动、视线跟随、macOS 与 Windows。">
+  <meta name="keywords" content="Kimi Work,桌面宠物,桌宠,Codex Pets,迪莫,Hiyuki,胡桃,星见雅,薇尔莉特,desktop pet">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://caseclose.github.io/kimi-work-pets/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Kimi Work Pets">
+  <meta property="og:title" content="Kimi Work Pets — Kimi Work 桌面宠物合集">
+  <meta property="og:description" content="14 款 Codex Pets 社区桌宠一键装进 Kimi Work 桌面端,支持悬停互动与视线跟随。">
+  <meta property="og:url" content="https://caseclose.github.io/kimi-work-pets/">
+  <meta property="og:image" content="https://caseclose.github.io/kimi-work-pets/assets/dimo/pet-preview.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="assets/dimo/pet-preview.png">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Kimi Work Pets",
+    "url": "https://caseclose.github.io/kimi-work-pets/",
+    "description": "把 Codex Pets 社区桌宠装进 Kimi Work 桌面端的安装器与素材合集,含 14 款桌面宠物,支持悬停互动、视线跟随,兼容 macOS 与 Windows。",
+    "applicationCategory": "UtilitiesApplication",
+    "operatingSystem": "macOS, Windows",
+    "offers": {"@type": "Offer", "price": "0", "priceCurrency": "CNY"},
+    "codeRepository": "https://github.com/caseclose/kimi-work-pets",
+    "license": "https://opensource.org/licenses/MIT",
+    "hasPart": [
+    {"@type": "ListItem", "position": 1, "name": "Dimo", "url": "https://caseclose.github.io/kimi-work-pets/#dimo"},
+    {"@type": "ListItem", "position": 2, "name": "Siam", "url": "https://caseclose.github.io/kimi-work-pets/#siam"},
+    {"@type": "ListItem", "position": 3, "name": "Maomao", "url": "https://caseclose.github.io/kimi-work-pets/#maomao"},
+    {"@type": "ListItem", "position": 4, "name": "Hiyuki", "url": "https://caseclose.github.io/kimi-work-pets/#hiyuki"},
+    {"@type": "ListItem", "position": 5, "name": "Feixue", "url": "https://caseclose.github.io/kimi-work-pets/#feixue"},
+    {"@type": "ListItem", "position": 6, "name": "GUGUGAGA", "url": "https://caseclose.github.io/kimi-work-pets/#endminguga"},
+    {"@type": "ListItem", "position": 7, "name": "Round Cola Hatch", "url": "https://caseclose.github.io/kimi-work-pets/#round-cola-hatch"},
+    {"@type": "ListItem", "position": 8, "name": "\u80e1\u6843", "url": "https://caseclose.github.io/kimi-work-pets/#hu-tao-pet"},
+    {"@type": "ListItem", "position": 9, "name": "Flamy", "url": "https://caseclose.github.io/kimi-work-pets/#flamy"},
+    {"@type": "ListItem", "position": 10, "name": "Kimlet Move Wave", "url": "https://caseclose.github.io/kimi-work-pets/#kimlet-move-wave"},
+    {"@type": "ListItem", "position": 11, "name": "Kimlet", "url": "https://caseclose.github.io/kimi-work-pets/#kimlet"},
+    {"@type": "ListItem", "position": 12, "name": "\u661f\u89c1\u96c5", "url": "https://caseclose.github.io/kimi-work-pets/#miyabi"},
+    {"@type": "ListItem", "position": 13, "name": "\u8587\u5c14\u8389\u7279", "url": "https://caseclose.github.io/kimi-work-pets/#violet"},
+    {"@type": "ListItem", "position": 14, "name": "\u5495\u560e", "url": "https://caseclose.github.io/kimi-work-pets/#guga"}
+    ]
+  }
+  </script>
+  <style>
+    :root {
+      --bg: #0f1115;
+      --panel: #171a21;
+      --text: #e8eaf0;
+      --muted: #9aa1b0;
+      --accent: #6ee7b7;
+      --accent2: #7dd3fc;
+      --border: #262b36;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", "Segoe UI", sans-serif;
+      line-height: 1.7;
+    }
+    a { color: var(--accent2); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .wrap { max-width: 1080px; margin: 0 auto; padding: 0 20px; }
+    header.hero {
+      padding: 72px 0 40px;
+      text-align: center;
+      background: radial-gradient(ellipse at top, rgba(110,231,183,.08), transparent 60%);
+    }
+    .hero h1 { font-size: 2.4rem; margin: 0 0 12px; }
+    .hero h1 .em { color: var(--accent); }
+    .hero p { color: var(--muted); max-width: 640px; margin: 0 auto 24px; }
+    .hero .cta a {
+      display: inline-block; margin: 0 6px; padding: 10px 22px;
+      border-radius: 10px; border: 1px solid var(--border);
+      background: var(--panel); color: var(--text); font-weight: 600;
+    }
+    .hero .cta a.primary { background: var(--accent); color: #06251b; border-color: transparent; }
+    section { padding: 40px 0; }
+    h2 { font-size: 1.5rem; border-left: 4px solid var(--accent); padding-left: 12px; margin-bottom: 20px; }
+    .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; }
+    .feature {
+      background: var(--panel); border: 1px solid var(--border);
+      border-radius: 12px; padding: 16px 18px;
+    }
+    .feature strong { color: var(--accent); }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
+    .card {
+      background: var(--panel); border: 1px solid var(--border);
+      border-radius: 14px; padding: 18px;
+    }
+    .card-media { display: flex; gap: 12px; align-items: flex-start; margin-bottom: 12px; }
+    .card-media .preview { width: 46%; border-radius: 8px; background: #fff; }
+    .card-media .states { width: 50%; border-radius: 8px; image-rendering: pixelated; }
+    .card h3 { margin: 0 0 4px; font-size: 1.1rem; }
+    .card .desc { margin: 0 0 6px; color: var(--muted); font-size: .92rem; }
+    .card .author { margin: 0 0 4px; font-size: .85rem; }
+    .card .ip { margin: 0 0 8px; font-size: .82rem; color: #fbbf24; }
+    .card .install code {
+      display: block; background: #0b0d11; border: 1px solid var(--border);
+      border-radius: 8px; padding: 8px 10px; font-size: .8rem;
+      color: var(--accent); overflow-x: auto; white-space: nowrap;
+    }
+    .steps { counter-reset: step; padding-left: 0; list-style: none; }
+    .steps li {
+      counter-increment: step; margin: 0 0 14px; padding: 14px 16px 14px 56px;
+      background: var(--panel); border: 1px solid var(--border); border-radius: 12px;
+      position: relative;
+    }
+    .steps li::before {
+      content: counter(step); position: absolute; left: 16px; top: 14px;
+      width: 26px; height: 26px; border-radius: 50%;
+      background: var(--accent); color: #06251b; font-weight: 700;
+      display: flex; align-items: center; justify-content: center; font-size: .9rem;
+    }
+    .steps code { background: #0b0d11; border: 1px solid var(--border); border-radius: 6px; padding: 2px 8px; font-size: .88rem; color: var(--accent2); }
+    footer {
+      border-top: 1px solid var(--border); margin-top: 40px; padding: 28px 0 48px;
+      color: var(--muted); font-size: .85rem; text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <div class="wrap">
+      <h1>Kimi Work <span class="em">Pets</span></h1>
+      <p>把 <a href="https://codexpets.net/" rel="noopener">Codex Pets</a> 社区桌宠一键装进 Kimi Work 桌面端。14 款精选宠物,自带悬停互动、视线跟随转头,兼容 macOS 与 Windows。</p>
+      <div class="cta">
+        <a class="primary" href="https://github.com/caseclose/kimi-work-pets">GitHub 仓库</a>
+        <a href="#pets">浏览宠物</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section id="features">
+      <h2>特性</h2>
+      <div class="features">
+        <div class="feature"><strong>一键安装</strong><br>一条命令完成转换与注入,自动备份原桌宠,可随时回滚。</div>
+        <div class="feature"><strong>悬停互动</strong><br>鼠标悬停时宠物主动打招呼(Hiyuki 挥剑、Dimo 挥爪)。</div>
+        <div class="feature"><strong>视线跟随</strong><br>宠物会根据鼠标位置转动头部,时刻「看」着你。</div>
+        <div class="feature"><strong>双平台</strong><br>支持 macOS 与 Windows,处理 Rive 动画与精灵表自动转换。</div>
+      </div>
+    </section>
+
+    <section id="pets">
+      <h2>宠物画廊(14 款)</h2>
+      <div class="grid">
+      <article class="card" id="dimo">
+        <div class="card-media">
+          <img class="preview" src="assets/dimo/pet-preview.png" alt="Dimo(迪莫) 桌宠预览图" loading="lazy">
+          <img class="states" src="assets/dimo/pet-states.webp" alt="Dimo(迪莫) 逐行动作演示" loading="lazy">
+        </div>
+        <h3>Dimo(迪莫)</h3>
+        <p class="desc">《洛克王国》光属性明星宠物(社区二创)</p>
+        <p class="author">作者 <a href="https://codexpets.net/gallery/dimo" rel="noopener">swrited</a> · <a href="https://codexpets.net/gallery/dimo" rel="noopener">Codex Pets 画廊</a></p>
+        <p class="ip">形象源自腾讯《洛克王国》</p>
+        <div class="install"><code>python3 scripts/install.py pets/dimo</code></div>
+      </article>
+      <article class="card" id="siam">
+        <div class="card-media">
+          <img class="preview" src="assets/siam/pet-preview.png" alt="Siam(暹罗猫) 桌宠预览图" loading="lazy">
+          <img class="states" src="assets/siam/pet-states.webp" alt="Siam(暹罗猫) 逐行动作演示" loading="lazy">
+        </div>
+        <h3>Siam(暹罗猫)</h3>
+        <p class="desc">小体型暹罗猫</p>
+        <p class="author">作者 <a href="https://codexpets.net/gallery/siam" rel="noopener">allen</a> · <a href="https://codexpets.net/gallery/siam" rel="noopener">Codex Pets 画廊</a></p>
+        
+        <div class="install"><code>python3 scripts/install.py pets/siam</code></div>
+      </article>
+      <article class="card" id="maomao">
+        <div class="card-media">
+          <img class="preview" src="assets/maomao/pet-preview.png" alt="Maomao(大开门) 桌宠预览图" loading="lazy">
+          <img class="states" src="assets/maomao/pet-states.webp" alt="Maomao(大开门) 逐行动作演示" loading="lazy">
+        </div>
+        <h3>Maomao(大开门)</h3>
+        <p class="desc">戴蓝色钩针帽的三花猫</p>
+        <p class="author">作者 <a href="https://codexpets.net/gallery/maomao" rel="noopener">kyle</a> · <a href="https://codexpets.net/gallery/maomao" rel="noopener">Codex Pets 画廊</a></p>
+        
+        <div class="install"><code>python3 scripts/install.py pets/maomao</code></div>
+      </article>
+      <article class="card" id="hiyuki">
+        <div class="card-media">
+          <img class="preview" src="assets/hiyuki/pet-preview.png" alt="Hiyuki 桌宠预览图" loading="lazy">
+          <img class="states" src="assets/hiyuki/pet-states.webp" alt="Hiyuki 逐行动作演示" loading="lazy">
+        </div>
+        <h3>Hiyuki</h3>
+        <p class="desc">持冰剑的银发红瞳 Q 版少女</p>
+        <p class="author">作者 <a href="https://codexpets.net/gallery/hiyuki" rel="noopener">foxibu</a> · <a href="https://codexpets.net/gallery/hiyuki" rel="noopener">Codex Pets 画廊</a></p>
+        
+        <div class="install"><code>python3 scripts/install.py pets/hiyuki</code></div>
+      </article>
+      <article class="card" id="feixue">
+        <div class="card-media">
+          <img class="preview" src="assets/feixue/pet-preview.png" alt="Feixue(绯雪) 桌宠预览图" loading="lazy">
+          <img class="states" src="assets/feixue/pet-states.webp" alt="Feixue(绯雪) 逐行动作演示" loading="lazy">
+        </div>
+        <h3>Feixue(绯雪)</h3>
+        <p class="desc">冷艳巫女风 Q 版少女</p>
+        <p class="author">作者 <a href="https://codexpets.net/gallery/feixue" rel="noopener">Akira97</a> · <a href="https://codexpets.net/gallery/feixue" rel="noopener">Codex Pets 画廊</a></p>
+        
+        <div class="install"><code>python3 scripts/install.py pets/feixue</code></div>
+      </article>
+      <article class="card" id="endminguga">
+        <div class="card-media">
+          <img class="preview" src="assets/endminguga/pet-preview.png" alt="GUGUGAGA 桌宠预览图" loading="lazy">
+          <img class="states" src="assets/endminguga/pet-states.webp" alt="GUGUGAGA 逐行动作演示" loading="lazy">
+        </div>
+        <h3>GUGUGAGA</h3>
+        <p class="desc">企鹅装 Q 版少女</p>
+        <p class="author">作者 <a href="https://codexpets.net/gallery/endminguga" rel="noopener">Hibik1</a> · <a href="https://codexpets.net/gallery/endminguga" rel="noopener">Codex Pets 画廊</a></p>
+        
+        <div class="install"><code>python3 scripts/install.py pets/endminguga</code></div>
+      </article>
+      <article class="card" id="round-cola-hatch">
+        <div class="card-media">
+          <img class="preview" src="assets/round-cola-hatch/pet-preview.png" alt="Round Cola Hatch 桌宠预览图" loading="lazy">
+          <img class="states" src="assets/round-cola-hatch/pet-states.webp" alt="Round Cola Hatch 逐行动作演示" loading="lazy">
+        </div>
+        <h3>Round Cola Hatch</h3>
+        <p class="desc">喝可乐的蓝色圆滚滚机器人</p>
+        <p class="author">作者 <a href="https://codexpets.net/gallery/round-cola-hatch" rel="noopener">tsang</a> · <a href="https://codexpets.net/gallery/round-cola-hatch" rel="noopener">Codex Pets 画廊</a></p>
+        
+        <div class="install"><code>python3 scripts/install.py pets/round-cola-hatch</code></div>
+      </article>
+      <article class="card" id="hu-tao-pet">
+        <div class="card-media">
+          <img class="preview" src="assets/hu-tao-pet/pet-preview.png" alt="胡桃(Hu Tao) 桌宠预览图" loading="lazy">
+          <img class="states" src="assets/hu-tao-pet/pet-states.webp" alt="胡桃(Hu Tao) 逐行动作演示" loading="lazy">
+        </div>
+        <h3>胡桃(Hu Tao)</h3>
+        <p class="desc">《原神》往生堂堂主,带小幽灵</p>
+        <p class="author">作者 <a href="https://codexpets.net/gallery/hu-tao-pet" rel="noopener">Barometer</a> · <a href="https://codexpets.net/gallery/hu-tao-pet" rel="noopener">Codex Pets 画廊</a></p>
+        <p class="ip">形象版权归米哈游</p>
+        <div class="install"><code>python3 scripts/install.py pets/hu-tao-pet</code></div>
+      </article>
+      <article class="card" id="flamy">
+        <div class="card-media">
+          <img class="preview" src="assets/flamy/pet-preview.png" alt="Flamy 桌宠预览图" loading="lazy">
+          <img class="states" src="assets/flamy/pet-states.webp" alt="Flamy 逐行动作演示" loading="lazy">
+        </div>
+        <h3>Flamy</h3>
+        <p class="desc">戴破碎眼镜敲笔记本的红色小火龙</p>
+        <p class="author">作者 <a href="https://codexpets.net/gallery/flamy" rel="noopener">inwizzy</a> · <a href="https://codexpets.net/gallery/flamy" rel="noopener">Codex Pets 画廊</a></p>
+        
+        <div class="install"><code>python3 scripts/install.py pets/flamy</code></div>
+      </article>
+      <article class="card" id="kimlet-move-wave">
+        <div class="card-media">
+          <img class="preview" src="assets/kimlet-move-wave/pet-preview.png" alt="Kimlet Move Wave 桌宠预览图" loading="lazy">
+          <img class="states" src="assets/kimlet-move-wave/pet-states.webp" alt="Kimlet Move Wave 逐行动作演示" loading="lazy">
+        </div>
+        <h3>Kimlet Move Wave</h3>
+        <p class="desc">像素风挥手人物</p>
+        <p class="author">作者 <a href="https://codexpets.net/gallery/kimlet-move-wave" rel="noopener">kimehwa</a> · <a href="https://codexpets.net/gallery/kimlet-move-wave" rel="noopener">Codex Pets 画廊</a></p>
+        <p class="ip">⚠️ 真人形象戏仿,介意请勿安装</p>
+        <div class="install"><code>python3 scripts/install.py pets/kimlet-move-wave</code></div>
+      </article>
+      <article class="card" id="kimlet">
+        <div class="card-media">
+          <img class="preview" src="assets/kimlet/pet-preview.png" alt="Kimlet 桌宠预览图" loading="lazy">
+          <img class="states" src="assets/kimlet/pet-states.webp" alt="Kimlet 逐行动作演示" loading="lazy">
+        </div>
+        <h3>Kimlet</h3>
+        <p class="desc">带光环挥手人物</p>
+        <p class="author">作者 <a href="https://codexpets.net/gallery/kimlet" rel="noopener">kimehwa</a> · <a href="https://codexpets.net/gallery/kimlet" rel="noopener">Codex Pets 画廊</a></p>
+        <p class="ip">⚠️ 真人形象戏仿,介意请勿安装</p>
+        <div class="install"><code>python3 scripts/install.py pets/kimlet</code></div>
+      </article>
+      <article class="card" id="miyabi">
+        <div class="card-media">
+          <img class="preview" src="assets/miyabi/pet-preview.png" alt="星见雅(Miyabi) 桌宠预览图" loading="lazy">
+          <img class="states" src="assets/miyabi/pet-states.webp" alt="星见雅(Miyabi) 逐行动作演示" loading="lazy">
+        </div>
+        <h3>星见雅(Miyabi)</h3>
+        <p class="desc">《绝区零》对空六课狐耳剑士</p>
+        <p class="author">作者 <a href="https://codexpets.net/gallery/miyabi" rel="noopener">Eric-Terminal</a> · <a href="https://codexpets.net/gallery/miyabi" rel="noopener">Codex Pets 画廊</a></p>
+        <p class="ip">形象版权归米哈游</p>
+        <div class="install"><code>python3 scripts/install.py pets/miyabi</code></div>
+      </article>
+      <article class="card" id="violet">
+        <div class="card-media">
+          <img class="preview" src="assets/violet/pet-preview.png" alt="薇尔莉特(Violet) 桌宠预览图" loading="lazy">
+          <img class="states" src="assets/violet/pet-states.webp" alt="薇尔莉特(Violet) 逐行动作演示" loading="lazy">
+        </div>
+        <h3>薇尔莉特(Violet)</h3>
+        <p class="desc">《紫罗兰永恒花园》自动手记人偶</p>
+        <p class="author">作者 <a href="https://codexpets.net/gallery/violet" rel="noopener">Lazenca</a> · <a href="https://codexpets.net/gallery/violet" rel="noopener">Codex Pets 画廊</a></p>
+        <p class="ip">形象版权归京都动画</p>
+        <div class="install"><code>python3 scripts/install.py pets/violet</code></div>
+      </article>
+      <article class="card" id="guga">
+        <div class="card-media">
+          <img class="preview" src="assets/guga/pet-preview.png" alt="咕嘎(Guga) 桌宠预览图" loading="lazy">
+          <img class="states" src="assets/guga/pet-states.webp" alt="咕嘎(Guga) 逐行动作演示" loading="lazy">
+        </div>
+        <h3>咕嘎(Guga)</h3>
+        <p class="desc">圆润版企鹅装连帽少女</p>
+        <p class="author">作者 <a href="https://codexpets.net/gallery/guga" rel="noopener">CIRCUS</a> · <a href="https://codexpets.net/gallery/guga" rel="noopener">Codex Pets 画廊</a></p>
+        
+        <div class="install"><code>python3 scripts/install.py pets/guga</code></div>
+      </article>
+      </div>
+    </section>
+
+    <section id="quickstart">
+      <h2>快速开始</h2>
+      <ol class="steps">
+        <li>克隆仓库:<code>git clone https://github.com/caseclose/kimi-work-pets.git</code></li>
+        <li>安装宠物(以迪莫为例):<code>python3 scripts/install.py pets/dimo</code></li>
+        <li>重启 Kimi 应用,桌面上就会出现新桌宠;悬停试试它的互动动作。</li>
+      </ol>
+      <p>恢复默认桌宠:<code>python3 scripts/restore.py</code>(自动使用安装前的备份)。</p>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <p>本站素材来自 <a href="https://codexpets.net/" rel="noopener">Codex Pets</a> 社区,版权归各位原作者;含第三方 IP 形象(腾讯、米哈游、京都动画)的宠物仅作社区二创展示。仓库代码以 MIT 协议开源。</p>
+      <p><a href="https://github.com/caseclose/kimi-work-pets">GitHub</a> · <a href="https://caseclose.github.io/kimi-work-pets/sitemap.xml">Sitemap</a></p>
+    </div>
+  </footer>
+</body>
+</html>

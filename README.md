@@ -2,6 +2,8 @@
 
 把 [Codex 社区桌宠](https://codexpets.net/)装进 **Kimi Work 桌面端**(macOS / Windows)。
 
+在线浏览全部宠物与效果演示:[**caseclose.github.io/kimi-work-pets**](https://caseclose.github.io/kimi-work-pets/)
+
 Kimi Work 内置桌宠除默认 Rive 形象外,还支持精灵图(spritesheet)模式,与 Codex 社区宠物素材(8×9 网格、192×208 单元格)格式同源。本仓库提供转换、安装、回滚工具;社区画廊里的宠物按同样流程都可以装。
 
 ## 内置宠物
