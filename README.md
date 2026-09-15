@@ -20,7 +20,7 @@ cd kimi-work-pets
 bash scripts/install.sh pets/dimo   # 内置示例:迪莫
 ```
 
-重启 Kimi 应用(或重新开关桌宠)后生效。
+重启 Kimi 应用(或重新开关桌宠)后生效,桌宠已带悬停交互(见下节)。
 回滚默认形象:`bash scripts/restore-default.sh`(原配置自动备份在 `~/.kimi-work-pet-backup/`)。
 
 ## 安装其他社区宠物
@@ -46,14 +46,13 @@ bash scripts/install.sh pets/dimo   # 内置示例:迪莫
 布局不符时,用 `scripts/inspect_spritesheet.py` 逐行确认动作后手动调整 `pet.json`;
 manifest 字段与宿主状态映射详见 [docs/how-kimi-work-pet-works.md](docs/how-kimi-work-pet-works.md)。
 
-## 悬停交互(可选)
+## 悬停交互
 
-```bash
-python3 scripts/patch-hover-interaction.py
-```
+安装时自动注入:鼠标悬停桌宠时,它会播放招手动作(`idle_random_1`)一个循环后回到待机,
+6 秒冷却,不影响工作/等待等状态。`restore-default.sh` 会一并还原页面、撤销交互。
 
-鼠标悬停桌宠时,播放招手动作(`idle_random_1`)一个循环后回到待机,6 秒冷却。
-补丁幂等可重复运行;`restore-default.sh` 会一并还原页面、撤销补丁。
+注入逻辑由 [scripts/patch-hover-interaction.py](scripts/patch-hover-interaction.py) 完成(幂等,
+可单独重复运行;仅对精灵图宠物生效)。
 
 ## 版权
 
@@ -68,8 +67,8 @@ python3 scripts/patch-hover-interaction.py
 Install Codex community pets as the desktop pet of the Kimi Work desktop app (macOS).
 Convert a Codex package with `scripts/convert-codex-pet.py`, install it with
 `scripts/install.sh <pet-dir>`(built-in example: `pets/dimo`, Dimo from Tencent's
-*Roco Kingdom*), roll back with `scripts/restore-default.sh`, optionally add a
-hover-wave interaction with `scripts/patch-hover-interaction.py`.
+*Roco Kingdom*), roll back with `scripts/restore-default.sh`. Installation also injects
+a hover interaction: the pet waves back when you hover over it.
 Manifest format and host-state mapping: [docs/how-kimi-work-pet-works.md](docs/how-kimi-work-pet-works.md).
 Code is MIT; bundled assets are community fan art (CC BY-NC, personal use only).
 Not affiliated with Moonshot AI or OpenAI.

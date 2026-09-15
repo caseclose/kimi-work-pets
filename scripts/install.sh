@@ -78,5 +78,13 @@ print("current.json 已更新,当前桌宠:", manifest["id"])
 EOF
 
 echo ""
+echo "注入悬停交互补丁(悬停时宠物招手回应)..."
+if python3 "$SCRIPT_DIR/patch-hover-interaction.py"; then
+  :
+else
+  echo "⚠️ 补丁注入失败(不影响桌宠使用),可稍后手动运行: python3 scripts/patch-hover-interaction.py" >&2
+fi
+
+echo ""
 echo "✅ 安装完成。重启 Kimi 应用(或重新开关桌宠)后生效。"
 echo "   回滚: bash scripts/restore-default.sh"
