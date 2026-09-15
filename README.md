@@ -80,6 +80,9 @@ manifest 字段与宿主状态映射详见 [Kimi Work 桌宠机制调研](https:
 - **视线跟随**:鼠标在桌宠附近移动时,宠物平滑地向光标方向倾斜、偏移,离开后回正
   (CSS transform 近似"脑袋偏向";仅精灵图宠物,Rive 宠物自带眼动状态机会自动跳过)。
 - **拖动奔跑**:拖动桌宠时朝拖动方向奔跑(应用原生行为)。
+- **气泡信息增强**:任务运行时,头顶气泡在原有状态文案之外追加"已工作 X 分钟/秒"
+  (页面本地计时)和"刚用过 <工具名>",不再只有"正在思考…";任务结束自动停止计时。
+  例:`正在调用 Bash… · 已工作 2 分钟`。
 - **显示与响应范围**:宠物显示为默认的 2 倍大小;悬停/点击的响应范围在宠物轮廓外
   再外扩 24px,不用精确对准(由页面主动上报可交互区域实现)。
 
@@ -90,6 +93,7 @@ manifest 字段与宿主状态映射详见 [Kimi Work 桌宠机制调研](https:
 可加 `--appdata` 指定应用数据目录):
 [patch-hover-interaction.py](scripts/patch-hover-interaction.py) ·
 [patch-pet-interactions.py](scripts/patch-pet-interactions.py) ·
+[patch-bubble-info.py](scripts/patch-bubble-info.py) ·
 [patch-look-at-cursor.py](scripts/patch-look-at-cursor.py) ·
 [patch-pet-display.py](scripts/patch-pet-display.py)。
 

@@ -154,6 +154,15 @@ def main() -> None:
         print("⚠️ 互动补丁注入失败(不影响桌宠使用),可稍后手动运行 "
               "python3 scripts/patch-pet-interactions.py", file=sys.stderr)
 
+    print("注入气泡信息补丁(已工作时长/最近工具)...")
+    patch = Path(__file__).parent / "patch-bubble-info.py"
+    try:
+        subprocess.run([sys.executable, str(patch)]
+                       + (["--appdata", args.appdata] if args.appdata else []), check=True)
+    except subprocess.CalledProcessError:
+        print("⚠️ 气泡补丁注入失败(不影响桌宠使用),可稍后手动运行 "
+              "python3 scripts/patch-bubble-info.py", file=sys.stderr)
+
     print()
     print("✅ 安装完成。重启 Kimi 应用(或重新开关桌宠)后生效。")
     print("   回滚: python3 scripts/restore.py")
