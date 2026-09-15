@@ -108,6 +108,15 @@ def main() -> None:
         print("⚠️ 视线补丁注入失败(不影响桌宠使用),可稍后手动运行 "
               "python3 scripts/patch-look-at-cursor.py", file=sys.stderr)
 
+    print("注入显示与交互范围补丁(宠物 2 倍大小、响应范围外扩)...")
+    patch = Path(__file__).parent / "patch-pet-display.py"
+    try:
+        subprocess.run([sys.executable, str(patch)]
+                       + (["--appdata", args.appdata] if args.appdata else []), check=True)
+    except subprocess.CalledProcessError:
+        print("⚠️ 显示补丁注入失败(不影响桌宠使用),可稍后手动运行 "
+              "python3 scripts/patch-pet-display.py", file=sys.stderr)
+
     print()
     print("✅ 安装完成。重启 Kimi 应用(或重新开关桌宠)后生效。")
     print("   回滚: python3 scripts/restore.py")

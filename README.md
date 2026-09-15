@@ -57,11 +57,14 @@ manifest 字段与宿主状态映射详见 [docs/how-kimi-work-pet-works.md](doc
 - **视线跟随**:鼠标在桌宠附近移动时,宠物平滑地向光标方向倾斜、偏移,离开后回正
   (CSS transform 近似"脑袋偏向";仅精灵图宠物,Rive 宠物自带眼动状态机会自动跳过)。
 - **拖动奔跑**:拖动桌宠时朝拖动方向奔跑(应用原生行为)。
+- **显示与响应范围**:宠物显示为默认的 2 倍大小;悬停/点击的响应范围在宠物轮廓外
+  再外扩 24px,不用精确对准(由页面主动上报可交互区域实现)。
 
-交互由两个安装时自动注入的补丁实现(均幂等,可单独重复运行,
+交互由三个安装时自动注入的补丁实现(均幂等,可单独重复运行,
 可加 `--appdata` 指定应用数据目录):
 [patch-hover-interaction.py](scripts/patch-hover-interaction.py) ·
-[patch-look-at-cursor.py](scripts/patch-look-at-cursor.py)。
+[patch-look-at-cursor.py](scripts/patch-look-at-cursor.py) ·
+[patch-pet-display.py](scripts/patch-pet-display.py)。
 
 ## 版权
 
