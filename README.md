@@ -58,6 +58,19 @@ bash scripts/install.sh my-pet
 如果某只宠物的布局不同,先用 `scripts/inspect_spritesheet.py <spritesheet.webp>`
 逐行确认动作,再手动调整生成的 `pet.json`。
 
+## 悬停交互(可选补丁)
+
+默认行为:拖动桌宠时它会朝拖动方向奔跑;悬停时空闲动画会加快。
+想要更多互动,可以打补丁让桌宠**在鼠标悬停时招手回应**:
+
+```bash
+python3 scripts/patch-hover-interaction.py
+```
+
+效果:悬停在桌宠身上时播放 `idle_random_1`(通常是 waving 招手)一个循环后回到待机,
+内置 6 秒冷却避免频繁触发;只对精灵图宠物生效,幂等可重复运行。
+`restore-default.sh` 会一并还原页面、撤销补丁。
+
 ## 回滚
 
 ```bash
@@ -73,7 +86,8 @@ scripts/
 ├── restore-default.sh     # 回滚默认 Kimi 桌宠
 ├── convert-codex-pet.py   # Codex 社区包 → Kimi Work 格式转换器
 ├── inspect_spritesheet.py # 精灵图布局检查(逐行帧条带 + 非空帧统计)
-└── generate_previews.py   # 从精灵图生成 README 预览素材
+├── generate_previews.py   # 从精灵图生成 README 预览素材
+└── patch-hover-interaction.py # 悬停招手交互补丁(可选,幂等)
 docs/
 ├── how-kimi-work-pet-works.md   # Kimi Work 桌宠机制调研(manifest 格式、状态映射)
 └── kimi-pet-plugin-notes.md     # wbxl2000/kimi-pet(Kimi Code 桌宠插件)调研

@@ -2,7 +2,8 @@
 # restore-default.sh — 恢复 Kimi Work 默认桌宠
 #
 # 用法: bash scripts/restore-default.sh
-# 需要 ~/.kimi-work-pet-backup/ 中存在 install-dimo.sh 生成的备份。
+# 需要 ~/.kimi-work-pet-backup/ 中存在安装脚本生成的备份。
+# 若备份中有 index.html,会一并还原桌宠页面(撤销悬停交互补丁)。
 set -euo pipefail
 
 BASE="$HOME/Library/Application Support/kimi-desktop/daimon-share/daimon/agents/main/blueprint"
@@ -18,5 +19,10 @@ cp "$BACKUP_DIR/pet.json" "$WS/pet.json"
 cp "$BACKUP_DIR/pet.riv" "$WS/pet.riv"
 cp "$BACKUP_DIR/current.json" "$BASE/pet/current.json"
 rm -f "$WS/spritesheet.webp"
+
+if [[ -f "$BACKUP_DIR/index.html" ]]; then
+  cp "$BACKUP_DIR/index.html" "$WS/index.html"
+  echo "已一并还原桌宠页面(撤销交互补丁)。"
+fi
 
 echo "✅ 已恢复默认 Kimi 桌宠,重启 Kimi 应用后生效。"
