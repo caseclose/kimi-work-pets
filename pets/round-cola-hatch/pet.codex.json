@@ -1,0 +1,7 @@
+{
+  "id": "round-cola-hatch",
+  "displayName": "Round Cola Hatch",
+  "description": "An original cute round-body Codex pet using Codex's default row order with only four visual behaviors: cola drinking, run while dragged or moving, ghost for failed or blocked states, and a burger-only review/done-like state.",
+  "spritesheetPath": "spritesheet.webp",
+  "kind": "object"
+}
