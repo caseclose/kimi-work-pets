@@ -1,0 +1,7 @@
+{
+  "id": "maomao",
+  "displayName": "大开门",
+  "description": "A compact calico cat companion wearing a blue crocheted cat-ear bonnet with a tiny yellow flower and dangling blue ties.",
+  "spritesheetPath": "spritesheet.webp",
+  "kind": "animal"
+}
