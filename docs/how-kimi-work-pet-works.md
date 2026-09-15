@@ -92,4 +92,4 @@
 3. 更新 `pet/current.json` 的 `selectedPetId` 与 `installed[0].manifest`。
 4. 重启 Kimi 应用(渲染器只在加载时读取配置)。
 
-`scripts/install-dimo.sh` 实现了以上全部步骤并自动备份。
+`scripts/install.sh` 实现了以上全部步骤并自动备份;Codex 社区包先用 `scripts/convert-codex-pet.py` 转换。
