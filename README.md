@@ -2,6 +2,10 @@
 
 把 Kimi Work 桌面端的内置桌宠换成 **Dimo(迪莫)**——来自 Codex 社区宠物生态的蓝色星尾小猫。
 
+| 预览 | 状态演示 |
+| --- | --- |
+| ![Dimo 预览](assets/dimo-preview.png) | ![Dimo 状态演示](assets/dimo-states.gif) |
+
 [English](#english) below.
 
 ## 这是什么
@@ -12,6 +16,7 @@ Kimi Work 桌面端(macOS)的内置桌宠默认是一个 Rive 动画形象。本
 - `scripts/install-dimo.sh` — 一键安装(自动备份原配置)
 - `scripts/restore-default.sh` — 一键回滚
 - `scripts/inspect_spritesheet.py` — 精灵图布局检查工具
+- `scripts/generate_previews.py` — 从精灵图重新生成 `assets/` 预览素材(图片/GIF)
 - `docs/` — Kimi Work 桌宠机制调研、社区生态笔记
 
 ## 安装
@@ -46,6 +51,12 @@ bash scripts/restore-default.sh
 | 失败 failed | 5 | 倒地大哭 |
 | 空闲彩蛋 idle_random_1 | 3 | 招手 |
 | 空闲彩蛋 idle_random_2 | 4 | 开心跳跃 |
+
+### 逐行动作演示
+
+精灵图共 9 行 × 8 列(第 8 行 `review 完成庆祝` 未映射到 Kimi Work 状态):
+
+![逐行动作](assets/dimo-rows.png)
 
 想换别的社区宠物?参考 `docs/how-kimi-work-pet-works.md` 的 manifest 格式,
 从 [CodexPets.net](https://codexpets.net/) 等社区下载素材包后改写字段即可,
