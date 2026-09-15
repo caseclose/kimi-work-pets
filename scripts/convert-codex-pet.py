@@ -137,7 +137,7 @@ def main() -> None:
     )
     print(f"✅ 已生成 Kimi Work 格式清单: {codex_manifest_path}")
     print(f"   宠物: {manifest['name']} (id: {manifest['id']}), 状态: {', '.join(states)}")
-    print("   下一步: bash scripts/install.sh", d)
+    print(f"   下一步: python3 scripts/install.py {d}")
 
 
 if __name__ == "__main__":

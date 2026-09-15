@@ -21,7 +21,10 @@ def appdata_dir(override: str | None = None) -> Path:
     if sys.platform == "darwin":
         return Path.home() / "Library/Application Support/kimi-desktop"
     if sys.platform == "win32":
-        return Path(os.environ["APPDATA"]) / "kimi-desktop"
+        appdata = os.environ.get("APPDATA")
+        if not appdata:
+            appdata = str(Path.home() / "AppData" / "Roaming")
+        return Path(appdata) / "kimi-desktop"
     return Path(os.environ.get("XDG_CONFIG_HOME", Path.home() / ".config")) / "kimi-desktop"
 
 
@@ -43,6 +46,8 @@ def find_pet_widget_id(base: Path) -> str:
                 continue
             if meta.get("kind") == "pet":
                 return d.name
+    print("⚠️ 未能自动发现桌宠组件,回退到内置组件 ID;若桌宠未生效请用 "
+          "--appdata 指定应用数据目录", file=sys.stderr)
     return FALLBACK_PET_WIDGET_ID
 
 

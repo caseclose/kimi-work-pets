@@ -38,7 +38,10 @@ def main() -> None:
     if not manifest_path.is_file():
         die(f"未找到 {manifest_path}")
 
-    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    try:
+        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    except json.JSONDecodeError as exc:
+        die(f"pet.json 不是合法 JSON: {exc}")
     states = manifest.get("states") or {}
     if not (manifest.get("atlas") and states.get("idle")):
         die("pet.json 不是有效的 Kimi Work 精灵图清单(缺 atlas/states.idle),"
@@ -50,8 +53,9 @@ def main() -> None:
 
     base = blueprint_dir(args.appdata)
     widget_id = find_pet_widget_id(base)
+    widget_meta_path = base / "widgets" / widget_id / "widget.json"
     ws = base / "widgets" / widget_id / "workspace"
-    for f in (base / "pet/current.json", ws / "pet.json", ws / "pet.riv"):
+    for f in (base / "pet" / "current.json", widget_meta_path, ws / "pet.json", ws / "pet.riv"):
         if not f.is_file():
             die(f"未找到 {f},请先确认 Kimi Work 桌面端已运行过并生成默认桌宠")
 
@@ -60,7 +64,8 @@ def main() -> None:
 
     bk = backup_dir()
     bk.mkdir(parents=True, exist_ok=True)
-    for name, src in (("current.json", base / "pet/current.json"),
+    for name, src in (("current.json", base / "pet" / "current.json"),
+                      ("widget.json", widget_meta_path),
                       ("pet.json", ws / "pet.json"),
                       ("pet.riv", ws / "pet.riv")):
         dst = bk / name
@@ -68,12 +73,35 @@ def main() -> None:
             shutil.copy2(src, dst)
     print(f"已备份原桌宠文件到 {bk}")
 
-    lib = base / "pet/library" / pet_id
+    # 记录旧精灵图文件名,替换后清理,避免组件目录残留孤儿素材
+    old_sheet = None
+    try:
+        old_sheet = json.loads((ws / "pet.json").read_text(encoding="utf-8")).get("spritesheet")
+    except (json.JSONDecodeError, OSError):
+        pass
+
+    lib = base / "pet" / "library" / pet_id
     lib.mkdir(parents=True, exist_ok=True)
     shutil.copy2(pet_dir / sheet, lib / sheet)
     shutil.copy2(manifest_path, lib / "pet.json")
     shutil.copy2(pet_dir / sheet, ws / sheet)
     shutil.copy2(manifest_path, ws / "pet.json")
+    if old_sheet and old_sheet != sheet and (ws / old_sheet).is_file():
+        (ws / old_sheet).unlink()
+        print(f"已清理旧精灵图: {old_sheet}")
+
+    # 同步组件标题/描述,与所装宠物保持一致
+    try:
+        widget_meta = json.loads(widget_meta_path.read_text(encoding="utf-8"))
+        w = widget_meta.setdefault("widget", {})
+        w["title"] = manifest.get("name", pet_id)
+        if manifest.get("description"):
+            w["description"] = manifest["description"]
+        widget_meta_path.write_text(
+            json.dumps(widget_meta, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+        print("widget.json 标题/描述已同步")
+    except (json.JSONDecodeError, OSError) as exc:
+        print(f"⚠️ widget.json 更新失败(不影响桌宠使用): {exc}", file=sys.stderr)
 
     current = {
         "version": 1,
@@ -86,7 +114,7 @@ def main() -> None:
                               .strftime("%Y-%m-%dT%H:%M:%S.000Z"),
         }],
     }
-    (base / "pet/current.json").write_text(
+    (base / "pet" / "current.json").write_text(
         json.dumps(current, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print("current.json 已更新,当前桌宠:", pet_id)
 
