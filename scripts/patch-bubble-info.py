@@ -85,14 +85,15 @@ INJECTION = r"""
 
     setInterval(function () {
       try {
-        if (
-          typeof render === 'function' &&
-          activities.some(function (a) { return a.runState === 'running'; })
-        ) {
+        if (!activities.some(function (a) { return a.runState === 'running'; })) return;
+        // 卡片文本由 renderConversationCenter 负责,render 只画宠物精灵
+        if (typeof renderConversationCenter === 'function') {
+          renderConversationCenter();
+        } else if (typeof render === 'function') {
           render();
         }
       } catch (bubbleInfoErr) { /* noop */ }
-    }, 20000);
+    }, 15000);
 """
 
 # 在 IIFE 结束(最后一个 "})();" + "</script>")之前注入,与既有补丁兼容
