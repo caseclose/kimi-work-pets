@@ -1,0 +1,7 @@
+{
+  "id": "kimlet-move-wave",
+  "displayName": "Kimlet Move Wave",
+  "description": "A Kimlet variant with ordinary idle waving, clapping hover, and sun-backed waving while moving left or right.",
+  "spritesheetPath": "spritesheet.webp",
+  "kind": "person"
+}
