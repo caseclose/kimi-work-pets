@@ -4,11 +4,12 @@
 
 Kimi Work 内置桌宠除默认 Rive 形象外,还支持精灵图(spritesheet)模式,与 Codex 社区宠物素材(8×9 网格、192×208 单元格)格式同源。本仓库提供转换、安装、回滚工具;社区画廊里的宠物按同样流程都可以装。
 
-内置示例 **Dimo(迪莫)**:腾讯《洛克王国》的光属性明星宠物([角色背景](https://baike.baidu.com/item/%E8%BF%AA%E8%8E%AB/10570042)),精灵图为社区二创(swrited)。
+内置示例:
 
-| 预览 | 状态演示 |
-| --- | --- |
-| <img src="assets/dimo-preview.png" width="170"> | <img src="assets/dimo-states.gif" width="150"> |
+| 宠物 | 预览 | 状态演示 |
+| --- | --- | --- |
+| **Dimo(迪莫)**,腾讯《洛克王国》的光属性明星宠物([角色背景](https://baike.baidu.com/item/%E8%BF%AA%E8%8E%AB/10570042)),精灵图为社区二创(swrited) | <img src="assets/dimo/pet-preview.png" width="150"> | <img src="assets/dimo/pet-states.gif" width="130"> |
+| **Siam(暹罗猫)**,小体型暹罗猫([来源](https://codexpets.net/gallery/siam),作者 allen) | <img src="assets/siam/pet-preview.png" width="150"> | <img src="assets/siam/pet-states.gif" width="130"> |
 
 ## 快速开始
 
@@ -20,6 +21,7 @@ Kimi Work 内置桌宠除默认 Rive 形象外,还支持精灵图(spritesheet)�
 git clone https://github.com/caseclose/kimi-work-pets.git
 cd kimi-work-pets
 python3 scripts/install.py pets/dimo   # 内置示例:迪莫
+# python3 scripts/install.py pets/siam  # 或:暹罗猫
 ```
 
 重启 Kimi 应用(或重新开关桌宠)后生效,桌宠已带悬停交互(见下节)。
@@ -71,6 +73,8 @@ manifest 字段与宿主状态映射详见 [docs/how-kimi-work-pet-works.md](doc
 - 代码:MIT(见 LICENSE)。
 - `pets/dimo/` 精灵图:社区粉丝二创,作者 [swrited](https://codexpets.net/gallery/dimo),
   CC BY-NC 类协议,**仅供个人非商业使用**;迪莫形象来自腾讯《洛克王国》,权利归原版权方。
+- `pets/siam/` 精灵图:社区分享素材,作者 [allen](https://codexpets.net/gallery/siam),
+  版权以来源页面为准,**仅供个人非商业使用**。
   其他社区素材的版权以各自来源页面为准。
 - 本仓库与 Moonshot AI、OpenAI 无任何隶属或授权关系。
 
@@ -79,7 +83,8 @@ manifest 字段与宿主状态映射详见 [docs/how-kimi-work-pet-works.md](doc
 Install Codex community pets as the desktop pet of the Kimi Work desktop app (macOS/Windows).
 Convert a Codex package with `scripts/convert-codex-pet.py`, install it with
 `scripts/install.py <pet-dir>`(built-in example: `pets/dimo`, Dimo from Tencent's
-*Roco Kingdom*), roll back with `scripts/restore.py`. Installation also injects
+*Roco Kingdom*), roll back with `scripts/restore.py`. Built-in examples: `pets/dimo` (Dimo from Tencent's
+*Roco Kingdom*) and `pets/siam` (a Siamese cat). Installation also injects
 hover interactions: the pet waves back when you hover over it, and sprite pets
 lean toward the cursor as you move the mouse around.
 All scripts accept `--appdata <dir>` if the app data folder is located elsewhere.

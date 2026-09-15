@@ -5,9 +5,9 @@
     python3 scripts/generate_previews.py [--spritesheet pets/dimo/spritesheet.webp] [--out assets]
 
 输出:
-    dimo-preview.png   待机帧 2x 预览图
-    dimo-states.gif    各状态带标注的演示动画
-    dimo-rows.png      9 行原始动作条带(逐行标注)
+    pet-preview.png   待机帧 2x 预览图
+    pet-states.gif    各状态带标注的演示动画
+    pet-rows.png      9 行原始动作条带(逐行标注)
 """
 import argparse
 import os
@@ -77,8 +77,8 @@ def make_preview(sheet: Image.Image, out: Path) -> None:
     frame = sheet.crop((0, 0, FW, FH)).resize((FW * 2, FH * 2), Image.NEAREST)
     canvas = Image.new("RGB", (FW * 2 + 80, FH * 2 + 80), BG)
     canvas.paste(frame, (40, 40), frame)
-    canvas.save(out / "dimo-preview.png")
-    print("written", out / "dimo-preview.png")
+    canvas.save(out / "pet-preview.png")
+    print("written", out / "pet-preview.png")
 
 
 def make_states_gif(sheet: Image.Image, out: Path, scale: int = 2) -> None:
@@ -107,14 +107,14 @@ def make_states_gif(sheet: Image.Image, out: Path, scale: int = 2) -> None:
             frames.append(holder.copy())
             durations.append(300)
     frames[0].save(
-        out / "dimo-states.gif",
+        out / "pet-states.gif",
         save_all=True,
         append_images=frames[1:],
         duration=durations,
         loop=0,
         optimize=True,
     )
-    print("written", out / "dimo-states.gif", f"({len(frames)} frames)")
+    print("written", out / "pet-states.gif", f"({len(frames)} frames)")
 
 
 def make_rows_png(sheet: Image.Image, out: Path, scale: float = 0.5) -> None:
@@ -136,8 +136,8 @@ def make_rows_png(sheet: Image.Image, out: Path, scale: float = 0.5) -> None:
         )
         strip = sheet.crop((0, r * FH, COLS * FW, (r + 1) * FH)).resize((tw, th), Image.NEAREST)
         canvas.paste(flatten(strip, (tw, th)), (pad, y0 + bar))
-    canvas.save(out / "dimo-rows.png")
-    print("written", out / "dimo-rows.png")
+    canvas.save(out / "pet-rows.png")
+    print("written", out / "pet-rows.png")
 
 
 def main() -> None:

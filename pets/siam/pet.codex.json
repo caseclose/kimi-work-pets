@@ -1,0 +1,7 @@
+{
+  "id": "siam",
+  "displayName": "Siam",
+  "description": "一只小体型暹罗猫 Codex 桌面悬浮宠物。",
+  "spritesheetPath": "spritesheet.webp",
+  "kind": "animal"
+}
