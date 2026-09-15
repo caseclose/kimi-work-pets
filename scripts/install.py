@@ -145,6 +145,15 @@ def main() -> None:
         print("⚠️ 显示补丁注入失败(不影响桌宠使用),可稍后手动运行 "
               "python3 scripts/patch-pet-display.py", file=sys.stderr)
 
+    print("注入扩展互动补丁(开机问候/点击跳跃/长视撒娇)...")
+    patch = Path(__file__).parent / "patch-pet-interactions.py"
+    try:
+        subprocess.run([sys.executable, str(patch)]
+                       + (["--appdata", args.appdata] if args.appdata else []), check=True)
+    except subprocess.CalledProcessError:
+        print("⚠️ 互动补丁注入失败(不影响桌宠使用),可稍后手动运行 "
+              "python3 scripts/patch-pet-interactions.py", file=sys.stderr)
+
     print()
     print("✅ 安装完成。重启 Kimi 应用(或重新开关桌宠)后生效。")
     print("   回滚: python3 scripts/restore.py")

@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
-"""patch-hover-interaction.py — 给 Kimi Work 桌宠页面加"悬停招手"交互
+"""patch-hover-interaction.py — 给 Kimi Work 桌宠页面加"悬停互动"
 
 桌宠组件的 workspace/index.html 是单文件 IIFE。本脚本在 IIFE 结束前注入一段代码:
-鼠标悬停在宠物身上时,播放 idle_random_1(通常为 waving 招手)一个循环后回到待机。
+鼠标悬停在宠物身上时,从可用的空闲彩蛋动作里随机挑一个播放(优先 idle_random_1
+招手 / idle_random_3 眨眼互动,素材里没有的会自动跳过),播完一个循环后回到待机。
 可重复运行(幂等,以 hover-wave-interaction 标记判断)。
 
 用法:
@@ -28,12 +29,15 @@ INJECTION = r"""
       if (stateName !== 'idle' && stateName !== 'idle_random_2') return;
       const nowTime = Date.now();
       if (nowTime < hoverWaveCooldownUntil) return;
-      const waveState = manifest.states.idle_random_1;
-      if (!waveState) return;
+      const wavePool = ['idle_random_1', 'idle_random_3']
+        .filter((name) => Boolean(manifest.states[name]));
+      if (wavePool.length === 0) return;
+      const waveName = wavePool[Math.floor(Math.random() * wavePool.length)];
+      const waveState = manifest.states[waveName];
       hoverWaveCooldownUntil = nowTime + 6000;
       interactionStateActive = true;
       clearIdleVariantTimer();
-      setState('idle_random_1');
+      setState(waveName);
       clearTimeout(hoverWaveTimer);
       hoverWaveTimer = setTimeout(() => {
         interactionStateActive = false;
@@ -84,7 +88,7 @@ def main() -> None:
     patched = html[:idx] + INJECTION + html[idx:]
     path.write_text(patched, encoding="utf-8")
     print("✅ 已注入悬停交互:", path)
-    print("   重启 Kimi 应用后,鼠标悬停桌宠即可看到它招手回应(6 秒冷却)。")
+    print("   重启 Kimi 应用后,鼠标悬停桌宠即可看到它随机回以招手或眨眼互动(6 秒冷却)。")
 
 
 if __name__ == "__main__":

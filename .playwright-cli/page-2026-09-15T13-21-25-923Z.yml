@@ -1,0 +1,570 @@
+- generic [active] [ref=e1]:
+  - link "跳到主要内容" [ref=e2] [cursor=pointer]:
+    - /url: "#main"
+  - navigation "主导航" [ref=e3]:
+    - generic [ref=e4]:
+      - link "Kimi Work Pets" [ref=e5] [cursor=pointer]:
+        - /url: "#"
+        - text: Kimi Work
+        - generic [ref=e6]: Pets
+      - generic [ref=e7]:
+        - link "概览" [ref=e8] [cursor=pointer]:
+          - /url: "#overview"
+        - link "互动" [ref=e9] [cursor=pointer]:
+          - /url: "#interact"
+        - link "画廊" [ref=e10] [cursor=pointer]:
+          - /url: "#pets"
+        - link "安装" [ref=e11] [cursor=pointer]:
+          - /url: "#quickstart"
+        - link "自定义" [ref=e12] [cursor=pointer]:
+          - /url: "#custom"
+        - link "版权" [ref=e13] [cursor=pointer]:
+          - /url: "#license"
+        - link "GitHub" [ref=e14] [cursor=pointer]:
+          - /url: https://github.com/caseclose/kimi-work-pets
+      - button "切换到暗色模式" [ref=e16] [cursor=pointer]
+  - banner [ref=e19]:
+    - generic [ref=e20]:
+      - generic [ref=e21]:
+        - generic [ref=e22]: Codex Pets × Kimi Work · 开源安装器
+        - heading [level=1] [ref=e23]:
+          - text: 把社区桌宠，一键请上
+          - emphasis [ref=e24]: Kimi Work
+        - paragraph [ref=e25]:
+          - text: 精选 14 款
+          - link "Codex Pets" [ref=e26] [cursor=pointer]:
+            - /url: https://codexpets.net/
+          - text: 社区形象，自动转换精灵表、注入悬停招手与视线跟随，兼容 macOS 与 Windows，随时回滚默认桌宠。
+        - generic [ref=e27]:
+          - link "开始安装" [ref=e28] [cursor=pointer]:
+            - /url: "#quickstart"
+          - link "浏览 14 款宠物" [ref=e29] [cursor=pointer]:
+            - /url: "#pets"
+        - generic "项目数据" [ref=e30]:
+          - generic [ref=e31]:
+            - generic [ref=e32]: "14"
+            - text: 内置宠物
+          - generic [ref=e33]:
+            - generic [ref=e34]: "2"
+            - text: 桌面平台
+          - generic [ref=e35]:
+            - generic [ref=e36]: 1 条
+            - text: 命令安装
+          - generic [ref=e37]:
+            - generic [ref=e38]: MIT
+            - text: 代码开源
+      - complementary [ref=e39]:
+        - generic [ref=e40]:
+          - img "Dimo(迪莫) 预览" [ref=e41]
+          - img "Dimo(迪莫) 动作演示" [ref=e42]
+        - heading "今日推荐 · 迪莫" [level=2] [ref=e43]
+        - paragraph [ref=e44]: 洛克王国光属性明星宠物的社区二创。安装后可悬停挥爪、跟随鼠标转头。
+  - main [ref=e45]:
+    - generic [ref=e46]:
+      - generic [ref=e47]:
+        - generic [ref=e48]:
+          - paragraph [ref=e49]: Overview
+          - heading "从社区画廊到桌面伙伴" [level=2] [ref=e50]
+          - paragraph [ref=e51]: Kimi Work 除默认 Rive 形象外，还支持与 Codex 同源的精灵表（8×9 网格、192×208 单元格）。本仓库补齐转换、安装、回滚与互动补丁。
+        - generic [ref=e52]:
+          - article [ref=e53]:
+            - generic [ref=e54]: "1"
+            - heading "取材社区" [level=3] [ref=e55]
+            - paragraph [ref=e56]: 从 Codex Pets 画廊挑选形象。仓库已预置 14 款，也可自行下载任意社区包。
+          - article [ref=e57]:
+            - generic [ref=e58]: "2"
+            - heading "一键注入" [level=3] [ref=e59]
+            - paragraph [ref=e60]:
+              - code [ref=e61]: install.py
+              - text: 负责转换清单、写入应用数据、备份原桌宠，失败可随时 restore。
+          - article [ref=e62]:
+            - generic [ref=e63]: "3"
+            - heading "桌面互动" [level=3] [ref=e64]
+            - paragraph [ref=e65]: 安装即带悬停招手、视线跟随、拖动奔跑。重启 Kimi 后，桌宠会看向你。
+      - generic [ref=e66]:
+        - generic [ref=e67]:
+          - paragraph [ref=e68]: Interactions
+          - heading "安装即用的四种互动" [level=2] [ref=e69]
+          - paragraph [ref=e70]:
+            - text: 由三个幂等补丁自动注入，无需额外配置；
+            - code [ref=e71]: restore.py
+            - text: 会一并撤销。
+        - generic [ref=e72]:
+          - article [ref=e73]:
+            - generic [ref=e74]: "01"
+            - heading "悬停招手" [level=3] [ref=e75]
+            - paragraph [ref=e76]:
+              - text: 鼠标悬停时播放
+              - code [ref=e77]: idle_random_1
+              - text: 一个循环后回到待机，6 秒冷却，不影响工作或等待状态。Hiyuki 挥剑，Dimo 挥爪。
+          - article [ref=e78]:
+            - generic [ref=e79]: "02"
+            - heading "视线跟随" [level=3] [ref=e80]
+            - paragraph [ref=e81]: 鼠标在附近移动时，精灵图宠物平滑向光标倾斜；离开后回正。Rive 默认形象自带眼动，补丁会自动跳过。
+          - article [ref=e82]:
+            - generic [ref=e83]: "03"
+            - heading "拖动奔跑" [level=3] [ref=e84]
+            - paragraph [ref=e85]: 拖动桌宠时沿方向播放左右奔跑帧，这是 Kimi Work 的原生行为，安装后继续保留。
+          - article [ref=e86]:
+            - generic [ref=e87]: "04"
+            - heading "更大的响应范围" [level=3] [ref=e88]
+            - paragraph [ref=e89]: 默认 2 倍显示；可点区域在轮廓外再扩 24px，不用对准像素。由页面主动上报可交互区域实现。
+      - generic [ref=e90]:
+        - generic [ref=e91]:
+          - paragraph [ref=e92]: Gallery
+          - heading "宠物画廊" [level=2] [ref=e93]
+          - paragraph [ref=e94]: 14 款预置形象。可按来源筛选，或搜索名字与作者。右侧进入视口后才播放动作 GIF。
+        - generic [ref=e95]:
+          - group "按来源筛选" [ref=e96]:
+            - button "全部" [pressed] [ref=e97] [cursor=pointer]
+            - button "社区原创" [ref=e98] [cursor=pointer]
+            - button "IP 二创" [ref=e99] [cursor=pointer]
+            - button "戏仿" [ref=e100] [cursor=pointer]
+          - searchbox "搜索宠物" [ref=e101]
+        - paragraph [ref=e102]: 显示 14 / 14 款
+        - generic [ref=e103]:
+          - article [ref=e104]:
+            - generic [ref=e105]:
+              - img "Dimo(迪莫) 桌宠预览图" [ref=e106]
+              - img "Dimo(迪莫) 逐行动作演示" [ref=e107]
+            - generic [ref=e108]:
+              - generic [ref=e109]: IP 二创
+              - generic [ref=e110]: 洛克王国
+            - heading "Dimo(迪莫)" [level=3] [ref=e111]
+            - paragraph [ref=e112]: 《洛克王国》光属性明星宠物（社区二创）
+            - paragraph [ref=e113]:
+              - text: 作者
+              - link "swrited" [ref=e114] [cursor=pointer]:
+                - /url: https://codexpets.net/gallery/dimo
+              - text: ·
+              - link "画廊" [ref=e115] [cursor=pointer]:
+                - /url: https://codexpets.net/gallery/dimo
+            - paragraph [ref=e116]: 形象源自腾讯《洛克王国》
+            - generic [ref=e117]:
+              - code [ref=e118]: python3 scripts/install.py pets/dimo
+              - button "复制" [ref=e119] [cursor=pointer]
+          - article [ref=e120]:
+            - generic [ref=e121]:
+              - img "Siam(暹罗猫) 桌宠预览图" [ref=e122]
+              - img "Siam(暹罗猫) 逐行动作演示" [ref=e123]
+            - generic [ref=e124]: 社区原创
+            - heading "Siam(暹罗猫)" [level=3] [ref=e126]
+            - paragraph [ref=e127]: 小体型暹罗猫
+            - paragraph [ref=e128]:
+              - text: 作者
+              - link "allen" [ref=e129] [cursor=pointer]:
+                - /url: https://codexpets.net/gallery/siam
+              - text: ·
+              - link "画廊" [ref=e130] [cursor=pointer]:
+                - /url: https://codexpets.net/gallery/siam
+            - generic [ref=e131]:
+              - code [ref=e132]: python3 scripts/install.py pets/siam
+              - button "复制" [ref=e133] [cursor=pointer]
+          - article [ref=e134]:
+            - generic [ref=e135]:
+              - img "Maomao(大开门) 桌宠预览图" [ref=e136]
+              - img "Maomao(大开门) 逐行动作演示" [ref=e137]
+            - generic [ref=e138]: 社区原创
+            - heading "Maomao(大开门)" [level=3] [ref=e140]
+            - paragraph [ref=e141]: 戴蓝色钩针帽的三花猫
+            - paragraph [ref=e142]:
+              - text: 作者
+              - link "kyle" [ref=e143] [cursor=pointer]:
+                - /url: https://codexpets.net/gallery/maomao
+              - text: ·
+              - link "画廊" [ref=e144] [cursor=pointer]:
+                - /url: https://codexpets.net/gallery/maomao
+            - generic [ref=e145]:
+              - code [ref=e146]: python3 scripts/install.py pets/maomao
+              - button "复制" [ref=e147] [cursor=pointer]
+          - article [ref=e148]:
+            - generic [ref=e149]:
+              - img "Hiyuki 桌宠预览图"
+              - img "Hiyuki 逐行动作演示"
+            - generic [ref=e150]: 社区原创
+            - heading "Hiyuki" [level=3] [ref=e152]
+            - paragraph [ref=e153]: 持冰剑的银发红瞳 Q 版少女
+            - paragraph [ref=e154]:
+              - text: 作者
+              - link "foxibu" [ref=e155] [cursor=pointer]:
+                - /url: https://codexpets.net/gallery/hiyuki
+              - text: ·
+              - link "画廊" [ref=e156] [cursor=pointer]:
+                - /url: https://codexpets.net/gallery/hiyuki
+            - generic [ref=e157]:
+              - code [ref=e158]: python3 scripts/install.py pets/hiyuki
+              - button "复制" [ref=e159] [cursor=pointer]
+          - article [ref=e160]:
+            - generic [ref=e161]:
+              - img "Feixue(绯雪) 桌宠预览图"
+              - img "Feixue(绯雪) 逐行动作演示"
+            - generic [ref=e162]: 社区原创
+            - heading "Feixue(绯雪)" [level=3] [ref=e164]
+            - paragraph [ref=e165]: 冷艳巫女风 Q 版少女
+            - paragraph [ref=e166]:
+              - text: 作者
+              - link "Akira97" [ref=e167] [cursor=pointer]:
+                - /url: https://codexpets.net/gallery/feixue
+              - text: ·
+              - link "画廊" [ref=e168] [cursor=pointer]:
+                - /url: https://codexpets.net/gallery/feixue
+            - generic [ref=e169]:
+              - code [ref=e170]: python3 scripts/install.py pets/feixue
+              - button "复制" [ref=e171] [cursor=pointer]
+          - article [ref=e172]:
+            - generic [ref=e173]:
+              - img "GUGUGAGA 桌宠预览图"
+              - img "GUGUGAGA 逐行动作演示"
+            - generic [ref=e174]: 社区原创
+            - heading "GUGUGAGA" [level=3] [ref=e176]
+            - paragraph [ref=e177]: 企鹅装 Q 版少女
+            - paragraph [ref=e178]:
+              - text: 作者
+              - link "Hibik1" [ref=e179] [cursor=pointer]:
+                - /url: https://codexpets.net/gallery/endminguga
+              - text: ·
+              - link "画廊" [ref=e180] [cursor=pointer]:
+                - /url: https://codexpets.net/gallery/endminguga
+            - generic [ref=e181]:
+              - code [ref=e182]: python3 scripts/install.py pets/endminguga
+              - button "复制" [ref=e183] [cursor=pointer]
+          - article [ref=e184]:
+            - generic [ref=e185]:
+              - img "Round Cola Hatch 桌宠预览图"
+              - img "Round Cola Hatch 逐行动作演示"
+            - generic [ref=e186]: 社区原创
+            - heading "Round Cola Hatch" [level=3] [ref=e188]
+            - paragraph [ref=e189]: 喝可乐的蓝色圆滚滚机器人
+            - paragraph [ref=e190]:
+              - text: 作者
+              - link "tsang" [ref=e191] [cursor=pointer]:
+                - /url: https://codexpets.net/gallery/round-cola-hatch
+              - text: ·
+              - link "画廊" [ref=e192] [cursor=pointer]:
+                - /url: https://codexpets.net/gallery/round-cola-hatch
+            - generic [ref=e193]:
+              - code [ref=e194]: python3 scripts/install.py pets/round-cola-hatch
+              - button "复制" [ref=e195] [cursor=pointer]
+          - article [ref=e196]:
+            - generic [ref=e197]:
+              - img "胡桃(Hu Tao) 桌宠预览图"
+              - img "胡桃(Hu Tao) 逐行动作演示"
+            - generic [ref=e198]:
+              - generic [ref=e199]: IP 二创
+              - generic [ref=e200]: 原神
+            - heading "胡桃(Hu Tao)" [level=3] [ref=e201]
+            - paragraph [ref=e202]: 《原神》往生堂堂主，带小幽灵
+            - paragraph [ref=e203]:
+              - text: 作者
+              - link "Barometer" [ref=e204] [cursor=pointer]:
+                - /url: https://codexpets.net/gallery/hu-tao-pet
+              - text: ·
+              - link "画廊" [ref=e205] [cursor=pointer]:
+                - /url: https://codexpets.net/gallery/hu-tao-pet
+            - paragraph [ref=e206]: 形象版权归米哈游
+            - generic [ref=e207]:
+              - code [ref=e208]: python3 scripts/install.py pets/hu-tao-pet
+              - button "复制" [ref=e209] [cursor=pointer]
+          - article [ref=e210]:
+            - generic [ref=e211]:
+              - img "Flamy 桌宠预览图"
+              - img "Flamy 逐行动作演示"
+            - generic [ref=e212]: 社区原创
+            - heading "Flamy" [level=3] [ref=e214]
+            - paragraph [ref=e215]: 戴破碎眼镜敲笔记本的红色小火龙
+            - paragraph [ref=e216]:
+              - text: 作者
+              - link "inwizzy" [ref=e217] [cursor=pointer]:
+                - /url: https://codexpets.net/gallery/flamy
+              - text: ·
+              - link "画廊" [ref=e218] [cursor=pointer]:
+                - /url: https://codexpets.net/gallery/flamy
+            - generic [ref=e219]:
+              - code [ref=e220]: python3 scripts/install.py pets/flamy
+              - button "复制" [ref=e221] [cursor=pointer]
+          - article [ref=e222]:
+            - generic [ref=e223]:
+              - img "Kimlet Move Wave 桌宠预览图"
+              - img "Kimlet Move Wave 逐行动作演示"
+            - generic [ref=e224]: 戏仿
+            - heading "Kimlet Move Wave" [level=3] [ref=e226]
+            - paragraph [ref=e227]: 像素风挥手人物
+            - paragraph [ref=e228]:
+              - text: 作者
+              - link "kimehwa" [ref=e229] [cursor=pointer]:
+                - /url: https://codexpets.net/gallery/kimlet-move-wave
+              - text: ·
+              - link "画廊" [ref=e230] [cursor=pointer]:
+                - /url: https://codexpets.net/gallery/kimlet-move-wave
+            - paragraph [ref=e231]: ⚠️ 真人形象戏仿，介意请勿安装
+            - generic [ref=e232]:
+              - code [ref=e233]: python3 scripts/install.py pets/kimlet-move-wave
+              - button "复制" [ref=e234] [cursor=pointer]
+          - article [ref=e235]:
+            - generic [ref=e236]:
+              - img "Kimlet 桌宠预览图"
+              - img "Kimlet 逐行动作演示"
+            - generic [ref=e237]: 戏仿
+            - heading "Kimlet" [level=3] [ref=e239]
+            - paragraph [ref=e240]: 带光环挥手人物
+            - paragraph [ref=e241]:
+              - text: 作者
+              - link "kimehwa" [ref=e242] [cursor=pointer]:
+                - /url: https://codexpets.net/gallery/kimlet
+              - text: ·
+              - link "画廊" [ref=e243] [cursor=pointer]:
+                - /url: https://codexpets.net/gallery/kimlet
+            - paragraph [ref=e244]: ⚠️ 真人形象戏仿，介意请勿安装
+            - generic [ref=e245]:
+              - code [ref=e246]: python3 scripts/install.py pets/kimlet
+              - button "复制" [ref=e247] [cursor=pointer]
+          - article [ref=e248]:
+            - generic [ref=e249]:
+              - img "星见雅(Miyabi) 桌宠预览图"
+              - img "星见雅(Miyabi) 逐行动作演示"
+            - generic [ref=e250]:
+              - generic [ref=e251]: IP 二创
+              - generic [ref=e252]: 绝区零
+            - heading "星见雅(Miyabi)" [level=3] [ref=e253]
+            - paragraph [ref=e254]: 《绝区零》对空六课狐耳剑士
+            - paragraph [ref=e255]:
+              - text: 作者
+              - link "Eric-Terminal" [ref=e256] [cursor=pointer]:
+                - /url: https://codexpets.net/gallery/miyabi
+              - text: ·
+              - link "画廊" [ref=e257] [cursor=pointer]:
+                - /url: https://codexpets.net/gallery/miyabi
+            - paragraph [ref=e258]: 形象版权归米哈游
+            - generic [ref=e259]:
+              - code [ref=e260]: python3 scripts/install.py pets/miyabi
+              - button "复制" [ref=e261] [cursor=pointer]
+          - article [ref=e262]:
+            - generic [ref=e263]:
+              - img "薇尔莉特(Violet) 桌宠预览图"
+              - img "薇尔莉特(Violet) 逐行动作演示"
+            - generic [ref=e264]:
+              - generic [ref=e265]: IP 二创
+              - generic [ref=e266]: 京阿尼
+            - heading "薇尔莉特(Violet)" [level=3] [ref=e267]
+            - paragraph [ref=e268]: 《紫罗兰永恒花园》自动手记人偶
+            - paragraph [ref=e269]:
+              - text: 作者
+              - link "Lazenca" [ref=e270] [cursor=pointer]:
+                - /url: https://codexpets.net/gallery/violet
+              - text: ·
+              - link "画廊" [ref=e271] [cursor=pointer]:
+                - /url: https://codexpets.net/gallery/violet
+            - paragraph [ref=e272]: 形象版权归京都动画
+            - generic [ref=e273]:
+              - code [ref=e274]: python3 scripts/install.py pets/violet
+              - button "复制" [ref=e275] [cursor=pointer]
+          - article [ref=e276]:
+            - generic [ref=e277]:
+              - img "咕嘎(Guga) 桌宠预览图"
+              - img "咕嘎(Guga) 逐行动作演示"
+            - generic [ref=e278]: 社区原创
+            - heading "咕嘎(Guga)" [level=3] [ref=e280]
+            - paragraph [ref=e281]: 圆润版企鹅装连帽少女
+            - paragraph [ref=e282]:
+              - text: 作者
+              - link "CIRCUS" [ref=e283] [cursor=pointer]:
+                - /url: https://codexpets.net/gallery/guga
+              - text: ·
+              - link "画廊" [ref=e284] [cursor=pointer]:
+                - /url: https://codexpets.net/gallery/guga
+            - generic [ref=e285]:
+              - code [ref=e286]: python3 scripts/install.py pets/guga
+              - button "复制" [ref=e287] [cursor=pointer]
+      - generic [ref=e288]:
+        - generic [ref=e289]:
+          - paragraph [ref=e290]: Install
+          - heading "三步装上桌宠" [level=2] [ref=e291]
+          - paragraph [ref=e292]:
+            - text: 需要 Kimi Work 桌面端与
+            - code [ref=e293]: python3
+            - text: 。Windows 按 Electron 惯例定位
+            - code [ref=e294]: "%APPDATA%\\kimi-desktop"
+            - text: ；找不到时加
+            - code [ref=e295]: "--appdata"
+            - text: 。
+        - generic [ref=e296]:
+          - list [ref=e297]:
+            - listitem [ref=e298]:
+              - text: 克隆仓库
+              - generic [ref=e299]:
+                - code [ref=e300]: git clone https://github.com/caseclose/kimi-work-pets.git
+                - button "复制" [ref=e301] [cursor=pointer]
+            - listitem [ref=e302]:
+              - text: 安装一只宠物（可换成
+              - code [ref=e303]: pets/
+              - text: 下任意目录）
+              - generic [ref=e304]:
+                - code [ref=e305]: python3 scripts/install.py pets/dimo
+                - button "复制" [ref=e306] [cursor=pointer]
+            - listitem [ref=e307]: 重启 Kimi，或重新开关桌宠。悬停试试招手，移动鼠标看它转头。
+          - complementary [ref=e308]:
+            - heading "回滚与备份" [level=3] [ref=e309]
+            - paragraph [ref=e310]:
+              - text: 原配置自动备份在用户目录
+              - code [ref=e311]: .kimi-work-pet-backup/
+              - text: 。
+            - generic [ref=e312]:
+              - code [ref=e313]: python3 scripts/restore.py
+              - button "复制" [ref=e314] [cursor=pointer]
+            - heading "平台说明" [level=3] [ref=e315]
+            - list [ref=e316]:
+              - listitem [ref=e317]: macOS：自动定位 Kimi 应用数据目录
+              - listitem [ref=e318]: Windows：路径按惯例推断，未经全面真机验证
+              - listitem [ref=e319]:
+                - text: 所有脚本都接受
+                - code [ref=e320]: "--appdata <目录>"
+      - generic [ref=e321]:
+        - generic [ref=e322]:
+          - paragraph [ref=e323]: Bring your own pet
+          - heading "安装画廊里的其他宠物" [level=2] [ref=e324]
+          - paragraph [ref=e325]:
+            - text: 社区包通常含
+            - code [ref=e326]: pet.json
+            - text: 与
+            - code [ref=e327]: spritesheet.webp
+            - text: 。转换器会统计每行帧数，并把原清单备份为
+            - code [ref=e328]: pet.codex.json
+            - text: 。
+        - list [ref=e329]:
+          - listitem [ref=e330]:
+            - text: 从
+            - link "CodexPets.net" [ref=e331] [cursor=pointer]:
+              - /url: https://codexpets.net/
+            - text: 或 petdex.dev 下载并解压宠物包。
+          - listitem [ref=e332]:
+            - text: 转换：
+            - generic [ref=e333]:
+              - code [ref=e334]: python3 scripts/convert-codex-pet.py <目录>
+              - button "复制" [ref=e335] [cursor=pointer]
+          - listitem [ref=e336]:
+            - text: 安装：
+            - generic [ref=e337]:
+              - code [ref=e338]: python3 scripts/install.py <目录>
+              - button "复制" [ref=e339] [cursor=pointer]
+        - table [ref=e341]:
+          - rowgroup [ref=e342]:
+            - row [ref=e343]:
+              - columnheader "行" [ref=e344]
+              - columnheader "社区语义" [ref=e345]
+              - columnheader "Kimi Work 状态" [ref=e346]
+          - rowgroup [ref=e347]:
+            - row [ref=e348]:
+              - cell "0" [ref=e349]
+              - cell "idle" [ref=e350]
+              - cell "空闲" [ref=e351]
+            - row [ref=e352]:
+              - cell "1" [ref=e353]
+              - cell "running_right" [ref=e354]
+              - cell "向右拖动" [ref=e355]
+            - row [ref=e356]:
+              - cell "2" [ref=e357]
+              - cell "running_left" [ref=e358]
+              - cell "向左拖动" [ref=e359]
+            - row [ref=e360]:
+              - cell "3" [ref=e361]
+              - cell "waving" [ref=e362]
+              - cell "空闲彩蛋 1" [ref=e363]
+            - row [ref=e364]:
+              - cell "4" [ref=e365]
+              - cell "jumping" [ref=e366]
+              - cell "空闲彩蛋 2" [ref=e367]
+            - row [ref=e368]:
+              - cell "5" [ref=e369]
+              - cell "failed" [ref=e370]
+              - cell "失败" [ref=e371]
+            - row [ref=e372]:
+              - cell "6" [ref=e373]
+              - cell "waiting" [ref=e374]
+              - cell "等待确认" [ref=e375]
+            - row [ref=e376]:
+              - cell "7" [ref=e377]
+              - cell "running" [ref=e378]
+              - cell "工作中" [ref=e379]
+            - row [ref=e380]:
+              - cell "8" [ref=e381]
+              - cell "review" [ref=e382]
+              - cell "未映射" [ref=e383]
+        - paragraph [ref=e384]:
+          - text: 布局不符时，用
+          - code [ref=e385]: scripts/inspect_spritesheet.py
+          - text: 逐行确认后再改
+          - code [ref=e386]: pet.json
+          - text: 。机制说明见
+          - link "桌宠机制调研" [ref=e387] [cursor=pointer]:
+            - /url: how-kimi-work-pet-works.html
+          - text: 。
+      - generic [ref=e388]:
+        - generic [ref=e389]:
+          - paragraph [ref=e390]: FAQ
+          - heading "常见问题" [level=2] [ref=e391]
+        - generic [ref=e392]:
+          - article [ref=e393]:
+            - heading "装完没有变化？" [level=3] [ref=e394]
+            - paragraph [ref=e395]: 完全退出并重启 Kimi Work，或先关掉再打开桌宠。渲染器只在加载时读取配置。
+          - article [ref=e396]:
+            - heading "如何回到默认形象？" [level=3] [ref=e397]
+            - paragraph [ref=e398]:
+              - text: 运行
+              - code [ref=e399]: python3 scripts/restore.py
+              - text: 。脚本会使用安装前自动备份，并撤销互动补丁。
+          - article [ref=e400]:
+            - heading "Windows 找不到目录？" [level=3] [ref=e401]
+            - paragraph [ref=e402]:
+              - text: 手动指定应用数据目录：
+              - code [ref=e403]: "--appdata %APPDATA%\\kimi-desktop"
+              - text: 。各脚本均支持该参数。
+          - article [ref=e404]:
+            - heading "能装画廊里没预置的宠物吗？" [level=3] [ref=e405]
+            - paragraph [ref=e406]:
+              - text: 可以。先
+              - code [ref=e407]: convert-codex-pet.py
+              - text: ，再
+              - code [ref=e408]: install.py
+              - text: 。标准 9 行精灵表即可自动映射。
+      - generic [ref=e409]:
+        - generic [ref=e410]:
+          - paragraph [ref=e411]: License
+          - heading "版权与使用边界" [level=2] [ref=e412]
+          - paragraph [ref=e413]: 本仓库与 Moonshot AI、OpenAI 无隶属或授权关系。素材仅供个人非商业使用。
+        - generic [ref=e414]:
+          - article [ref=e415]:
+            - heading "代码 · MIT" [level=3] [ref=e416]
+            - paragraph [ref=e417]: 安装器、转换器与补丁脚本按 MIT 开源，详见仓库 LICENSE。
+          - article [ref=e418]:
+            - heading "社区原创" [level=3] [ref=e419]
+            - paragraph [ref=e420]: siam / maomao / hiyuki / feixue / endminguga / round-cola-hatch / flamy / guga 来自 Codex 社区，版权以各画廊页为准。
+          - article [ref=e421]:
+            - heading "第三方 IP" [level=3] [ref=e422]
+            - paragraph [ref=e423]: 迪莫（腾讯《洛克王国》）、胡桃与星见雅（米哈游）、薇尔莉特（京都动画）均为二创展示，权利归原版权方。
+          - article [ref=e424]:
+            - heading "戏仿内容" [level=3] [ref=e425]
+            - paragraph [ref=e426]: kimlet 与 kimlet-move-wave 含真实公众人物形象。介意者请跳过，勿作商业使用。
+  - contentinfo [ref=e427]:
+    - generic [ref=e428]:
+      - generic [ref=e429]:
+        - strong [ref=e430]: Kimi Work Pets
+        - text: 把 Codex Pets 社区桌宠装进 Kimi Work。代码 MIT；素材版权归原作者。
+      - generic [ref=e431]:
+        - strong [ref=e432]: 页面
+        - link "画廊" [ref=e433] [cursor=pointer]:
+          - /url: "#pets"
+        - link "安装" [ref=e434] [cursor=pointer]:
+          - /url: "#quickstart"
+        - link "自定义" [ref=e435] [cursor=pointer]:
+          - /url: "#custom"
+        - link "机制说明" [ref=e436] [cursor=pointer]:
+          - /url: how-kimi-work-pet-works.html
+      - generic [ref=e437]:
+        - strong [ref=e438]: 链接
+        - link "GitHub" [ref=e439] [cursor=pointer]:
+          - /url: https://github.com/caseclose/kimi-work-pets
+        - link "Codex Pets" [ref=e440] [cursor=pointer]:
+          - /url: https://codexpets.net/
+        - link "Sitemap" [ref=e441] [cursor=pointer]:
+          - /url: https://caseclose.github.io/kimi-work-pets/sitemap.xml
+  - status

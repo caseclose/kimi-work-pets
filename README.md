@@ -69,19 +69,27 @@ manifest 字段与宿主状态映射详见 [Kimi Work 桌宠机制调研](https:
 
 ## 交互行为
 
-安装即自带,无需额外操作(`restore.py` 会一并还原页面、全部撤销):
+安装即自带,无需额外操作(`restore.py` 会一并还原页面、全部撤销)。所有互动只在
+宠物空闲时触发,不影响工作/等待/失败等任务状态驱动:
 
-- **悬停招手**:鼠标悬停桌宠时,播放招手动作(`idle_random_1`)一个循环后回到待机,
-  6 秒冷却,不影响工作/等待等状态。
+- **开机问候**:桌宠加载完成后,主动随机播放一个空闲彩蛋动作(如招手、眨眼)打招呼。
+- **悬停回应**:鼠标悬停桌宠时,随机回应一个空闲彩蛋动作(招手 / 眨眼 / 跳跃,
+  素材里有的才会被选中),6 秒冷却。
+- **点击跳跃**:点击/轻点桌宠,兴奋地随机跳跃或眨眼,3 秒冷却。
+- **长视撒娇**:鼠标停留在桌宠身上超过 2.6 秒不放,她会撒娇大哭(failed)约两个循环。
 - **视线跟随**:鼠标在桌宠附近移动时,宠物平滑地向光标方向倾斜、偏移,离开后回正
   (CSS transform 近似"脑袋偏向";仅精灵图宠物,Rive 宠物自带眼动状态机会自动跳过)。
 - **拖动奔跑**:拖动桌宠时朝拖动方向奔跑(应用原生行为)。
 - **显示与响应范围**:宠物显示为默认的 2 倍大小;悬停/点击的响应范围在宠物轮廓外
   再外扩 24px,不用精确对准(由页面主动上报可交互区域实现)。
 
-交互由三个安装时自动注入的补丁实现(均幂等,可单独重复运行,
+部分宠物素材带有第 9 行隐藏动作(眨眼、庆祝等),转换时已映射为 `idle_random_3`
+纳入随机彩蛋池;没有该行的宠物自动跳过,互不影响。
+
+交互由四个安装时自动注入的补丁实现(均幂等,可单独重复运行,
 可加 `--appdata` 指定应用数据目录):
 [patch-hover-interaction.py](scripts/patch-hover-interaction.py) ·
+[patch-pet-interactions.py](scripts/patch-pet-interactions.py) ·
 [patch-look-at-cursor.py](scripts/patch-look-at-cursor.py) ·
 [patch-pet-display.py](scripts/patch-pet-display.py)。
 
@@ -105,8 +113,9 @@ table above; includes Dimo from Tencent's *Roco Kingdom*, a Siamese cat, a calic
 several original chibi characters, Hu Tao from *Genshin Impact*, Hoshimi Miyabi from
 *Zenless Zone Zero*, Violet Evergarden, and two pixel-art public-figure parodies).
 Convert new pets with `scripts/convert-codex-pet.py`, roll back with `scripts/restore.py`.
-Installation also injects hover interactions: the pet waves back when you hover over it,
-and sprite pets lean toward the cursor as you move the mouse around.
+Installation also injects interactions: a startup greeting, random hover/tap reactions
+(wave, wink, jump), a long-hover tease where the pet bursts into tears, and sprite pets
+lean toward the cursor as you move the mouse around.
 All scripts accept `--appdata <dir>` if the app data folder is located elsewhere.
 Manifest format and host-state mapping: [how the Kimi Work pet works](https://caseclose.github.io/kimi-work-pets/how-kimi-work-pet-works.html).
 Code is MIT; bundled assets are community fan art (CC BY-NC, personal use only).
