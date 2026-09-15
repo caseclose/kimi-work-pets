@@ -96,6 +96,7 @@ def build_index() -> str:
   <meta name="description" content="把 Codex Pets 社区桌宠装进 Kimi Work 桌面端:一键安装迪莫、Hiyuki、绯雪、胡桃、星见雅、薇尔莉特等 14 款桌面宠物,支持悬停互动、视线跟随、macOS 与 Windows。">
   <meta name="keywords" content="Kimi Work,桌面宠物,桌宠,Codex Pets,迪莫,Hiyuki,胡桃,星见雅,薇尔莉特,desktop pet">
   <meta name="robots" content="index, follow">
+  <meta name="google-site-verification" content="3O-yG5hm8o7yswYRIP9tyr6y5vBBJ4chKsrCtE2VOIg">
   <link rel="canonical" href="{SITE}/">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Kimi Work Pets">
