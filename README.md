@@ -19,6 +19,7 @@ Kimi Work 内置桌宠除默认 Rive 形象外,还支持精灵图(spritesheet)�
 | **Flamy**,戴破碎眼镜敲笔记本的红色小火龙([来源](https://codexpets.net/gallery/flamy),作者 inwizzy) | <img src="assets/flamy/pet-preview.png" width="150"> | <img src="assets/flamy/pet-states.gif" width="130"> |
 | **Kimlet Move Wave**,像素风挥手人物恶搞形象([来源](https://codexpets.net/gallery/kimlet-move-wave),作者 kimehwa;真人形象戏仿,介意请勿安装) | <img src="assets/kimlet-move-wave/pet-preview.png" width="150"> | <img src="assets/kimlet-move-wave/pet-states.gif" width="130"> |
 | **Kimlet**,像素风带光环挥手人物恶搞形象([来源](https://codexpets.net/gallery/kimlet),作者 kimehwa;真人形象戏仿,介意请勿安装) | <img src="assets/kimlet/pet-preview.png" width="150"> | <img src="assets/kimlet/pet-states.gif" width="130"> |
+| **星见雅(Miyabi)**,《绝区零》对空六课狐耳剑士,Q 版([来源](https://codexpets.net/gallery/miyabi),作者 Eric-Terminal;形象版权归米哈游) | <img src="assets/miyabi/pet-preview.png" width="150"> | <img src="assets/miyabi/pet-states.gif" width="130"> |
 
 ## 快速开始
 
@@ -40,6 +41,7 @@ python3 scripts/install.py pets/dimo   # 内置示例:迪莫
 # python3 scripts/install.py pets/flamy  # 或:小火龙 Flamy
 # python3 scripts/install.py pets/kimlet-move-wave  # 或:Kimlet Move Wave
 # python3 scripts/install.py pets/kimlet  # 或:Kimlet(光环挥手版)
+# python3 scripts/install.py pets/miyabi  # 或:《绝区零》星见雅
 ```
 
 重启 Kimi 应用(或重新开关桌宠)后生效,桌宠已带悬停交互(见下节)。
@@ -111,6 +113,8 @@ manifest 字段与宿主状态映射详见 [docs/how-kimi-work-pet-works.md](doc
   含真实公众人物形象的戏仿内容,**仅供个人非商业使用**,介意者可不安装。
 - `pets/kimlet/` 精灵图:社区分享素材,作者 [kimehwa](https://codexpets.net/gallery/kimlet);
   含真实公众人物形象的戏仿内容,**仅供个人非商业使用**,介意者可不安装。
+- `pets/miyabi/` 精灵图:社区分享素材,作者 [Eric-Terminal](https://codexpets.net/gallery/miyabi);
+  星见雅形象来自米哈游《绝区零》,权利归原版权方,**仅供个人非商业使用**。
   其他社区素材的版权以各自来源页面为准。
 - 本仓库与 Moonshot AI、OpenAI 无任何隶属或授权关系。
 
@@ -126,7 +130,8 @@ Convert a Codex package with `scripts/convert-codex-pet.py`, install it with
 (a round cola-drinking robot), `pets/hu-tao-pet` (a chibi Hu Tao from *Genshin Impact*)
 and `pets/flamy` (a tiny red dragon with a laptop), `pets/kimlet-move-wave`
 (a pixel-art waving figure parodying a public figure) and `pets/kimlet`
-(a sun-backed variant of the same figure).
+(a sun-backed variant of the same figure) and `pets/miyabi`
+(a chibi Hoshimi Miyabi from *Zenless Zone Zero*).
 Installation also injects
 hover interactions: the pet waves back when you hover over it, and sprite pets
 lean toward the cursor as you move the mouse around.
