@@ -12,7 +12,7 @@ awesome-codex-pet 等)的素材格式同源。本仓库提供一键转换与安�
 
 | 预览 | 状态演示 |
 | --- | --- |
-| ![Dimo 预览](assets/dimo-preview.png) | ![Dimo 状态演示](assets/dimo-states.gif) |
+| <img src="assets/dimo-preview.png" width="170"> | <img src="assets/dimo-states.gif" width="150"> |
 
 [English](#english) below.
 
