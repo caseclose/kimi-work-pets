@@ -52,7 +52,8 @@ INJECTION = r"""
     };
 """
 
-ANCHOR = "reason instanceof Error ? reason.message : String(reason)));\n  })();"
+# 在 IIFE 结束(最后一个 "})();" + "</script>")之前注入,与既有补丁兼容
+ANCHOR = "\n  })();\n  </script>"
 
 
 def main() -> None:
@@ -76,10 +77,11 @@ def main() -> None:
     if MARKER in html:
         print("已打过补丁,跳过:", path)
         return
-    if ANCHOR not in html:
+    idx = html.rfind(ANCHOR)
+    if idx < 0:
         sys.exit("未找到注入锚点,桌宠页面结构可能已更新,请人工检查 index.html")
 
-    patched = html.replace(ANCHOR, ANCHOR.replace("})();", INJECTION + "\n  })();"), 1)
+    patched = html[:idx] + INJECTION + html[idx:]
     path.write_text(patched, encoding="utf-8")
     print("✅ 已注入悬停交互:", path)
     print("   重启 Kimi 应用后,鼠标悬停桌宠即可看到它招手回应(6 秒冷却)。")

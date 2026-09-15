@@ -96,8 +96,17 @@ def main() -> None:
         subprocess.run([sys.executable, str(patch)]
                        + (["--appdata", args.appdata] if args.appdata else []), check=True)
     except subprocess.CalledProcessError:
-        print("⚠️ 补丁注入失败(不影响桌宠使用),可稍后手动运行 "
+        print("⚠️ 悬停补丁注入失败(不影响桌宠使用),可稍后手动运行 "
               "python3 scripts/patch-hover-interaction.py", file=sys.stderr)
+
+    print("注入视线跟随补丁(宠物偏向鼠标方向)...")
+    patch = Path(__file__).parent / "patch-look-at-cursor.py"
+    try:
+        subprocess.run([sys.executable, str(patch)]
+                       + (["--appdata", args.appdata] if args.appdata else []), check=True)
+    except subprocess.CalledProcessError:
+        print("⚠️ 视线补丁注入失败(不影响桌宠使用),可稍后手动运行 "
+              "python3 scripts/patch-look-at-cursor.py", file=sys.stderr)
 
     print()
     print("✅ 安装完成。重启 Kimi 应用(或重新开关桌宠)后生效。")
