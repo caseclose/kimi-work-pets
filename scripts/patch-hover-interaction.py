@@ -6,10 +6,14 @@
 可重复运行(幂等,以 hover-wave-interaction 标记判断)。
 
 用法:
-    python3 scripts/patch-hover-interaction.py [index.html 路径]
+    python3 scripts/patch-hover-interaction.py [--appdata <Kimi应用数据目录> | <index.html 路径>]
 """
+import argparse
 import sys
 from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).parent))
+from petlib import blueprint_dir, find_pet_widget_id
 
 MARKER = "hover-wave-interaction"
 
@@ -52,12 +56,21 @@ ANCHOR = "reason instanceof Error ? reason.message : String(reason)));\n  })();"
 
 
 def main() -> None:
-    path = Path(sys.argv[1]) if len(sys.argv) > 1 else None
-    if path is None:
-        base = Path.home() / ("Library/Application Support/kimi-desktop/daimon-share/daimon/"
-                              "agents/main/blueprint/widgets/"
-                              "widget_d53cf028-d0fd-4751-b955-28e325bd3e01/workspace/index.html")
-        path = base
+    parser = argparse.ArgumentParser(description="给 Kimi Work 桌宠注入悬停交互")
+    parser.add_argument("path", nargs="?", default=None, help="index.html 路径(直接指定页面文件)")
+    parser.add_argument("--appdata", default=None, help="Kimi 应用数据目录(路径不符时手动指定)")
+    args = parser.parse_args()
+
+    if args.path:
+        path = Path(args.path)
+    else:
+        base = blueprint_dir(args.appdata)
+        widget_id = find_pet_widget_id(base)
+        path = base / "widgets" / widget_id / "workspace/index.html"
+    if not path.is_file():
+        sys.exit(f"未找到桌宠页面 {path},请确认 Kimi Work 桌面端已运行过,"
+                 f"或用 --appdata 指定应用数据目录")
+
     html = path.read_text(encoding="utf-8")
 
     if MARKER in html:

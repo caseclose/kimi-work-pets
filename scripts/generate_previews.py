@@ -15,7 +15,12 @@ from pathlib import Path
 
 from PIL import Image, ImageDraw, ImageFont
 
-FONT_PATH = "/System/Library/Fonts/Hiragino Sans GB.ttc"
+# 中文字体回退:macOS -> Windows -> 无标注
+FONT_CANDIDATES = [
+    "/System/Library/Fonts/Hiragino Sans GB.ttc",
+    "C:/Windows/Fonts/msyh.ttc",
+    "C:/Windows/Fonts/simhei.ttf",
+]
 BG = (238, 243, 249)          # 浅色背景
 LABEL_BG = (220, 230, 242)
 TEXT = (45, 62, 82)
@@ -48,8 +53,18 @@ DEMO_STATES = [
 ]
 
 
+_FONT_CACHE: dict[int, ImageFont.FreeTypeFont] = {}
+
+
 def font(size: int) -> ImageFont.FreeTypeFont:
-    return ImageFont.truetype(FONT_PATH, size)
+    if size not in _FONT_CACHE:
+        for candidate in FONT_CANDIDATES:
+            if Path(candidate).is_file():
+                _FONT_CACHE[size] = ImageFont.truetype(candidate, size)
+                break
+        else:
+            _FONT_CACHE[size] = ImageFont.load_default()
+    return _FONT_CACHE[size]
 
 
 def flatten(frame: Image.Image, size=(FW, FH), bg=BG) -> Image.Image:
