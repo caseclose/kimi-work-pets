@@ -53,3 +53,28 @@ def find_pet_widget_id(base: Path) -> str:
 
 def backup_dir() -> Path:
     return Path.home() / ".kimi-work-pet-backup"
+
+
+def bump_widget_updated_at(base: Path, widget_id: str) -> None:
+    """把组件的 updatedAt 刷成当前时间,促使宿主重载桌宠页面。
+
+    宿主(Electron)会缓存桌宠页面,只改 workspace/index.html 时重启应用
+    也可能拿到旧页面;widget.json 的 updatedAt 变化会让宿主认为组件已更新。
+    """
+    import datetime
+    meta_file = base / "widgets" / widget_id / "widget.json"
+    if not meta_file.is_file():
+        return
+    try:
+        doc = json.loads(meta_file.read_text(encoding="utf-8"))
+        widget = doc.get("widget")
+        if not isinstance(widget, dict):
+            return
+        widget["updatedAt"] = datetime.datetime.now(
+            datetime.timezone.utc
+        ).strftime("%Y-%m-%dT%H:%M:%S.000Z")
+        meta_file.write_text(
+            json.dumps(doc, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
+        )
+    except (json.JSONDecodeError, OSError):
+        pass

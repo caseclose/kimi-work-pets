@@ -15,7 +15,7 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
-from petlib import blueprint_dir, find_pet_widget_id
+from petlib import blueprint_dir, bump_widget_updated_at, find_pet_widget_id
 
 MARKER = "pet-display-x2-range"
 
@@ -87,6 +87,9 @@ def main() -> None:
 
     patched = html[:idx] + INJECTION + html[idx:]
     path.write_text(patched, encoding="utf-8")
+    bump_widget_updated_at(
+        blueprint_dir(args.appdata), find_pet_widget_id(blueprint_dir(args.appdata))
+    )
     print("✅ 已注入显示/交互范围补丁:", path)
     print("   宠物显示为原来的 2 倍,悬停/点击响应范围外扩 24px。重启 Kimi 应用后生效。")
 

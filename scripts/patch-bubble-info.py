@@ -20,7 +20,7 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
-from petlib import blueprint_dir, find_pet_widget_id
+from petlib import blueprint_dir, bump_widget_updated_at, find_pet_widget_id
 
 MARKER = "bubble-rich-info"
 
@@ -126,6 +126,9 @@ def main() -> None:
 
     patched = html[:idx] + INJECTION + html[idx:]
     path.write_text(patched, encoding="utf-8")
+    bump_widget_updated_at(
+        blueprint_dir(args.appdata), find_pet_widget_id(blueprint_dir(args.appdata))
+    )
     print("✅ 已注入气泡增强:", path)
     print("   重启 Kimi 应用后,任务气泡会显示已工作时长和最近使用的工具。")
 
