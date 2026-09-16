@@ -1481,59 +1481,11 @@
       toggleConversationBubble();
     });
 
-    let spriteSheetImage = null;
-    let petCanvas = null;
-    let petCanvasCtx = null;
-
-    function ensurePetCanvas(atlas) {
-      if (!petCanvas) {
-        petCanvas = document.createElement('canvas');
-        petCanvas.style.position = 'absolute';
-        petCanvas.style.left = '0';
-        petCanvas.style.top = '0';
-        petCanvas.style.width = '100%';
-        petCanvas.style.height = '100%';
-        petCanvas.style.pointerEvents = 'none';
-        petCanvas.style.imageRendering = 'pixelated';
-        pet.appendChild(petCanvas);
-        petCanvasCtx = petCanvas.getContext('2d');
-        petCanvasCtx.imageSmoothingEnabled = false;
-      }
-      if (petCanvas.width !== atlas.frameWidth) petCanvas.width = atlas.frameWidth;
-      if (petCanvas.height !== atlas.frameHeight) petCanvas.height = atlas.frameHeight;
-    }
-
-    function loadSpriteSheetImage(fileName) {
-      spriteSheetImage = null;
-      const image = new Image();
-      image.addEventListener('load', () => {
-        spriteSheetImage = image;
-        pet.style.backgroundImage = 'none';
-        render();
-      });
-      image.src = '/workspace/' + encodeURIComponent(fileName);
-    }
-
     function render() {
       if (!manifest || isRiveManifest(manifest)) return;
       const atlas = manifest.atlas;
       const state = manifest.states[stateName] || manifest.states.idle;
       const safeFrame = reducedMotion.matches ? 0 : frame % state.frames;
-      if (spriteSheetImage && petCanvasCtx) {
-        petCanvasCtx.clearRect(0, 0, atlas.frameWidth, atlas.frameHeight);
-        petCanvasCtx.drawImage(
-          spriteSheetImage,
-          safeFrame * atlas.frameWidth,
-          state.row * atlas.frameHeight,
-          atlas.frameWidth,
-          atlas.frameHeight,
-          0,
-          0,
-          atlas.frameWidth,
-          atlas.frameHeight
-        );
-        return;
-      }
       pet.style.backgroundPosition =
         String(-safeFrame * atlas.frameWidth) + 'px ' + String(-state.row * atlas.frameHeight) + 'px';
     }
@@ -1696,7 +1648,6 @@
     document.addEventListener('visibilitychange', () => {
       if (document.hidden) return;
       lastFrameAt = performance.now();
-      render();
       restartAnimationSchedule();
     });
 
@@ -1926,8 +1877,6 @@
         pet.setAttribute('aria-label', value.name || currentCopy().petAria);
         pet.style.width = String(value.atlas.frameWidth) + 'px';
         pet.style.height = String(value.atlas.frameHeight) + 'px';
-        ensurePetCanvas(value.atlas);
-        loadSpriteSheetImage(value.spritesheet);
         pet.style.backgroundImage = 'url("/workspace/' + encodeURIComponent(value.spritesheet) + '")';
         pet.style.backgroundSize =
           String(value.atlas.frameWidth * value.atlas.columns) + 'px ' +
