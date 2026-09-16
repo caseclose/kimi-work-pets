@@ -1,0 +1,2195 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="daimon-pet-runtime" content="89">
+  <title>Daimon Pet</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      --pet-bubble-background: #fff;
+      --pet-bubble-foreground: #25262b;
+      --pet-bubble-border: transparent;
+      --pet-bubble-surface: #fff;
+      --pet-bubble-text: #25262b;
+      --pet-center-label: #25262b;
+      --pet-card-surface: color-mix(in srgb, var(--pet-bubble-surface) 88%, transparent);
+      --pet-card-border: color-mix(in srgb, var(--pet-bubble-text) 9%, transparent);
+      --pet-secondary: color-mix(in srgb, var(--pet-bubble-text) 62%, transparent);
+      --pet-control-surface: color-mix(in srgb, var(--pet-bubble-text) 3%, transparent);
+      --pet-shadow: rgba(0, 0, 0, 0.10);
+      --pet-blue: #238bff;
+      --pet-warning: #ff384f;
+    }
+    :root[data-theme='dark'] {
+      --pet-center-label: #f7f8fa;
+      --pet-bubble-surface: #262626;
+      --pet-bubble-text: #e3e3e3;
+      --pet-card-surface: color-mix(in srgb, var(--pet-bubble-surface) 96%, transparent);
+      --pet-shadow: rgba(0, 0, 0, 0.20);
+      --pet-control-surface: color-mix(in srgb, var(--pet-bubble-text) 7%, transparent);
+      --pet-warning: #ff486a;
+    }
+    .conversation-card-action.is-error svg { transform: rotate(180deg); }
+    * { box-sizing: border-box; }
+    html, body { width: 100%; height: 100%; margin: 0; overflow: hidden !important; background: transparent !important; }
+    body { user-select: none; -webkit-user-select: none; }
+    #stage { position: relative; width: 100%; height: 100%; overflow: hidden; background: transparent; }
+    #conversation-bubble {
+      position: absolute;
+      z-index: 2;
+      bottom: 0;
+      left: 50%;
+      width: min(280px, calc(100% - 24px));
+      padding: 0;
+      color: var(--pet-bubble-text);
+      pointer-events: none;
+      visibility: hidden;
+      opacity: 0;
+      transform: translateX(-50%);
+      transition: opacity 160ms ease;
+    }
+    #stage.bubble-visible #conversation-bubble { pointer-events: auto; visibility: visible; opacity: 1; }
+    #conversation-center-header { display: flex; justify-content: flex-end; margin-bottom: 6px; }
+    #conversation-center-header[hidden], .conversation-card[hidden], [hidden] { display: none !important; }
+    #conversation-center-collapse {
+      appearance: none;
+      border: 1px solid var(--pet-card-border);
+      border-radius: 12px;
+      padding: 2px 7px;
+      background: var(--pet-card-surface);
+      color: var(--pet-secondary);
+      font: 10px/1.4 system-ui, sans-serif;
+      cursor: pointer;
+      backdrop-filter: blur(16px);
+      box-shadow: 0 2px 8px var(--pet-shadow);
+    }
+    #conversation-list { position: relative; padding: 12px; margin: -12px; }
+    #conversation-bubble.notification-expanded #conversation-list {
+      max-height: var(--pet-conversation-list-max-height, 380px);
+      overflow-x: hidden;
+      overflow-y: auto;
+      overscroll-behavior-y: contain;
+      scrollbar-width: none;
+    }
+    #conversation-list::-webkit-scrollbar { display: none; }
+    #conversation-list.fade-top { mask-image: linear-gradient(to bottom, transparent, black 18px); }
+    #conversation-list.fade-bottom { mask-image: linear-gradient(to top, transparent, black 18px); }
+    #conversation-list.fade-top.fade-bottom { mask-image: linear-gradient(to bottom, transparent, black 18px, black calc(100% - 18px), transparent); }
+    #conversation-bubble.notification-collapsed.has-three-or-more::before,
+    #conversation-bubble.notification-collapsed.has-multiple::after {
+      content: '';
+      position: absolute;
+      z-index: -1;
+      inset: 0 8px -5px;
+      border: 1px solid var(--pet-card-border);
+      border-radius: 18px;
+      background: var(--pet-card-surface);
+      box-shadow: 0 4px 14px var(--pet-shadow);
+      backdrop-filter: blur(16px);
+    }
+    #conversation-bubble.notification-collapsed.has-three-or-more::before { inset: 0 16px -10px; opacity: 0.6; }
+    .conversation-card {
+      position: relative;
+      width: 100%;
+      padding: 8px 10px;
+      border: 1px solid var(--pet-card-border);
+      border-radius: 18px;
+      background: var(--pet-card-surface);
+      color: var(--pet-bubble-text);
+      box-shadow: 0 4px 14px var(--pet-shadow);
+      backdrop-filter: blur(16px) saturate(1.12);
+      -webkit-backdrop-filter: blur(16px) saturate(1.12);
+      font: 12px/1.4 system-ui, sans-serif;
+    }
+    #conversation-bubble button, #conversation-bubble input { min-block-size: 0; min-inline-size: 0; }
+    #conversation-bubble input[type='text'] { border: 0; border-radius: 0; padding: 0; outline: none; background: transparent; }
+    #conversation-bubble .conversation-card-copy:hover, #conversation-bubble .conversation-card-copy:active { background: transparent; }
+    #conversation-bubble .conversation-card-action:hover { background: var(--pet-control-surface); }
+    .conversation-card + .conversation-card { margin-top: 6px; }
+    .conversation-card-row { display: flex; align-items: center; gap: 8px; min-height: 36px; }
+    .conversation-card-copy { flex: 1; min-width: 0; padding: 0; border: 0; background: transparent; color: inherit; font: inherit; text-align: start; cursor: pointer; }
+    .conversation-card-title, .conversation-card-content { display: block; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+    .conversation-card-title { font-weight: 500; }
+    .conversation-card-content { margin-top: 2px; color: var(--pet-secondary); }
+    .conversation-card-progress { display: inline-block; max-width: 100%; vertical-align: bottom; overflow: hidden; text-overflow: ellipsis; }
+    .conversation-card.is-running .conversation-card-progress {
+      background-color: var(--pet-secondary);
+      background-image: linear-gradient(90deg, transparent 35%, var(--pet-bubble-text) 50%, transparent 65%);
+      background-size: 300% 100%;
+      background-repeat: no-repeat;
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+      animation: pet-progress-shimmer 2.2s linear infinite;
+    }
+    @keyframes pet-progress-shimmer { from { background-position: 100% 0; } to { background-position: 0 0; } }
+    .conversation-card-actions { display: flex; flex: none; align-items: center; gap: 6px; }
+    .conversation-card-action { display: grid; place-items: center; width: 28px; height: 28px; padding: 0; border: 0; border-radius: 50%; background: var(--pet-control-surface); color: inherit; cursor: pointer; }
+    .conversation-card-action.is-complete { color: var(--pet-blue); background: color-mix(in srgb, var(--pet-blue) 10%, transparent); }
+    .conversation-card-action.is-error { color: var(--pet-warning); background: transparent; }
+    .conversation-card-close { position: absolute; left: -5px; top: -5px; display: none; place-items: center; width: 16px; height: 16px; border: 1px solid var(--pet-card-border); border-radius: 50%; padding: 0; background: var(--pet-bubble-surface); color: var(--pet-secondary); box-shadow: 0 1px 5px var(--pet-shadow); cursor: pointer; }
+    .conversation-card .hover-action { display: none; }
+    .conversation-card:hover .hover-action, .keyboard-navigation .conversation-card:has(:focus-visible) .hover-action, .conversation-card.has-reply .hover-action { display: grid; }
+    .conversation-card button:focus, #conversation-center-collapse:focus, #conversation-bubble-toggle:focus { outline: none; }
+    .keyboard-navigation .conversation-card button:focus-visible, .keyboard-navigation #conversation-center-collapse:focus-visible { outline: 2px solid var(--pet-blue); outline-offset: 2px; }
+    .conversation-card button:disabled { cursor: default; opacity: 0.45; }
+    .conversation-card-composer { display: flex; align-items: center; gap: 4px; padding: 4px 5px 4px 7px; margin-top: 6px; border-radius: 10px; background: var(--pet-control-surface); }
+    .conversation-card-composer input { width: 0; min-width: 0; flex: 1; padding: 0; border: 0; outline: none; background: transparent; color: inherit; font: inherit; user-select: text; -webkit-user-select: text; }
+    .conversation-card-composer input::placeholder { color: var(--pet-secondary); }
+    .conversation-card-composer button { display: grid; place-items: center; border: 0; padding: 0; background: transparent; color: inherit; cursor: pointer; }
+    .conversation-card-error { margin: 5px 0 0; font-size: 11px; color: var(--pet-warning); }
+    #pet {
+      position: absolute;
+      left: 50%;
+      bottom: 0;
+      display: none;
+      transform-origin: 50% 100%;
+      background-repeat: no-repeat;
+      image-rendering: pixelated;
+      image-rendering: crisp-edges;
+      will-change: background-position, transform;
+    }
+    #rive-pet {
+      position: absolute;
+      left: 50%;
+      bottom: 0;
+      display: none;
+      width: 128px;
+      height: 128px;
+      contain: strict;
+      transform: translateX(-50%);
+    }
+    #conversation-bubble-toggle {
+      all: unset;
+      position: absolute;
+      z-index: 3;
+      display: none;
+      box-sizing: border-box;
+      width: 30px !important;
+      min-width: 30px !important;
+      max-width: 30px !important;
+      height: 30px !important;
+      min-height: 30px !important;
+      max-height: 30px !important;
+      inline-size: 30px !important;
+      min-inline-size: 30px !important;
+      max-inline-size: 30px !important;
+      block-size: 30px !important;
+      min-block-size: 30px !important;
+      max-block-size: 30px !important;
+      aspect-ratio: 1;
+      place-items: center;
+      border: 0;
+      border-radius: 50%;
+      padding: 0;
+      background: var(--pet-card-surface);
+      backdrop-filter: blur(16px);
+      border: 1px solid var(--pet-card-border);
+      box-shadow: 0 2px 6px rgba(31, 35, 41, 0.14);
+      color: var(--pet-bubble-text);
+      font: 600 11px/1 system-ui, sans-serif;
+      cursor: pointer;
+    }
+    .keyboard-navigation #conversation-bubble-toggle:focus-visible {
+      outline: 2px solid color-mix(in srgb, var(--pet-bubble-text) 56%, transparent);
+      outline-offset: 2px;
+    }
+    #conversation-bubble-toggle-icon {
+      display: block;
+      width: 18px;
+      height: 18px;
+    }
+    #conversation-bubble-toggle-count {
+      display: none;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .conversation-card-progress { animation: none !important; color: var(--pet-secondary) !important; }
+      #conversation-bubble,
+      .conversation-card,
+      .conversation-card-content-clip,
+      .conversation-card-close {
+        transition-duration: 1ms !important;
+      }
+    }
+    #error {
+      position: absolute;
+      inset: 12px;
+      display: none;
+      place-items: center;
+      color: #b91c1c;
+      font: 12px/1.4 system-ui, sans-serif;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <main id="stage" aria-label="桌宠">
+    <section id="conversation-bubble" aria-label="最近任务" aria-live="polite">
+      <header id="conversation-center-header" hidden>
+        <button id="conversation-center-collapse" type="button">清除全部</button>
+      </header>
+      <div id="conversation-list"></div>
+    </section>
+    <div id="pet" role="img"></div>
+    <canvas id="rive-pet" role="img"></canvas>
+    <button
+      id="conversation-bubble-toggle"
+      type="button"
+      aria-expanded="true"
+      aria-label="隐藏会话状态"
+    >
+      <svg
+        id="conversation-bubble-toggle-icon"
+        viewBox="0 0 12 12"
+        aria-hidden="true"
+      >
+        <path
+          d="M2.75 4.5 6 7.75 9.25 4.5"
+          fill="none"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="1.5"
+        ></path>
+      </svg>
+      <span id="conversation-bubble-toggle-count"></span>
+    </button>
+    <div id="error" role="status"></div>
+  </main>
+  <script>
+  (() => {
+    'use strict';
+    const RUNTIME_READY_MESSAGE_TYPE = "daimon-pet:runtime-ready";
+    const MESSAGE_TYPE = "daimon-pet:state";
+    const POINTER_PRESENCE_MESSAGE_TYPE = "daimon-pet:pointer-presence";
+    const DISPLAY_SCALE_MESSAGE_TYPE = "daimon-pet:display-scale";
+    const ANCHOR_MESSAGE_TYPE = "daimon-pet:anchor";
+    const CLICK_MESSAGE_TYPE = "daimon-pet:click";
+    const POINTER_IDLE_DELAY_MS = 1000;
+    const IDLE_FRAME_INTERVAL_MS = 800;
+    const IDLE_VARIANT_MIN_DELAY_MS = 120000;
+    const IDLE_VARIANT_MAX_DELAY_MS = 300000;
+    const BASE_DISPLAY_SIZE_PX = 128;
+    const DISPLAY_SCALE_MIN = 0.5;
+    const DISPLAY_SCALE_MAX = 2;
+    const BUBBLE_GAP_PX = 8;
+    const BUBBLE_SCREEN_MARGIN_PX = 8;
+    const BUBBLE_LIST_MIN_HEIGHT_PX = 54;
+    const BUBBLE_LIST_MAX_HEIGHT_PX = 380;
+    const ACTION_ICONS = {"reply":"<path d=\"M180.224 524.288a331.776 331.776 0 1 1 331.73504 331.776H198.656l52.59264-125.5424-11.59168-16.62976A330.09664 330.09664 0 0 1 180.224 524.288zM512 118.784c-223.96928 0-405.504 181.57568-405.504 405.504 0 78.76608 22.44608 152.3712 61.35808 214.6304l-44.27776 105.6768a61.44 61.44 0 0 0 56.68864 85.1968H512c223.92832 0 405.504-181.53472 405.504-405.504 0-223.92832-181.57568-405.504-405.504-405.504z m-61.27616 411.648a59.392 59.392 0 1 1-118.784 0 59.392 59.392 0 0 1 118.784 0z m253.91104 0a59.392 59.392 0 1 1-118.784 0 59.392 59.392 0 0 1 118.784 0z\" fill=\"currentColor\"/>","stop":"<path d=\"M331.946667 379.904c-11.946667 23.466667-11.946667 54.186667-11.946667 115.626667v32.938666c0 61.44 0 92.16 11.946667 115.626667 10.538667 20.650667 27.306667 37.418667 47.957333 47.957333 23.466667 11.946667 54.186667 11.946667 115.626667 11.946667h32.938666c61.44 0 92.16 0 115.626667-11.946667 20.650667-10.538667 37.418667-27.306667 47.957333-47.957333 11.946667-23.466667 11.946667-54.186667 11.946667-115.626667v-32.938666c0-61.44 0-92.16-11.946667-115.626667a109.696 109.696 0 0 0-47.957333-47.957333c-23.466667-11.946667-54.186667-11.946667-115.626667-11.946667h-32.938666c-61.44 0-92.16 0-115.626667 11.946667-20.650667 10.538667-37.418667 27.306667-47.957333 47.957333z\" fill=\"currentColor\"/>","info":"<path d=\"M512 89.6c-233.301333 0-422.4 189.098667-422.4 422.4s189.098667 422.4 422.4 422.4c233.258667 0 422.4-189.098667 422.4-422.4S745.258667 89.6 512 89.6zM166.4 512a345.6 345.6 0 1 1 691.2 0 345.6 345.6 0 1 1-691.2 0zM512 277.333333a38.4 38.4 0 1 0 0 76.8 38.4 38.4 0 0 0 0-76.8z m38.4 434.090667c0 19.456-17.194667 35.242667-38.4 35.242667s-38.4-15.786667-38.4-35.242667v-270.848c0-19.456 17.194667-35.242667 38.4-35.242667s38.4 15.786667 38.4 35.242667v270.848z\" fill=\"currentColor\"/>"};
+    const BUBBLE_TOGGLE_NUDGE_PX = 6;
+    const BUBBLE_TEXT_MAX_LENGTH = 500;
+    const UI_COPY = {"zh-CN":{"clearAll":"清除全部","reply":"回复","continueTask":"继续任务","send":"发送","stop":"停止任务","actionFailed":"操作未成功，请查看会话后重试。","interrupted":"任务已中断","petAria":"桌宠","recentTasksAria":"最近任务","showLess":"更少内容","hideConversationStatus":"隐藏会话状态","showConversationStatuses":"显示 {count} 个会话状态","confirmationBody":"需要你的确认","thinkingBody":"正在思考…","completedBody":"已完成","confirmationStatus":"需要确认","completedStatus":"已完成","processingStatus":"正在处理","workedMinutes":"已工作 {minutes} 分钟","untitledConversation":"未命名会话","close":"关闭","closeTaskCard":"关闭“{title}”任务卡片","chooseOption":"请选择一个选项","callingTool":"正在调用工具…","callingToolNamed":"正在调用 {toolName}…","riveUnavailable":"Rive runtime 不可用","riveLoadFailed":"Rive 桌宠加载失败","manifestLoadFailed":"pet.json 加载失败","manifestInvalid":"pet.json 格式无效","riveManifestInvalid":"pet.json Rive 格式无效","spritesheetManifestInvalid":"pet.json spritesheet 格式无效"},"en-US":{"clearAll":"Clear all","reply":"Reply","continueTask":"Continue task","send":"Send","stop":"Stop task","actionFailed":"Could not complete the action. Check the conversation and try again.","interrupted":"Task interrupted","petAria":"Desktop pet","recentTasksAria":"Recent tasks","showLess":"Show less","hideConversationStatus":"Hide conversation status","showConversationStatuses":"Conversation statuses: {count}","confirmationBody":"Needs your confirmation","thinkingBody":"Thinking…","completedBody":"Completed","confirmationStatus":"Needs confirmation","completedStatus":"Completed","processingStatus":"Processing","workedMinutes":"Worked for {minutes} min","untitledConversation":"Untitled conversation","close":"Close","closeTaskCard":"Close “{title}” task card","chooseOption":"Choose an option","callingTool":"Calling tool…","callingToolNamed":"Calling {toolName}…","riveUnavailable":"Rive runtime unavailable","riveLoadFailed":"Rive pet failed to load","manifestLoadFailed":"pet.json failed to load","manifestInvalid":"Invalid pet.json","riveManifestInvalid":"Invalid Rive pet.json","spritesheetManifestInvalid":"Invalid spritesheet pet.json"},"zh-TW":{"clearAll":"清除全部","reply":"回覆","continueTask":"繼續任務","send":"傳送","stop":"停止任務","actionFailed":"操作未成功，請查看會話後重試。","interrupted":"任務已中斷","petAria":"桌面寵物","recentTasksAria":"最近任務","showLess":"收起","hideConversationStatus":"隱藏會話狀態","showConversationStatuses":"顯示 {count} 個會話狀態","confirmationBody":"需要你的確認","thinkingBody":"正在思考…","completedBody":"已完成","confirmationStatus":"需要確認","completedStatus":"已完成","processingStatus":"正在處理","workedMinutes":"已工作 {minutes} 分鐘","untitledConversation":"未命名會話","close":"關閉","closeTaskCard":"關閉「{title}」任務卡片","chooseOption":"請選擇一個選項","callingTool":"正在呼叫工具…","callingToolNamed":"正在呼叫 {toolName}…","riveUnavailable":"Rive 執行環境無法使用","riveLoadFailed":"Rive 桌面寵物載入失敗","manifestLoadFailed":"無法載入 pet.json","manifestInvalid":"pet.json 格式無效","riveManifestInvalid":"Rive pet.json 格式無效","spritesheetManifestInvalid":"spritesheet pet.json 格式無效"},"ar":{"clearAll":"مسح الكل","reply":"رد","continueTask":"متابعة المهمة","send":"إرسال","stop":"إيقاف المهمة","actionFailed":"تعذّر إكمال الإجراء. تحقق من المحادثة وحاول مجددًا.","interrupted":"تمت مقاطعة المهمة","petAria":"الحيوان الأليف لسطح المكتب","recentTasksAria":"المهام الأخيرة","showLess":"عرض أقل","hideConversationStatus":"إخفاء حالة المحادثة","showConversationStatuses":"حالات المحادثة: {count}","confirmationBody":"يحتاج إلى تأكيدك","thinkingBody":"جارٍ التفكير…","completedBody":"اكتمل","confirmationStatus":"يحتاج إلى تأكيد","completedStatus":"اكتمل","processingStatus":"جارٍ المعالجة","workedMinutes":"مدة العمل: {minutes} دقيقة","untitledConversation":"محادثة بلا عنوان","close":"إغلاق","closeTaskCard":"إغلاق بطاقة المهمة «{title}»","chooseOption":"اختر خيارًا","callingTool":"جارٍ استدعاء أداة…","callingToolNamed":"جارٍ استدعاء {toolName}…","riveUnavailable":"بيئة تشغيل Rive غير متاحة","riveLoadFailed":"تعذّر تحميل الحيوان الأليف بتنسيق Rive","manifestLoadFailed":"تعذّر تحميل pet.json","manifestInvalid":"ملف pet.json غير صالح","riveManifestInvalid":"ملف Rive pet.json غير صالح","spritesheetManifestInvalid":"ملف spritesheet pet.json غير صالح"},"fr":{"clearAll":"Tout effacer","reply":"Répondre","continueTask":"Continuer la tâche","send":"Envoyer","stop":"Arrêter la tâche","actionFailed":"Échec de l’action. Vérifiez la conversation et réessayez.","interrupted":"Tâche interrompue","petAria":"Animal de bureau","recentTasksAria":"Tâches récentes","showLess":"Réduire","hideConversationStatus":"Masquer l’état des conversations","showConversationStatuses":"États des conversations : {count}","confirmationBody":"Votre confirmation est requise","thinkingBody":"Réflexion en cours…","completedBody":"Terminé","confirmationStatus":"Confirmation requise","completedStatus":"Terminé","processingStatus":"Traitement en cours","workedMinutes":"Temps de travail : {minutes} min","untitledConversation":"Conversation sans titre","close":"Fermer","closeTaskCard":"Fermer la carte de tâche « {title} »","chooseOption":"Choisissez une option","callingTool":"Appel d’un outil…","callingToolNamed":"Appel de {toolName}…","riveUnavailable":"Environnement d’exécution Rive indisponible","riveLoadFailed":"Échec du chargement de l’animal Rive","manifestLoadFailed":"Échec du chargement de pet.json","manifestInvalid":"Fichier pet.json non valide","riveManifestInvalid":"Fichier Rive pet.json non valide","spritesheetManifestInvalid":"Fichier spritesheet pet.json non valide"},"de":{"clearAll":"Alle entfernen","reply":"Antworten","continueTask":"Aufgabe fortsetzen","send":"Senden","stop":"Aufgabe stoppen","actionFailed":"Aktion fehlgeschlagen. Prüfe die Unterhaltung und versuche es erneut.","interrupted":"Aufgabe unterbrochen","petAria":"Desktop-Haustier","recentTasksAria":"Letzte Aufgaben","showLess":"Weniger anzeigen","hideConversationStatus":"Unterhaltungsstatus ausblenden","showConversationStatuses":"Unterhaltungsstatus: {count}","confirmationBody":"Deine Bestätigung ist erforderlich","thinkingBody":"Denkt nach…","completedBody":"Abgeschlossen","confirmationStatus":"Bestätigung erforderlich","completedStatus":"Abgeschlossen","processingStatus":"Wird verarbeitet","workedMinutes":"Arbeitszeit: {minutes} Min.","untitledConversation":"Unbenannte Unterhaltung","close":"Schließen","closeTaskCard":"Aufgabenkarte „{title}“ schließen","chooseOption":"Wähle eine Option","callingTool":"Tool wird aufgerufen…","callingToolNamed":"{toolName} wird aufgerufen…","riveUnavailable":"Rive-Laufzeit ist nicht verfügbar","riveLoadFailed":"Rive-Haustier konnte nicht geladen werden","manifestLoadFailed":"pet.json konnte nicht geladen werden","manifestInvalid":"Ungültige pet.json","riveManifestInvalid":"Ungültige Rive-pet.json","spritesheetManifestInvalid":"Ungültige Spritesheet-pet.json"},"id":{"clearAll":"Hapus semua","reply":"Balas","continueTask":"Lanjutkan tugas","send":"Kirim","stop":"Hentikan tugas","actionFailed":"Tindakan gagal. Periksa percakapan dan coba lagi.","interrupted":"Tugas terhenti","petAria":"Hewan peliharaan desktop","recentTasksAria":"Tugas terbaru","showLess":"Tampilkan lebih sedikit","hideConversationStatus":"Sembunyikan status percakapan","showConversationStatuses":"Status percakapan: {count}","confirmationBody":"Memerlukan konfirmasi Anda","thinkingBody":"Sedang berpikir…","completedBody":"Selesai","confirmationStatus":"Perlu konfirmasi","completedStatus":"Selesai","processingStatus":"Sedang diproses","workedMinutes":"Waktu kerja: {minutes} menit","untitledConversation":"Percakapan tanpa judul","close":"Tutup","closeTaskCard":"Tutup kartu tugas “{title}”","chooseOption":"Pilih satu opsi","callingTool":"Memanggil alat…","callingToolNamed":"Memanggil {toolName}…","riveUnavailable":"Runtime Rive tidak tersedia","riveLoadFailed":"Hewan peliharaan Rive gagal dimuat","manifestLoadFailed":"pet.json gagal dimuat","manifestInvalid":"pet.json tidak valid","riveManifestInvalid":"Rive pet.json tidak valid","spritesheetManifestInvalid":"Spritesheet pet.json tidak valid"},"it":{"clearAll":"Cancella tutto","reply":"Rispondi","continueTask":"Continua attività","send":"Invia","stop":"Interrompi attività","actionFailed":"Operazione non riuscita. Controlla la conversazione e riprova.","interrupted":"Attività interrotta","petAria":"Pet desktop","recentTasksAria":"Attività recenti","showLess":"Mostra meno","hideConversationStatus":"Nascondi lo stato delle conversazioni","showConversationStatuses":"Stati delle conversazioni: {count}","confirmationBody":"È necessaria la tua conferma","thinkingBody":"Ragionamento in corso…","completedBody":"Completato","confirmationStatus":"Conferma necessaria","completedStatus":"Completato","processingStatus":"Elaborazione in corso","workedMinutes":"Tempo di lavoro: {minutes} min","untitledConversation":"Conversazione senza titolo","close":"Chiudi","closeTaskCard":"Chiudi la scheda attività “{title}”","chooseOption":"Scegli un’opzione","callingTool":"Chiamata dello strumento…","callingToolNamed":"Chiamata di {toolName}…","riveUnavailable":"Runtime Rive non disponibile","riveLoadFailed":"Impossibile caricare il pet Rive","manifestLoadFailed":"Impossibile caricare pet.json","manifestInvalid":"pet.json non valido","riveManifestInvalid":"Rive pet.json non valido","spritesheetManifestInvalid":"Spritesheet pet.json non valido"},"ja":{"clearAll":"すべて消去","reply":"返信","continueTask":"タスクを続行","send":"送信","stop":"タスクを停止","actionFailed":"操作に失敗しました。会話を確認して再試行してください。","interrupted":"タスクが中断されました","petAria":"デスクトップペット","recentTasksAria":"最近のタスク","showLess":"表示を減らす","hideConversationStatus":"会話ステータスを非表示","showConversationStatuses":"会話ステータス: {count}件","confirmationBody":"確認が必要です","thinkingBody":"思考中…","completedBody":"完了","confirmationStatus":"確認が必要","completedStatus":"完了","processingStatus":"処理中","workedMinutes":"作業時間: {minutes}分","untitledConversation":"無題の会話","close":"閉じる","closeTaskCard":"「{title}」のタスクカードを閉じる","chooseOption":"選択肢を選んでください","callingTool":"ツールを呼び出し中…","callingToolNamed":"{toolName}を呼び出し中…","riveUnavailable":"Rive ランタイムを利用できません","riveLoadFailed":"Rive ペットの読み込みに失敗しました","manifestLoadFailed":"pet.json の読み込みに失敗しました","manifestInvalid":"pet.json が無効です","riveManifestInvalid":"Rive pet.json が無効です","spritesheetManifestInvalid":"スプライトシート pet.json が無効です"},"ko":{"clearAll":"모두 지우기","reply":"답장","continueTask":"작업 계속","send":"보내기","stop":"작업 중지","actionFailed":"작업에 실패했습니다. 대화를 확인하고 다시 시도하세요.","interrupted":"작업이 중단되었습니다","petAria":"데스크톱 펫","recentTasksAria":"최근 작업","showLess":"간단히 보기","hideConversationStatus":"대화 상태 숨기기","showConversationStatuses":"대화 상태: {count}개","confirmationBody":"확인이 필요합니다","thinkingBody":"생각 중…","completedBody":"완료","confirmationStatus":"확인 필요","completedStatus":"완료","processingStatus":"처리 중","workedMinutes":"작업 시간: {minutes}분","untitledConversation":"제목 없는 대화","close":"닫기","closeTaskCard":"“{title}” 작업 카드 닫기","chooseOption":"옵션을 선택하세요","callingTool":"도구 호출 중…","callingToolNamed":"{toolName} 호출 중…","riveUnavailable":"Rive 런타임을 사용할 수 없습니다","riveLoadFailed":"Rive 펫을 불러오지 못했습니다","manifestLoadFailed":"pet.json을 불러오지 못했습니다","manifestInvalid":"pet.json이 올바르지 않습니다","riveManifestInvalid":"Rive pet.json이 올바르지 않습니다","spritesheetManifestInvalid":"스프라이트시트 pet.json이 올바르지 않습니다"},"pt-BR":{"clearAll":"Limpar tudo","reply":"Responder","continueTask":"Continuar tarefa","send":"Enviar","stop":"Parar tarefa","actionFailed":"Não foi possível concluir a ação. Confira a conversa e tente novamente.","interrupted":"Tarefa interrompida","petAria":"Mascote da área de trabalho","recentTasksAria":"Tarefas recentes","showLess":"Mostrar menos","hideConversationStatus":"Ocultar status da conversa","showConversationStatuses":"Status das conversas: {count}","confirmationBody":"Precisa da sua confirmação","thinkingBody":"Pensando…","completedBody":"Concluído","confirmationStatus":"Confirmação necessária","completedStatus":"Concluído","processingStatus":"Processando","workedMinutes":"Tempo de trabalho: {minutes} min","untitledConversation":"Conversa sem título","close":"Fechar","closeTaskCard":"Fechar cartão da tarefa “{title}”","chooseOption":"Escolha uma opção","callingTool":"Chamando ferramenta…","callingToolNamed":"Chamando {toolName}…","riveUnavailable":"Runtime do Rive indisponível","riveLoadFailed":"Falha ao carregar o mascote Rive","manifestLoadFailed":"Falha ao carregar pet.json","manifestInvalid":"pet.json inválido","riveManifestInvalid":"Rive pet.json inválido","spritesheetManifestInvalid":"Spritesheet pet.json inválido"},"ru":{"clearAll":"Очистить всё","reply":"Ответить","continueTask":"Продолжить задачу","send":"Отправить","stop":"Остановить задачу","actionFailed":"Не удалось выполнить действие. Проверьте разговор и повторите попытку.","interrupted":"Задача прервана","petAria":"Питомец на рабочем столе","recentTasksAria":"Недавние задачи","showLess":"Показать меньше","hideConversationStatus":"Скрыть статус диалогов","showConversationStatuses":"Статусы диалогов: {count}","confirmationBody":"Требуется ваше подтверждение","thinkingBody":"Обдумывание…","completedBody":"Завершено","confirmationStatus":"Требуется подтверждение","completedStatus":"Завершено","processingStatus":"Обработка","workedMinutes":"Время работы: {minutes} мин","untitledConversation":"Диалог без названия","close":"Закрыть","closeTaskCard":"Закрыть карточку задачи «{title}»","chooseOption":"Выберите вариант","callingTool":"Вызов инструмента…","callingToolNamed":"Вызов {toolName}…","riveUnavailable":"Среда выполнения Rive недоступна","riveLoadFailed":"Не удалось загрузить питомца Rive","manifestLoadFailed":"Не удалось загрузить pet.json","manifestInvalid":"Недопустимый pet.json","riveManifestInvalid":"Недопустимый Rive pet.json","spritesheetManifestInvalid":"Недопустимый spritesheet pet.json"},"es-419":{"clearAll":"Borrar todo","reply":"Responder","continueTask":"Continuar tarea","send":"Enviar","stop":"Detener tarea","actionFailed":"No se pudo completar la acción. Revisa la conversación e inténtalo de nuevo.","interrupted":"Tarea interrumpida","petAria":"Mascota de escritorio","recentTasksAria":"Tareas recientes","showLess":"Mostrar menos","hideConversationStatus":"Ocultar estado de conversación","showConversationStatuses":"Estados de conversación: {count}","confirmationBody":"Necesita tu confirmación","thinkingBody":"Pensando…","completedBody":"Completada","confirmationStatus":"Confirmación necesaria","completedStatus":"Completada","processingStatus":"Procesando","workedMinutes":"Tiempo de trabajo: {minutes} min","untitledConversation":"Conversación sin título","close":"Cerrar","closeTaskCard":"Cerrar tarjeta de tarea “{title}”","chooseOption":"Elige una opción","callingTool":"Llamando a una herramienta…","callingToolNamed":"Llamando a {toolName}…","riveUnavailable":"Runtime de Rive no disponible","riveLoadFailed":"No se pudo cargar la mascota Rive","manifestLoadFailed":"No se pudo cargar pet.json","manifestInvalid":"pet.json no válido","riveManifestInvalid":"Rive pet.json no válido","spritesheetManifestInvalid":"Spritesheet pet.json no válido"},"th":{"clearAll":"ล้างทั้งหมด","reply":"ตอบกลับ","continueTask":"ดำเนินงานต่อ","send":"ส่ง","stop":"หยุดงาน","actionFailed":"ดำเนินการไม่สำเร็จ โปรดตรวจสอบการสนทนาแล้วลองอีกครั้ง","interrupted":"งานถูกขัดจังหวะ","petAria":"สัตว์เลี้ยงบนเดสก์ท็อป","recentTasksAria":"งานล่าสุด","showLess":"แสดงน้อยลง","hideConversationStatus":"ซ่อนสถานะการสนทนา","showConversationStatuses":"สถานะการสนทนา: {count}","confirmationBody":"ต้องการการยืนยันจากคุณ","thinkingBody":"กำลังคิด…","completedBody":"เสร็จสมบูรณ์","confirmationStatus":"ต้องยืนยัน","completedStatus":"เสร็จสมบูรณ์","processingStatus":"กำลังประมวลผล","workedMinutes":"เวลาทำงาน: {minutes} นาที","untitledConversation":"การสนทนาไม่มีชื่อ","close":"ปิด","closeTaskCard":"ปิดการ์ดงาน “{title}”","chooseOption":"เลือกตัวเลือก","callingTool":"กำลังเรียกใช้เครื่องมือ…","callingToolNamed":"กำลังเรียกใช้ {toolName}…","riveUnavailable":"รันไทม์ Rive ไม่พร้อมใช้งาน","riveLoadFailed":"โหลดสัตว์เลี้ยง Rive ไม่สำเร็จ","manifestLoadFailed":"โหลด pet.json ไม่สำเร็จ","manifestInvalid":"pet.json ไม่ถูกต้อง","riveManifestInvalid":"Rive pet.json ไม่ถูกต้อง","spritesheetManifestInvalid":"Spritesheet pet.json ไม่ถูกต้อง"},"tr":{"clearAll":"Tümünü temizle","reply":"Yanıtla","continueTask":"Göreve devam et","send":"Gönder","stop":"Görevi durdur","actionFailed":"İşlem tamamlanamadı. Konuşmayı kontrol edip tekrar deneyin.","interrupted":"Görev kesintiye uğradı","petAria":"Masaüstü evcil hayvanı","recentTasksAria":"Son görevler","showLess":"Daha az göster","hideConversationStatus":"Konuşma durumunu gizle","showConversationStatuses":"Konuşma durumları: {count}","confirmationBody":"Onayınız gerekiyor","thinkingBody":"Düşünüyor…","completedBody":"Tamamlandı","confirmationStatus":"Onay gerekiyor","completedStatus":"Tamamlandı","processingStatus":"İşleniyor","workedMinutes":"Çalışma süresi: {minutes} dk","untitledConversation":"Adsız konuşma","close":"Kapat","closeTaskCard":"“{title}” görev kartını kapat","chooseOption":"Bir seçenek belirleyin","callingTool":"Araç çağrılıyor…","callingToolNamed":"{toolName} çağrılıyor…","riveUnavailable":"Rive çalışma zamanı kullanılamıyor","riveLoadFailed":"Rive evcil hayvanı yüklenemedi","manifestLoadFailed":"pet.json yüklenemedi","manifestInvalid":"Geçersiz pet.json","riveManifestInvalid":"Geçersiz Rive pet.json","spritesheetManifestInvalid":"Geçersiz spritesheet pet.json"},"vi":{"clearAll":"Xóa tất cả","reply":"Trả lời","continueTask":"Tiếp tục tác vụ","send":"Gửi","stop":"Dừng tác vụ","actionFailed":"Không thể hoàn tất thao tác. Kiểm tra cuộc trò chuyện rồi thử lại.","interrupted":"Tác vụ bị gián đoạn","petAria":"Thú cưng trên màn hình","recentTasksAria":"Nhiệm vụ gần đây","showLess":"Hiển thị ít hơn","hideConversationStatus":"Ẩn trạng thái cuộc trò chuyện","showConversationStatuses":"Trạng thái cuộc trò chuyện: {count}","confirmationBody":"Cần bạn xác nhận","thinkingBody":"Đang suy nghĩ…","completedBody":"Đã hoàn tất","confirmationStatus":"Cần xác nhận","completedStatus":"Đã hoàn tất","processingStatus":"Đang xử lý","workedMinutes":"Thời gian làm việc: {minutes} phút","untitledConversation":"Cuộc trò chuyện không có tiêu đề","close":"Đóng","closeTaskCard":"Đóng thẻ nhiệm vụ “{title}”","chooseOption":"Chọn một tùy chọn","callingTool":"Đang gọi công cụ…","callingToolNamed":"Đang gọi {toolName}…","riveUnavailable":"Không có runtime Rive","riveLoadFailed":"Không tải được thú cưng Rive","manifestLoadFailed":"Không tải được pet.json","manifestInvalid":"pet.json không hợp lệ","riveManifestInvalid":"Rive pet.json không hợp lệ","spritesheetManifestInvalid":"Spritesheet pet.json không hợp lệ"}};
+    const UI_COPY_LOCALES = Object.keys(UI_COPY);
+    // Keep this function self-contained in the generated HTML. Protected
+    // releases obfuscate the surrounding bundle, so serializing a bundled
+    // function with toString() can leave references to bundle-only decoders.
+    const resolveCopyLocale = function resolveCopyLocale(
+      value,
+      availableLocales
+    ) {
+      const raw = typeof value === 'string' ? value.trim() : '';
+      const normalized = (raw || 'en-US').replaceAll('_', '-').toLowerCase();
+      const exact = availableLocales.find(
+        (locale) => locale.toLowerCase() === normalized
+      );
+      if (exact !== undefined) return exact;
+
+      const primary = normalized.split('-')[0] || '';
+      if (primary === 'zh') {
+        const traditional = /(?:^|-)(?:hant|tw|hk|mo)(?:-|$)/u.test(normalized);
+        const preferred = traditional ? 'zh-TW' : 'zh-CN';
+        const matched = availableLocales.find(
+          (locale) => locale.toLowerCase() === preferred.toLowerCase()
+        );
+        if (matched !== undefined) return matched;
+      }
+      if (primary === 'pt') {
+        const matched = availableLocales.find(
+          (locale) => locale.toLowerCase() === 'pt-br'
+        );
+        if (matched !== undefined) return matched;
+      }
+      if (primary === 'es') {
+        const matched = availableLocales.find(
+          (locale) => locale.toLowerCase() === 'es-419'
+        );
+        if (matched !== undefined) return matched;
+      }
+
+      const languageMatch = availableLocales.find(
+        (locale) => locale.toLowerCase().split('-')[0] === primary
+      );
+      if (languageMatch !== undefined) return languageMatch;
+      return (
+        availableLocales.find((locale) => locale.toLowerCase() === 'en-us') ||
+        availableLocales[0] ||
+        'en-US'
+      );
+    };
+    const SPRITE_ALPHA_THRESHOLD = 8;
+    const MAX_VISIBLE_BOUNDS_SCAN_PIXELS = 4_000_000;
+    const RIVE_IDLE_FRAME_RATE = 30;
+    const RIVE_HOVER_FRAME_RATE = 60;
+    const RIVE_DEVICE_PIXEL_RATIO = 1.5;
+    const RIVE_LOOK_DEAD_ZONE_RATIO = 0.12;
+    const RIVE_LOOK_DIRECTIONS = Object.freeze([
+      'right',
+      'lower_right',
+      'down',
+      'lower_left',
+      'left',
+      'upper_left',
+      'up',
+      'upper_right'
+    ]);
+    const RIVE_ACTIVITY_TRIGGERS = Object.freeze(['shake']);
+    const stage = document.getElementById('stage');
+    const conversationBubble = document.getElementById('conversation-bubble');
+    const conversationCenterHeader = document.getElementById('conversation-center-header');
+    const conversationCenterCollapse = document.getElementById('conversation-center-collapse');
+    const conversationList = document.getElementById('conversation-list');
+    const conversationBubbleToggle = document.getElementById('conversation-bubble-toggle');
+    const conversationBubbleToggleIcon = document.getElementById('conversation-bubble-toggle-icon');
+    const conversationBubbleToggleCount = document.getElementById('conversation-bubble-toggle-count');
+    const pet = document.getElementById('pet');
+    const rivePet = document.getElementById('rive-pet');
+    const error = document.getElementById('error');
+    const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
+    // Transparent-window activation and restored focus can retain Chromium's
+    // focus-visible heuristic. Only local keyboard navigation exposes its ring.
+    function setKeyboardNavigation(enabled) {
+      document.documentElement.classList.toggle('keyboard-navigation', enabled);
+    }
+    document.addEventListener('keydown', (event) => {
+      if (!event.metaKey && !event.ctrlKey && !event.altKey &&
+          ['Tab', 'Enter', ' ', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) {
+        setKeyboardNavigation(true);
+      }
+    }, true);
+    document.addEventListener('pointerdown', () => setKeyboardNavigation(false), true);
+    document.addEventListener('click', (event) => {
+      if (event.detail > 0) setKeyboardNavigation(false);
+    }, true);
+
+    let manifest = null;
+    let riveInstance = null;
+    let riveTargetFrameRate = RIVE_IDLE_FRAME_RATE;
+    let riveLookInputs = new Map();
+    let riveLookDirection = null;
+    let riveActivityInputs = new Map();
+    let riveActivityTrigger = null;
+    let stateName = 'idle';
+    let preferredStateName = 'idle';
+    let interactionStateActive = false;
+    let frame = 0;
+    let lastFrameAt = performance.now();
+    let pointerIdleTimer = 0;
+    let idleVariantTimer = 0;
+    let pointerInside = false;
+    let animationFrameRequest = 0;
+    let animationWakeTimer = 0;
+    let idleFrameRate = false;
+    let displayScale = 1;
+    let petAnchorXRatio = 0.5;
+    let petAnchorBottomRatio = 1;
+    let visibleBoundsByState = Object.create(null);
+    let activities = [];
+    let activeActivityId = null;
+    let conversationCenterTransitionToken = 0;
+    let pendingConversationCollapse = false;
+    const conversationCenterAnimations = new Set();
+    let conversationCenterExpanded = false;
+    let conversationBubbleExpanded = true;
+    let currentLocaleTag = 'en-US';
+    let lastErrorKey = null;
+    const dismissedActivityKeys = new Map();
+    const replyDrafts = new Map();
+    const actionErrors = new Set();
+    const pendingActions = new Set();
+    let replyActivityId = null;
+    let composingReply = false;
+
+    function normalizeLocaleTag(value) {
+      const tag = typeof value === 'string' ? value.trim() : '';
+      return tag || 'en-US';
+    }
+
+    function isChineseLocale(value) {
+      return /^zh(?:-|$)/i.test(normalizeLocaleTag(value));
+    }
+
+    function currentCopy() {
+      return UI_COPY[resolveCopyLocale(currentLocaleTag, UI_COPY_LOCALES)] || UI_COPY['en-US'];
+    }
+
+    function formatCopy(template, replacements) {
+      return String(template).replace(/{([A-Za-z]+)}/g, (match, key) =>
+        Object.prototype.hasOwnProperty.call(replacements, key)
+          ? String(replacements[key])
+          : match
+      );
+    }
+
+    function showConversationStatusesLabel(count) {
+      return formatCopy(currentCopy().showConversationStatuses, { count });
+    }
+
+    function closeTaskCardLabel(title) {
+      return formatCopy(currentCopy().closeTaskCard, { title });
+    }
+
+    function callingToolLabel(toolName) {
+      if (!toolName) return currentCopy().callingTool;
+      return formatCopy(currentCopy().callingToolNamed, { toolName });
+    }
+
+    function applyHostLocale(value) {
+      currentLocaleTag = normalizeLocaleTag(value);
+      const copy = currentCopy();
+      document.documentElement.lang = currentLocaleTag;
+      stage.setAttribute('aria-label', copy.petAria);
+      conversationBubble.setAttribute('aria-label', copy.recentTasksAria);
+      conversationCenterCollapse.textContent = copy.clearAll;
+      const petName =
+        manifest && typeof manifest.name === 'string' && manifest.name.trim()
+          ? manifest.name
+          : copy.petAria;
+      pet.setAttribute('aria-label', petName);
+      rivePet.setAttribute('aria-label', petName);
+      if (lastErrorKey) error.textContent = copy[lastErrorKey] || lastErrorKey;
+      renderConversationCenter();
+      updateConversationBubbleToggle();
+    }
+
+    function showError(messageKey) {
+      lastErrorKey = messageKey;
+      pet.style.display = 'none';
+      rivePet.style.display = 'none';
+      error.textContent = currentCopy()[messageKey] || messageKey;
+      error.style.display = 'grid';
+    }
+
+    function applyBubbleTheme(value) {
+      if (
+        !value ||
+        typeof value.background !== 'string' ||
+        typeof value.foreground !== 'string' ||
+        typeof value.border !== 'string' ||
+        !/^#[0-9A-Fa-f]{6}$/.test(value.background) ||
+        !/^#[0-9A-Fa-f]{6}$/.test(value.foreground) ||
+        !/^#[0-9A-Fa-f]{6}$/.test(value.border)
+      ) {
+        return false;
+      }
+      const background = value.background.toUpperCase();
+      document.documentElement.style.setProperty(
+        '--pet-bubble-background',
+        background
+      );
+      document.documentElement.style.setProperty(
+        '--pet-bubble-foreground',
+        value.foreground.toUpperCase()
+      );
+      document.documentElement.style.setProperty(
+        '--pet-bubble-border',
+        value.border.toUpperCase()
+      );
+      return true;
+    }
+
+    function isRiveManifest(value) {
+      return Boolean(value && value.renderer === 'rive' && value.rive);
+    }
+
+    function limitRiveFrameRate(instance, getTargetFrameRate) {
+      if (
+        !instance ||
+        typeof instance.startRendering !== 'function' ||
+        typeof instance.stopRendering !== 'function'
+      ) {
+        return instance;
+      }
+      const startRendering = instance.startRendering.bind(instance);
+      const stopRendering = instance.stopRendering.bind(instance);
+      const drawFrame = typeof instance.drawFrame === 'function'
+        ? instance.drawFrame.bind(instance)
+        : null;
+      let frameTimer = 0;
+      let lastFrameRequestAt = 0;
+      let hasRequestedFrame = false;
+
+      instance.startRendering = () => {
+        if (frameTimer) return;
+        const now = performance.now();
+        const requestedFrameRate = Number(getTargetFrameRate());
+        const targetFrameRate = Number.isFinite(requestedFrameRate)
+          ? Math.max(1, requestedFrameRate)
+          : 30;
+        const frameInterval = 1000 / targetFrameRate;
+        const delay = hasRequestedFrame
+          ? Math.max(0, frameInterval - (now - lastFrameRequestAt))
+          : frameInterval;
+        const requestFrame = () => {
+          frameTimer = 0;
+          lastFrameRequestAt = performance.now();
+          hasRequestedFrame = true;
+          if (drawFrame) {
+            drawFrame();
+            return;
+          }
+          startRendering();
+        };
+        frameTimer = window.setTimeout(requestFrame, delay);
+      };
+      instance.stopRendering = () => {
+        if (frameTimer) {
+          clearTimeout(frameTimer);
+          frameTimer = 0;
+        }
+        stopRendering();
+      };
+      // The constructor can request rendering before callers get a chance to
+      // install this limiter. Cancel that early scheduler so every later frame
+      // is driven through the patched startRendering path.
+      stopRendering();
+      return instance;
+    }
+
+    function resolveRiveDrawingSurfacePixelRatio(devicePixelRatio) {
+      const deviceScale = Number(devicePixelRatio);
+      return Number.isFinite(deviceScale)
+        ? Math.max(1, Math.min(RIVE_DEVICE_PIXEL_RATIO, deviceScale))
+        : 1;
+    }
+
+    function syncRiveDrawingSurfacePixelRatio() {
+      if (!riveInstance || typeof riveInstance.resizeDrawingSurfaceToCanvas !== 'function') {
+        return;
+      }
+      const nextPixelRatio = resolveRiveDrawingSurfacePixelRatio(window.devicePixelRatio);
+      riveInstance.resizeDrawingSurfaceToCanvas(nextPixelRatio);
+    }
+
+    function bindRiveLookInputs(stateMachine) {
+      riveLookInputs = new Map();
+      riveLookDirection = null;
+      riveActivityInputs = new Map();
+      riveActivityTrigger = null;
+      if (
+        !riveInstance ||
+        typeof stateMachine !== 'string' ||
+        typeof riveInstance.stateMachineInputs !== 'function'
+      ) {
+        return;
+      }
+      const inputs = riveInstance.stateMachineInputs(stateMachine);
+      if (!Array.isArray(inputs)) return;
+      for (const input of inputs) {
+        if (
+          input &&
+          RIVE_LOOK_DIRECTIONS.includes(input.name) &&
+          typeof input.fire === 'function'
+        ) {
+          riveLookInputs.set(input.name, input);
+        }
+        if (
+          input &&
+          RIVE_ACTIVITY_TRIGGERS.includes(input.name) &&
+          typeof input.fire === 'function'
+        ) {
+          riveActivityInputs.set(input.name, input);
+        }
+      }
+      syncRiveActivityTrigger();
+    }
+
+    function resetRiveLookDirection() {
+      riveLookDirection = null;
+    }
+
+    function isRivePointerInside(event, rect) {
+      return (
+        Number.isFinite(event.clientX) &&
+        Number.isFinite(event.clientY) &&
+        event.clientX >= rect.left &&
+        event.clientX < rect.right &&
+        event.clientY >= rect.top &&
+        event.clientY < rect.bottom
+      );
+    }
+
+    function resolveRiveLookDirection(event, rect) {
+      if (
+        !Number.isFinite(event.clientX) ||
+        !Number.isFinite(event.clientY) ||
+        !(rect.width > 0 && rect.height > 0)
+      ) return null;
+      const deltaX = event.clientX - (rect.left + rect.width / 2);
+      const deltaY = event.clientY - (rect.top + rect.height / 2);
+      const deadZone = Math.min(rect.width, rect.height) * RIVE_LOOK_DEAD_ZONE_RATIO;
+      if (Math.hypot(deltaX, deltaY) <= deadZone) return null;
+      const sector = Math.round(Math.atan2(deltaY, deltaX) / (Math.PI / 4));
+      return RIVE_LOOK_DIRECTIONS[
+        (sector + RIVE_LOOK_DIRECTIONS.length) % RIVE_LOOK_DIRECTIONS.length
+      ];
+    }
+
+    function handleRivePointerMove(event) {
+      if (!isRiveManifest(manifest)) return;
+      const rect = rivePet.getBoundingClientRect();
+      if (!(rect.width > 0 && rect.height > 0)) return;
+      const pointerInside = isRivePointerInside(event, rect);
+      riveTargetFrameRate = pointerInside ? RIVE_HOVER_FRAME_RATE : RIVE_IDLE_FRAME_RATE;
+      if (riveLookInputs.size === 0) return;
+      const direction = resolveRiveLookDirection(event, rect);
+      if (direction === null) {
+        resetRiveLookDirection();
+        return;
+      }
+      if (direction === riveLookDirection) return;
+      riveLookDirection = direction;
+      try {
+        riveLookInputs.get(direction)?.fire();
+      } catch {
+        // A malformed optional look input must not break the Pet runtime.
+      }
+    }
+
+    function handleRivePointerOut() {
+      riveTargetFrameRate = RIVE_IDLE_FRAME_RATE;
+      resetRiveLookDirection();
+    }
+
+    function preferredRiveActivityTrigger() {
+      if (activities.some((activity) => activity.awaitingApproval)) return 'shake';
+      return null;
+    }
+
+    function syncRiveActivityTrigger() {
+      const nextTrigger = preferredRiveActivityTrigger();
+      if (nextTrigger === riveActivityTrigger) return;
+      riveActivityTrigger = nextTrigger;
+      if (!nextTrigger) return;
+      try {
+        riveActivityInputs.get(nextTrigger)?.fire();
+      } catch {
+        // A malformed optional activity input must not break the Pet runtime.
+      }
+    }
+
+    function resolveBubbleHorizontalCenter(anchorX, bubbleWidth, viewportWidth, margin) {
+      if (
+        ![anchorX, bubbleWidth, viewportWidth, margin].every(Number.isFinite) ||
+        bubbleWidth <= 0 ||
+        viewportWidth <= 0
+      ) return viewportWidth / 2;
+      const safeMargin = Math.max(0, margin);
+      const minimum = safeMargin + bubbleWidth / 2;
+      const maximum = viewportWidth - safeMargin - bubbleWidth / 2;
+      if (minimum > maximum) return viewportWidth / 2;
+      return Math.min(maximum, Math.max(minimum, anchorX));
+    }
+
+    function currentPetAnchor() {
+      return {
+        x: Math.min(innerWidth, Math.max(0, petAnchorXRatio * innerWidth)),
+        bottom: Math.min(innerHeight, Math.max(0, petAnchorBottomRatio * innerHeight))
+      };
+    }
+
+    function syncPetAnchorLayout() {
+      const anchor = currentPetAnchor();
+      const bottomOffset = innerHeight - anchor.bottom;
+      pet.style.left = String(anchor.x) + 'px';
+      pet.style.bottom = String(bottomOffset) + 'px';
+      rivePet.style.left = String(anchor.x) + 'px';
+      rivePet.style.bottom = String(bottomOffset) + 'px';
+      const bubbleCenter = resolveBubbleHorizontalCenter(
+        anchor.x,
+        conversationBubble.offsetWidth,
+        innerWidth,
+        BUBBLE_SCREEN_MARGIN_PX
+      );
+      conversationBubble.style.left = String(bubbleCenter) + 'px';
+      return anchor;
+    }
+
+    function syncConversationBubbleVerticalLayout(bottom) {
+      const safeBottom = Number.isFinite(bottom) ? Math.max(0, bottom) : 0;
+      conversationBubble.style.bottom = String(safeBottom) + 'px';
+      const availableHeight = innerHeight - safeBottom - BUBBLE_SCREEN_MARGIN_PX - (conversationCenterExpanded ? 24 : 0);
+      const maximumListHeight = Math.min(
+        BUBBLE_LIST_MAX_HEIGHT_PX,
+        Math.max(BUBBLE_LIST_MIN_HEIGHT_PX, availableHeight)
+      );
+      const listHeight = maximumListHeight;
+      conversationList.style.setProperty(
+        '--pet-conversation-list-max-height',
+        String(Math.floor(listHeight)) + 'px'
+      );
+    }
+
+    function reportInteractiveRegion(dragRect) {
+      const hitRegions = [dragRect];
+      if (stage.classList.contains('bubble-visible')) {
+        const bubbleWidth = conversationBubble.offsetWidth;
+        const bubbleHeight = conversationBubble.offsetHeight;
+        if (bubbleWidth > 0 && bubbleHeight > 0) {
+          const bubbleBottom = Number.parseFloat(conversationBubble.style.bottom) || 0;
+          hitRegions.push({
+            x: Math.round(conversationBubble.offsetLeft - bubbleWidth / 2 - 6),
+            y: Math.round(innerHeight - bubbleBottom - bubbleHeight - 6),
+            width: bubbleWidth + 12,
+            height: bubbleHeight + 12
+          });
+        }
+        if (!conversationCenterHeader.hidden) {
+          const collapseRect = conversationCenterCollapse.getBoundingClientRect();
+          if (collapseRect.width > 0 && collapseRect.height > 0) {
+            hitRegions.push({
+              x: Math.round(collapseRect.left),
+              y: Math.round(collapseRect.top),
+              width: Math.round(collapseRect.width),
+              height: Math.round(collapseRect.height)
+            });
+          }
+        }
+      }
+      if (orderedActivities().length > 0) {
+        const toggleRect = conversationBubbleToggle.getBoundingClientRect();
+        if (toggleRect.width > 0 && toggleRect.height > 0) {
+          hitRegions.push({
+            x: Math.round(toggleRect.left),
+            y: Math.round(toggleRect.top),
+            width: Math.round(toggleRect.width),
+            height: Math.round(toggleRect.height)
+          });
+        }
+      }
+      parent.postMessage({
+        type: 'daimon-pet:interactive-region',
+        dragRect,
+        hitRegions
+      }, '*');
+    }
+
+    function resize() {
+      if (!manifest) return;
+      const anchor = syncPetAnchorLayout();
+      if (isRiveManifest(manifest)) {
+        const size = Math.max(1, Math.round(BASE_DISPLAY_SIZE_PX * displayScale));
+        rivePet.style.width = String(size) + 'px';
+        rivePet.style.height = String(size) + 'px';
+        syncConversationBubbleVerticalLayout(
+          innerHeight - anchor.bottom + size + BUBBLE_GAP_PX
+        );
+        syncRiveDrawingSurfacePixelRatio();
+        const left = Math.round(anchor.x - size / 2);
+        const top = Math.round(anchor.bottom - size);
+        if (orderedActivities().length > 0) {
+          const toggleWidth = Math.max(30, conversationBubbleToggle.offsetWidth);
+          const toggleHeight = Math.max(30, conversationBubbleToggle.offsetHeight);
+          conversationBubbleToggle.style.left =
+            String(Math.min(
+              innerWidth - toggleWidth - 6,
+              Math.max(6, left + size - 4 - BUBBLE_TOGGLE_NUDGE_PX)
+            )) + 'px';
+          conversationBubbleToggle.style.top =
+            String(Math.min(
+              innerHeight - toggleHeight - 6,
+              Math.max(6, top + size * 0.1)
+            )) + 'px';
+        }
+        reportInteractiveRegion({ x: left, y: top, width: size, height: size });
+        return;
+      }
+      const atlas = manifest.atlas;
+      const baseScale = Math.min(
+        BASE_DISPLAY_SIZE_PX / atlas.frameWidth,
+        BASE_DISPLAY_SIZE_PX / atlas.frameHeight
+      );
+      const scale = Math.max(0.05, baseScale * displayScale);
+      const bounds = visibleBoundsByState[stateName] || {
+        left: 0,
+        top: 0,
+        right: atlas.frameWidth,
+        bottom: atlas.frameHeight
+      };
+      const visiblePetTopFromBottom = (atlas.frameHeight - bounds.top) * scale;
+      syncConversationBubbleVerticalLayout(
+        innerHeight - anchor.bottom + visiblePetTopFromBottom + BUBBLE_GAP_PX
+      );
+      pet.style.transform = 'translateX(-50%) scale(' + String(scale) + ')';
+      const frameLeft = anchor.x - atlas.frameWidth * scale / 2;
+      const frameTop = anchor.bottom - atlas.frameHeight * scale;
+      const left = Math.floor(frameLeft + bounds.left * scale);
+      const top = Math.floor(frameTop + bounds.top * scale);
+      const right = Math.ceil(frameLeft + bounds.right * scale);
+      const bottom = Math.ceil(frameTop + bounds.bottom * scale);
+      if (orderedActivities().length > 0) {
+        const toggleWidth = Math.max(30, conversationBubbleToggle.offsetWidth);
+        const toggleHeight = Math.max(30, conversationBubbleToggle.offsetHeight);
+        conversationBubbleToggle.style.left =
+          String(Math.min(
+            innerWidth - toggleWidth - 6,
+            Math.max(6, right - 4 - BUBBLE_TOGGLE_NUDGE_PX)
+          )) + 'px';
+        conversationBubbleToggle.style.top =
+          String(Math.min(
+            innerHeight - toggleHeight - 6,
+            Math.max(6, top - 4)
+          )) + 'px';
+      }
+      const dragRect = {
+        x: left,
+        y: top,
+        width: Math.max(1, right - left),
+        height: Math.max(1, bottom - top)
+      };
+      reportInteractiveRegion(dragRect);
+    }
+
+    function measureVisibleSpriteBounds(image) {
+      if (!manifest) return Object.create(null);
+      const atlas = manifest.atlas;
+      const framePixels = atlas.frameWidth * atlas.frameHeight;
+      if (framePixels <= 0 || framePixels > MAX_VISIBLE_BOUNDS_SCAN_PIXELS) {
+        return Object.create(null);
+      }
+      const canvas = document.createElement('canvas');
+      canvas.width = atlas.frameWidth;
+      canvas.height = atlas.frameHeight;
+      const context = canvas.getContext('2d', { willReadFrequently: true });
+      if (!context) return Object.create(null);
+      const measured = Object.create(null);
+      let remainingScanPixels = MAX_VISIBLE_BOUNDS_SCAN_PIXELS;
+      try {
+        for (const [name, state] of Object.entries(manifest.states)) {
+          const stateScanPixels = state.frames * framePixels;
+          if (stateScanPixels > remainingScanPixels) continue;
+          remainingScanPixels -= stateScanPixels;
+          let opaqueLeft = atlas.frameWidth;
+          let opaqueTop = atlas.frameHeight;
+          let opaqueRight = -1;
+          let opaqueBottom = -1;
+          for (let frameIndex = 0; frameIndex < state.frames; frameIndex += 1) {
+            context.clearRect(0, 0, atlas.frameWidth, atlas.frameHeight);
+            context.drawImage(
+              image,
+              frameIndex * atlas.frameWidth,
+              state.row * atlas.frameHeight,
+              atlas.frameWidth,
+              atlas.frameHeight,
+              0,
+              0,
+              atlas.frameWidth,
+              atlas.frameHeight
+            );
+            const pixels = context.getImageData(0, 0, atlas.frameWidth, atlas.frameHeight).data;
+            for (let y = 0; y < atlas.frameHeight; y += 1) {
+              const rowStart = y * atlas.frameWidth * 4;
+              for (let x = 0; x < atlas.frameWidth; x += 1) {
+                if (pixels[rowStart + x * 4 + 3] > SPRITE_ALPHA_THRESHOLD) {
+                  opaqueLeft = Math.min(opaqueLeft, x);
+                  opaqueTop = Math.min(opaqueTop, y);
+                  opaqueRight = Math.max(opaqueRight, x + 1);
+                  opaqueBottom = Math.max(opaqueBottom, y + 1);
+                }
+              }
+            }
+          }
+          if (opaqueRight > opaqueLeft && opaqueBottom > opaqueTop) {
+            measured[name] = {
+              left: opaqueLeft,
+              top: opaqueTop,
+              right: opaqueRight,
+              bottom: opaqueBottom
+            };
+          }
+        }
+      } catch {
+        return Object.create(null);
+      }
+      return measured;
+    }
+
+    function measureSpritesheetWhenReady() {
+      const image = new Image();
+      image.crossOrigin = 'anonymous';
+      image.addEventListener('load', () => {
+        visibleBoundsByState = measureVisibleSpriteBounds(image);
+        resize();
+      }, { once: true });
+      image.src = '/workspace/' + encodeURIComponent(manifest.spritesheet);
+    }
+
+    function hideConversationBubble() {
+      conversationCenterTransitionToken += 1;
+      pendingConversationCollapse = false;
+      clearConversationCenterAnimations();
+      conversationCenterExpanded = false;
+      conversationBubbleExpanded = true;
+      stage.classList.remove('bubble-visible');
+      conversationBubble.classList.remove(
+        'notification-expanded',
+        'notification-collapsed',
+        'has-multiple'
+      );
+      conversationCenterHeader.hidden = true;
+      conversationList.replaceChildren();
+      updateConversationBubbleToggle();
+      resize();
+    }
+
+    function activeActivity() {
+      return activities.find((activity) => activity.id === activeActivityId) || activities[0] || null;
+    }
+
+    function orderedActivities() {
+      return activities.filter((activity) =>
+        dismissedActivityKeys.get(activity.id) !== activityDismissalKey(activity)
+      );
+    }
+
+    function updateConversationBubbleToggle() {
+      const visibleActivityCount = orderedActivities().length;
+      const visible = visibleActivityCount > 0;
+      conversationBubbleToggle.style.display = visible ? 'grid' : 'none';
+      conversationBubbleToggleIcon.style.display = conversationBubbleExpanded
+        ? 'block'
+        : 'none';
+      conversationBubbleToggleCount.style.display = conversationBubbleExpanded
+        ? 'none'
+        : 'block';
+      conversationBubbleToggleCount.textContent = new Intl.NumberFormat(resolveCopyLocale(currentLocaleTag, UI_COPY_LOCALES)).format(visibleActivityCount);
+      conversationBubbleToggle.setAttribute(
+        'aria-expanded',
+        conversationBubbleExpanded ? 'true' : 'false'
+      );
+      conversationBubbleToggle.setAttribute(
+        'aria-label',
+        conversationBubbleExpanded
+          ? currentCopy().hideConversationStatus
+          : showConversationStatusesLabel(visibleActivityCount)
+      );
+    }
+
+    function activityBodyText(activity) {
+      const progressText =
+        typeof activity.progressText === 'string'
+          ? activity.progressText.trim().slice(0, BUBBLE_TEXT_MAX_LENGTH)
+          : '';
+      const completedText =
+        typeof activity.text === 'string' && activity.text.trim()
+          ? activity.text.trim().slice(0, BUBBLE_TEXT_MAX_LENGTH)
+          : '';
+      if (activity.hasError) return completedText || currentCopy().interrupted;
+      return activity.petState === 'waiting'
+        ? completedText || currentCopy().confirmationBody
+        : activity.runState === 'running'
+          ? progressText || completedText || currentCopy().thinkingBody
+          : completedText || currentCopy().completedBody;
+    }
+
+    function activityDismissalKey(activity) {
+      const turnId =
+        typeof activity.turnId === 'string' ? activity.turnId.trim() : '';
+      return turnId
+        ? ['turn', activity.id, turnId].join(' ')
+        : [
+            'legacy',
+            activity.id,
+            activity.title,
+            activity.runState,
+            activity.petState,
+            activity.progressText || '',
+            activity.text || ''
+          ].join(' ');
+    }
+
+    function expandStackBeforeAction() {
+      if (conversationCenterExpanded || orderedActivities().length < 2) return false;
+      void setConversationCenterExpanded(true);
+      return true;
+    }
+
+    function dismissConversationCard(activity) {
+      dismissedActivityKeys.set(activity.id, activityDismissalKey(activity));
+      replyDrafts.delete(activity.id);
+      actionErrors.delete(activity.id);
+      if (replyActivityId === activity.id) replyActivityId = null;
+      renderConversationCenter();
+    }
+
+    function actionIcon(name) {
+      const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+      svg.setAttribute('aria-hidden', 'true');
+      svg.setAttribute('width', name === 'stop' ? '20' : '18');
+      svg.setAttribute('height', name === 'stop' ? '20' : '18');
+      svg.setAttribute('viewBox', '0 0 1024 1024');
+      // All markup comes from immutable first-party artwork, never conversation text.
+      svg.innerHTML = ACTION_ICONS[name];
+      return svg;
+    }
+
+    function lineIcon(name) {
+      const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+      svg.setAttribute('aria-hidden', 'true');
+      svg.setAttribute('viewBox', '0 0 20 20');
+      svg.setAttribute('width', name === 'close' ? '12' : '20');
+      svg.setAttribute('height', name === 'close' ? '12' : '20');
+      const paths = {
+        close: '<path d="m6 6 8 8m0-8-8 8" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>',
+        check: '<path d="m5 10 3.5 3.5L15 7" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>',
+        send: '<circle cx="10" cy="10" r="8" fill="currentColor"/><path d="M10 14V6m-3 3 3-3 3 3" fill="none" stroke="var(--pet-bubble-surface)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>'
+      };
+      svg.innerHTML = paths[name];
+      return svg;
+    }
+
+    async function performConversationAction(activity, action) {
+      if (pendingActions.has(activity.id)) return;
+      const method = conversationsApi && conversationsApi[action];
+      if (typeof method !== 'function') return;
+      pendingActions.add(activity.id);
+      actionErrors.delete(activity.id);
+      const text = (replyDrafts.get(activity.id) || '').trim() || currentCopy().continueTask;
+      renderConversationCenter();
+      try {
+        const result = action === 'send'
+          ? await method(activity.id, text)
+          : await method(activity.id);
+        if (!result || result.accepted !== true) throw new Error('not_accepted');
+        if (action === 'send') {
+          replyDrafts.delete(activity.id);
+          if (replyActivityId === activity.id) replyActivityId = null;
+        }
+      } catch {
+        actionErrors.add(activity.id);
+      } finally {
+        pendingActions.delete(activity.id);
+        renderConversationCenter();
+      }
+    }
+
+    function toggleConversationReply(activity) {
+      expandStackBeforeAction();
+      replyActivityId = replyActivityId === activity.id ? null : activity.id;
+      renderConversationCenter();
+      requestAnimationFrame(() => {
+        const card = [...conversationList.children].find((entry) => entry.dataset.conversationId === replyActivityId);
+        const input = card?.querySelector('input');
+        input?.focus({ preventScroll: true });
+        card?.scrollIntoView({ block: 'center', behavior: reducedMotion.matches ? 'auto' : 'smooth' });
+        updateConversationScrollFade();
+      });
+    }
+
+    function updateConversationCard(card, activity, index, hidden) {
+      card.activity = activity;
+      card.hidden = hidden;
+      card.dataset.activityIndex = String(index);
+      card.classList.toggle('is-running', activity.runState === 'running' && !activity.hasError);
+      card.classList.toggle('has-reply', replyActivityId === activity.id);
+      const title = card.querySelector('.conversation-card-title');
+      title.textContent = activity.title.trim() || currentCopy().untitledConversation;
+      const content = card.querySelector('.conversation-card-progress');
+      content.textContent = activityBodyText(activity);
+      const copy = card.querySelector('.conversation-card-copy');
+      copy.setAttribute('aria-label', title.textContent + ' ' + content.textContent);
+      const close = card.querySelector('.conversation-card-close');
+      close.setAttribute('aria-label', closeTaskCardLabel(title.textContent));
+      const reply = card.querySelector('.conversation-card-reply');
+      reply.hidden = typeof conversationsApi?.send !== 'function';
+      reply.setAttribute('aria-label', currentCopy().reply);
+      reply.setAttribute('aria-expanded', String(replyActivityId === activity.id));
+      const status = card.querySelector('.conversation-card-status');
+      const running = activity.runState === 'running' && !activity.hasError;
+      status.classList.toggle('hover-action', running);
+      status.classList.toggle('is-error', activity.hasError === true);
+      status.classList.toggle('is-complete', !running && !activity.hasError);
+      status.setAttribute('aria-label', running ? currentCopy().stop : currentCopy().close);
+      status.disabled = pendingActions.has(activity.id) || (running && typeof conversationsApi?.cancel !== 'function');
+      const icon = activity.hasError ? 'info' : running ? 'stop' : 'check';
+      if (status.dataset.icon !== icon) {
+        status.replaceChildren(icon === 'check' ? lineIcon(icon) : actionIcon(icon));
+        status.dataset.icon = icon;
+      }
+      const composer = card.querySelector('form');
+      composer.hidden = replyActivityId !== activity.id;
+      const input = card.querySelector('input');
+      input.placeholder = currentCopy().continueTask;
+      input.setAttribute('aria-label', currentCopy().reply);
+      input.disabled = pendingActions.has(activity.id);
+      if (document.activeElement !== input && !composingReply) input.value = replyDrafts.get(activity.id) || '';
+      const send = composer.querySelector('button');
+      send.setAttribute('aria-label', currentCopy().send);
+      send.disabled = input.disabled;
+      const error = card.querySelector('.conversation-card-error');
+      error.hidden = !actionErrors.has(activity.id);
+      error.textContent = currentCopy().actionFailed;
+    }
+
+    function createConversationCard(activity, index, hidden) {
+      const card = document.createElement('article');
+      card.className = 'conversation-card';
+      card.dataset.conversationId = activity.id;
+      const row = document.createElement('div');
+      row.className = 'conversation-card-row';
+      const copy = document.createElement('button');
+      copy.type = 'button';
+      copy.className = 'conversation-card-copy';
+      const title = document.createElement('span');
+      title.className = 'conversation-card-title';
+      const content = document.createElement('span');
+      content.className = 'conversation-card-content';
+      const progress = document.createElement('span');
+      progress.className = 'conversation-card-progress';
+      content.append(progress);
+      copy.append(title, content);
+      copy.addEventListener('click', () => {
+        if (expandStackBeforeAction()) return;
+        if (card.activity.hasError) dismissConversationCard(card.activity);
+        else openConversation(card.activity.id);
+      });
+      const actions = document.createElement('div');
+      actions.className = 'conversation-card-actions';
+      const reply = document.createElement('button');
+      reply.type = 'button';
+      reply.className = 'conversation-card-action conversation-card-reply hover-action';
+      reply.append(actionIcon('reply'));
+      reply.addEventListener('click', () => toggleConversationReply(card.activity));
+      const status = document.createElement('button');
+      status.type = 'button';
+      status.className = 'conversation-card-action conversation-card-status';
+      status.addEventListener('click', () => {
+        if ((card.activity.runState === 'running' || card.activity.hasError) && expandStackBeforeAction()) return;
+        if (card.activity.runState === 'running' && !card.activity.hasError) void performConversationAction(card.activity, 'cancel');
+        else dismissConversationCard(card.activity);
+      });
+      actions.append(reply, status);
+      row.append(copy, actions);
+      const close = document.createElement('button');
+      close.type = 'button';
+      close.className = 'conversation-card-close hover-action';
+      close.append(lineIcon('close'));
+      close.addEventListener('click', () => {
+        if (!expandStackBeforeAction()) dismissConversationCard(card.activity);
+      });
+      const composer = document.createElement('form');
+      composer.className = 'conversation-card-composer';
+      const input = document.createElement('input');
+      input.type = 'text';
+      input.maxLength = 16000;
+      input.addEventListener('input', () => replyDrafts.set(card.activity.id, input.value));
+      input.addEventListener('compositionstart', () => { composingReply = true; });
+      input.addEventListener('compositionend', () => { composingReply = false; });
+      input.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter' && (event.isComposing || composingReply || event.keyCode === 229)) event.preventDefault();
+      });
+      const send = document.createElement('button');
+      send.type = 'submit';
+      send.append(lineIcon('send'));
+      composer.append(input, send);
+      composer.addEventListener('submit', (event) => {
+        event.preventDefault();
+        if (!composingReply) void performConversationAction(card.activity, 'send');
+      });
+      const error = document.createElement('p');
+      error.className = 'conversation-card-error';
+      error.setAttribute('role', 'alert');
+      card.append(row, close, composer, error);
+      return card;
+    }
+
+    function updateConversationScrollFade() {
+      conversationList.classList.toggle('fade-top', conversationCenterExpanded && conversationList.scrollTop > 2);
+      conversationList.classList.toggle('fade-bottom', conversationCenterExpanded && conversationList.scrollHeight - conversationList.clientHeight - conversationList.scrollTop > 2);
+    }
+
+    function renderConversationCenter() {
+      // A live snapshot or action supersedes an unfinished collapse. Settle the
+      // requested mode immediately so its delayed completion cannot hide new UI.
+      if (pendingConversationCollapse) {
+        pendingConversationCollapse = false;
+        conversationCenterTransitionToken += 1;
+        clearConversationCenterAnimations();
+      }
+      const recent = orderedActivities();
+      if (!recent.some((activity) => activity.id === replyActivityId)) replyActivityId = null;
+      const hasMultiple = recent.length > 1;
+      conversationBubble.classList.toggle('notification-expanded', conversationCenterExpanded);
+      conversationBubble.classList.toggle('notification-collapsed', !conversationCenterExpanded);
+      conversationBubble.classList.toggle('has-multiple', hasMultiple);
+      conversationBubble.classList.toggle('has-three-or-more', recent.length > 2);
+      conversationBubble.dataset.stackCount = String(Math.min(3, recent.length));
+      conversationBubble.dataset.mode = !conversationBubbleExpanded ? 'count' : conversationCenterExpanded ? 'expanded' : 'stacked';
+      conversationCenterHeader.hidden = !conversationCenterExpanded || recent.length === 0;
+      const previous = new Map([...conversationList.children].map((card) => [card.dataset.conversationId, card]));
+      const activeInput = document.activeElement;
+      const selection = activeInput?.tagName === 'INPUT' ? [activeInput.selectionStart, activeInput.selectionEnd] : null;
+      const scrollTop = conversationList.scrollTop;
+      recent.forEach((activity, index) => {
+        const hidden = !conversationCenterExpanded && index > 0;
+        const card = previous.get(activity.id) || createConversationCard(activity, index, hidden);
+        previous.delete(activity.id);
+        updateConversationCard(card, activity, index, hidden);
+        if (conversationList.children[index] !== card) conversationList.insertBefore(card, conversationList.children[index] || null);
+      });
+      for (const card of previous.values()) card.remove();
+      if (selection && activeInput.isConnected && !activeInput.disabled && !activeInput.closest('form').hidden) {
+        activeInput.focus({ preventScroll: true });
+        activeInput.setSelectionRange(...selection);
+      }
+      conversationList.scrollTop = scrollTop;
+      stage.classList.toggle('bubble-visible', recent.length > 0 && conversationBubbleExpanded);
+      updateConversationBubbleToggle();
+      resize();
+      updateConversationScrollFade();
+    }
+
+    function animateElement(element, keyframes, options) {
+      if (reducedMotion.matches || !element || typeof element.animate !== 'function') return null;
+      const animation = element.animate(keyframes, options);
+      conversationCenterAnimations.add(animation);
+      void animation.finished.catch(() => undefined).then(() => {
+        if (options.fill !== 'forwards') conversationCenterAnimations.delete(animation);
+      });
+      return animation;
+    }
+
+    function clearConversationCenterAnimations() {
+      // Only cancel transitions owned here; the running-text shimmer is a
+      // separate CSS animation and must survive expand/collapse interruptions.
+      for (const animation of conversationCenterAnimations) animation.cancel();
+      conversationCenterAnimations.clear();
+    }
+
+    function animateLeadingConversationCard(card, before, expanding) {
+      if (!card?.isConnected) return;
+      const after = card.getBoundingClientRect();
+      animateElement(card, [
+        { transform: 'translateY(' + String(before.top - after.top) + 'px) scale(0.985)' },
+        { offset: 0.72, transform: 'translateY(' + (expanding ? '-2' : '2') + 'px) scale(1.004)' },
+        { transform: 'translateY(0) scale(1)' }
+      ], { duration: expanding ? 560 : 520, easing: 'cubic-bezier(0.16, 1, 0.3, 1)' });
+    }
+
+    async function setConversationCenterExpanded(expanded) {
+      if (conversationCenterExpanded === expanded && !pendingConversationCollapse) return;
+      const firstCard = conversationList.querySelector('.conversation-card');
+      if (!firstCard) return;
+      const before = firstCard.getBoundingClientRect();
+      clearConversationCenterAnimations();
+      const token = ++conversationCenterTransitionToken;
+      pendingConversationCollapse = false;
+      conversationCenterExpanded = expanded;
+      replyActivityId = null;
+      if (expanded) {
+        renderConversationCenter();
+        animateLeadingConversationCard(firstCard, before, true);
+        animateElement(conversationCenterHeader, [
+          { opacity: 0, transform: 'translateY(10px) scale(0.96)' },
+          { opacity: 1, transform: 'translateY(0) scale(1)' }
+        ], { duration: 440, easing: 'cubic-bezier(0.16, 1, 0.3, 1)' });
+        [...conversationList.children].slice(1).forEach((card, index) => {
+          animateElement(card, [
+            { opacity: 0, transform: 'translateY(' + String(-18 - index * 4) + 'px) scale(0.94)' },
+            { offset: 0.7, opacity: 1, transform: 'translateY(2px) scale(1.006)' },
+            { opacity: 1, transform: 'translateY(0) scale(1)' }
+          ], { duration: 520, delay: Math.min(index, 5) * 40, easing: 'cubic-bezier(0.16, 1, 0.3, 1)', fill: 'backwards' });
+        });
+        return;
+      }
+      pendingConversationCollapse = true;
+      const outgoing = [conversationCenterHeader, ...[...conversationList.children].slice(1)]
+        .map((element, index) => animateElement(element, [
+          { opacity: 1, transform: 'translateY(0) scale(1)' },
+          { opacity: 0, transform: 'translateY(-12px) scale(0.95)' }
+        ], { duration: 210, delay: Math.min(index, 5) * 14, easing: 'cubic-bezier(0.55, 0, 1, 0.45)', fill: 'forwards' }))
+        .filter(Boolean);
+      await Promise.all(outgoing.map((animation) => animation.finished.catch(() => undefined)));
+      if (token !== conversationCenterTransitionToken) return;
+      pendingConversationCollapse = false;
+      clearConversationCenterAnimations();
+      const collapseStart = firstCard.getBoundingClientRect();
+      renderConversationCenter();
+      animateLeadingConversationCard(firstCard, collapseStart, false);
+    }
+
+    function shouldIncludeConversationActivity(conversation) {
+      return Boolean(
+        conversation &&
+        typeof conversation.id === 'string' &&
+        typeof conversation.title === 'string' &&
+        (
+          conversation.runState === 'idle' ||
+          conversation.runState === 'running' ||
+          conversation.runState === 'failed'
+        )
+      );
+    }
+
+    function normalizeConversationStatus(value) {
+      if (!value || !Array.isArray(value.conversations)) {
+        return { activities: [], activeId: null };
+      }
+      return {
+        activities: value.conversations
+          .filter(shouldIncludeConversationActivity)
+          .map((conversation) => ({
+            id: conversation.id,
+            turnId:
+              typeof conversation.turnId === 'string' && conversation.turnId.trim()
+                ? conversation.turnId
+                : undefined,
+            title: conversation.title,
+            text: conversationStatusPartText(conversation.latestPart),
+            progressText: conversationStatusProgressText(conversation.latestPart),
+            runState: conversation.runState,
+            unread: conversation.unread === true,
+            hasError: conversation.runState === 'failed' || (conversation.latestPart?.kind === 'tool-result' && conversation.latestPart.isError === true),
+            petState: conversationPetState(conversation),
+            awaitingApproval: conversationAwaitingApproval(conversation)
+          })),
+        activeId: typeof value.activeConversationId === 'string'
+          ? value.activeConversationId
+          : null
+      };
+    }
+
+    function conversationStatusPartText(part) {
+      if (!part || typeof part !== 'object') return '';
+      if (part.kind === 'interaction') {
+        return part.interactionKind === 'question'
+          ? currentCopy().chooseOption
+          : currentCopy().confirmationBody;
+      }
+      if (part.kind === 'tool-result') return typeof part.summary === 'string' ? part.summary : '';
+      if (part.kind === 'text') {
+        return typeof part.text === 'string' ? part.text : '';
+      }
+      return '';
+    }
+
+    function conversationStatusProgressText(part) {
+      if (!part || typeof part !== 'object' || part.kind !== 'tool-call') return '';
+      const toolName =
+        typeof part.toolName === 'string' && part.toolName.trim()
+          ? part.toolName.trim()
+          : '';
+      return callingToolLabel(toolName);
+    }
+
+    function conversationPetState(conversation) {
+      if (conversation.runState !== 'running') return 'idle';
+      const part = conversation.latestPart;
+      if (part && part.kind === 'interaction') {
+        return 'waiting';
+      }
+      return 'working';
+    }
+
+    function conversationAwaitingApproval(conversation) {
+      const part = conversation.latestPart;
+      return Boolean(
+        conversation.runState === 'running' &&
+        part &&
+        part.kind === 'interaction' &&
+        part.interactionKind === 'tool-approval'
+      );
+    }
+
+    function preferredActivityState() {
+      const priority = ['waiting', 'working'];
+      for (const state of priority) {
+        if (activities.some((activity) => activity.petState === state)) return state;
+      }
+      return 'idle';
+    }
+
+    function handleConversationStatus(status) {
+      const previousFirstActivity = orderedActivities()[0] || null;
+      const previousFirstActivityId = previousFirstActivity?.id || null;
+      const feed = normalizeConversationStatus(status);
+      const feedIds = new Set(feed.activities.map((activity) => activity.id));
+      for (const [id, dismissalKey] of dismissedActivityKeys) {
+        if (!feedIds.has(id) && dismissalKey.startsWith('legacy ')) {
+          dismissedActivityKeys.delete(id);
+        }
+      }
+      activities = feed.activities;
+      syncRiveActivityTrigger();
+      updateConversationBubbleToggle();
+      activeActivityId = activities.some((activity) => activity.id === feed.activeId)
+        ? feed.activeId
+        : activities[0]?.id || null;
+      const current = activeActivity();
+      if (!current) {
+        hideConversationBubble();
+        setPreferredState('idle');
+        return;
+      }
+      const nextFirstActivity = orderedActivities()[0] || null;
+      renderConversationCenter();
+      if (nextFirstActivity?.id !== previousFirstActivityId) {
+        conversationList.scrollTop = 0;
+      }
+      setPreferredState(preferredActivityState());
+    }
+
+    function toggleConversationBubble() {
+      if (orderedActivities().length === 0) return;
+      replyActivityId = null;
+      if (pendingConversationCollapse) {
+        void setConversationCenterExpanded(true);
+      } else if (conversationCenterExpanded) {
+        void setConversationCenterExpanded(false);
+      } else {
+        conversationBubbleExpanded = !conversationBubbleExpanded;
+        renderConversationCenter();
+      }
+    }
+
+    function openConversation(conversationId) {
+      if (
+        !conversationsApi ||
+        typeof conversationsApi.open !== 'function'
+      ) {
+        return;
+      }
+      conversationsApi.open(conversationId);
+    }
+
+    conversationCenterCollapse.addEventListener('click', (event) => {
+      event.stopPropagation();
+      for (const activity of orderedActivities()) {
+        dismissedActivityKeys.set(activity.id, activityDismissalKey(activity));
+        replyDrafts.delete(activity.id);
+        actionErrors.delete(activity.id);
+      }
+      replyActivityId = null;
+      conversationCenterExpanded = false;
+      renderConversationCenter();
+    });
+    conversationList.addEventListener('scroll', updateConversationScrollFade);
+    conversationBubbleToggle.addEventListener('click', (event) => {
+      event.stopPropagation();
+      toggleConversationBubble();
+    });
+
+    function render() {
+      if (!manifest || isRiveManifest(manifest)) return;
+      const atlas = manifest.atlas;
+      const state = manifest.states[stateName] || manifest.states.idle;
+      const safeFrame = reducedMotion.matches ? 0 : frame % state.frames;
+      pet.style.backgroundPosition =
+        String(-safeFrame * atlas.frameWidth) + 'px ' + String(-state.row * atlas.frameHeight) + 'px';
+    }
+
+    function resolveStateName(nextState) {
+      if (!manifest || typeof nextState !== 'string') return 'idle';
+      if (isRiveManifest(manifest)) return 'idle';
+      if (manifest.states[nextState]) return nextState;
+      const legacyAliases = {
+        running_left: 'dragLeft',
+        running_right: 'dragRight',
+        working: 'idle',
+        failed: 'idle',
+        waiting: 'idle',
+        idle_random_1: 'idle',
+        idle_random_2: 'idle'
+      };
+      const legacyState = legacyAliases[nextState];
+      return legacyState && manifest.states[legacyState] ? legacyState : 'idle';
+    }
+
+    function usesPointerIdleFrameInterval() {
+      return (
+        idleFrameRate &&
+        stateName !== 'idle_random_1' &&
+        stateName !== 'idle_random_2' &&
+        stateName !== 'idle_random_3'
+      );
+    }
+
+    function setState(nextState) {
+      if (!manifest) return;
+      const resolvedState = resolveStateName(nextState);
+      if (stateName === resolvedState) return;
+      const usedPointerIdleFrameInterval = usesPointerIdleFrameInterval();
+      stateName = resolvedState;
+      frame = 0;
+      lastFrameAt = performance.now();
+      resize();
+      render();
+      if (usedPointerIdleFrameInterval !== usesPointerIdleFrameInterval()) {
+        restartAnimationSchedule();
+      }
+    }
+
+    function setPreferredState(nextState) {
+      preferredStateName =
+        nextState === 'working' ||
+        nextState === 'waiting'
+          ? nextState
+          : 'idle';
+      clearIdleVariantTimer();
+      if (!interactionStateActive) setState(preferredStateName);
+      scheduleIdleVariant();
+    }
+
+    function handleHostState(nextState) {
+      if (!manifest || typeof nextState !== 'string') return;
+      if (nextState === 'running_left' || nextState === 'running_right') {
+        clearIdleVariantTimer();
+        interactionStateActive = true;
+        setState(nextState);
+        return;
+      }
+      interactionStateActive = false;
+      setState(preferredStateName);
+      scheduleIdleVariant();
+    }
+
+    function clearPointerIdleTimer() {
+      if (!pointerIdleTimer) return;
+      clearTimeout(pointerIdleTimer);
+      pointerIdleTimer = 0;
+    }
+
+    function clearIdleVariantTimer() {
+      if (!idleVariantTimer) return;
+      clearTimeout(idleVariantTimer);
+      idleVariantTimer = 0;
+    }
+
+    function availableIdleVariants() {
+      if (!manifest || isRiveManifest(manifest)) return [];
+      return ['idle_random_1', 'idle_random_2', 'idle_random_3']
+        .filter((name) => Boolean(manifest.states[name]));
+    }
+
+    function scheduleIdleVariant() {
+      clearIdleVariantTimer();
+      if (
+        !manifest ||
+        isRiveManifest(manifest) ||
+        reducedMotion.matches ||
+        interactionStateActive ||
+        preferredStateName !== 'idle' ||
+        stateName !== 'idle'
+      ) {
+        return;
+      }
+      const variants = availableIdleVariants();
+      if (variants.length === 0) return;
+      const delayRange = IDLE_VARIANT_MAX_DELAY_MS - IDLE_VARIANT_MIN_DELAY_MS;
+      const delay = IDLE_VARIANT_MIN_DELAY_MS + Math.floor(Math.random() * (delayRange + 1));
+      idleVariantTimer = setTimeout(() => {
+        idleVariantTimer = 0;
+        if (
+          interactionStateActive ||
+          preferredStateName !== 'idle' ||
+          stateName !== 'idle'
+        ) {
+          return;
+        }
+        const currentVariants = availableIdleVariants();
+        if (currentVariants.length === 0) return;
+        const index = Math.floor(Math.random() * currentVariants.length);
+        setState(currentVariants[index] || currentVariants[0]);
+      }, delay);
+    }
+
+    function clearAnimationSchedule() {
+      if (animationFrameRequest) {
+        cancelAnimationFrame(animationFrameRequest);
+        animationFrameRequest = 0;
+      }
+      if (animationWakeTimer) {
+        clearTimeout(animationWakeTimer);
+        animationWakeTimer = 0;
+      }
+    }
+
+    function scheduleAnimationTick() {
+      if (
+        !manifest ||
+        isRiveManifest(manifest) ||
+        reducedMotion.matches ||
+        animationFrameRequest ||
+        animationWakeTimer
+      ) {
+        return;
+      }
+      if (!usesPointerIdleFrameInterval()) {
+        animationFrameRequest = requestAnimationFrame(tick);
+        return;
+      }
+      const remaining = Math.max(
+        0,
+        IDLE_FRAME_INTERVAL_MS - (performance.now() - lastFrameAt)
+      );
+      animationWakeTimer = setTimeout(() => {
+        animationWakeTimer = 0;
+        animationFrameRequest = requestAnimationFrame(tick);
+      }, remaining);
+    }
+
+    function restartAnimationSchedule() {
+      clearAnimationSchedule();
+      scheduleAnimationTick();
+    }
+
+    function setIdleFrameRate(enabled) {
+      if (idleFrameRate === enabled) return;
+      idleFrameRate = enabled;
+      lastFrameAt = performance.now();
+      restartAnimationSchedule();
+    }
+
+    function handlePointerPresence(inside) {
+      pointerInside = inside;
+      clearPointerIdleTimer();
+      if (inside) {
+        setIdleFrameRate(false);
+        return;
+      }
+      handleRivePointerOut();
+      if (idleFrameRate) return;
+      pointerIdleTimer = setTimeout(() => {
+        pointerIdleTimer = 0;
+        setIdleFrameRate(true);
+      }, POINTER_IDLE_DELAY_MS);
+    }
+
+    function handleHostClick(data) {
+      const values = [
+        data.button,
+        data.clientX,
+        data.clientY,
+        data.normalizedX,
+        data.normalizedY
+      ];
+      if (!values.every((value) => typeof value === 'number' && Number.isFinite(value))) {
+        return;
+      }
+      setKeyboardNavigation(false);
+      stage.dispatchEvent(new CustomEvent(CLICK_MESSAGE_TYPE, {
+        bubbles: true,
+        detail: {
+          button: data.button,
+          clientX: data.clientX,
+          clientY: data.clientY,
+          normalizedX: data.normalizedX,
+          normalizedY: data.normalizedY
+        }
+      }));
+    }
+
+    function tick(now) {
+      animationFrameRequest = 0;
+      if (manifest) {
+        const state = manifest.states[stateName] || manifest.states.idle;
+        const interval = usesPointerIdleFrameInterval()
+          ? IDLE_FRAME_INTERVAL_MS
+          : 1000 / state.fps;
+        if (!reducedMotion.matches && now - lastFrameAt >= interval) {
+          if (!state.loop && frame >= state.frames - 1) {
+            interactionStateActive = false;
+            setState(preferredStateName);
+            scheduleIdleVariant();
+            scheduleAnimationTick();
+            return;
+          }
+          const steps = Math.max(1, Math.floor((now - lastFrameAt) / interval));
+          frame = state.loop ? (frame + steps) % state.frames : Math.min(state.frames - 1, frame + steps);
+          lastFrameAt += steps * interval;
+          render();
+        }
+      }
+      scheduleAnimationTick();
+    }
+
+    addEventListener('message', (event) => {
+      const data = event.data;
+      if (!data) return;
+      if (data.type === MESSAGE_TYPE) {
+        handleHostState(data.state);
+      } else if (data.type === POINTER_PRESENCE_MESSAGE_TYPE) {
+        handlePointerPresence(data.inside === true);
+      } else if (data.type === DISPLAY_SCALE_MESSAGE_TYPE) {
+        const scale = Number(data.scale);
+        displayScale = Number.isFinite(scale)
+          ? Math.max(DISPLAY_SCALE_MIN, Math.min(DISPLAY_SCALE_MAX, scale))
+          : 1;
+        resize();
+      } else if (data.type === ANCHOR_MESSAGE_TYPE) {
+        const xRatio = Number(data.xRatio);
+        const bottomRatio = Number(data.bottomRatio);
+        petAnchorXRatio = Number.isFinite(xRatio)
+          ? Math.min(1, Math.max(0, xRatio))
+          : 0.5;
+        petAnchorBottomRatio = Number.isFinite(bottomRatio)
+          ? Math.min(1, Math.max(0, bottomRatio))
+          : 1;
+        resize();
+      } else if (data.type === CLICK_MESSAGE_TYPE) {
+        handleHostClick(data);
+      }
+    });
+    parent.postMessage({ type: RUNTIME_READY_MESSAGE_TYPE }, '*');
+    const widgetApi = window.DaimonWidget;
+    const conversationsApi = widgetApi && widgetApi.conversations;
+    conversationBubble.setAttribute('role', 'region');
+    applyHostLocale(
+      widgetApi && typeof widgetApi.locale === 'string'
+        ? widgetApi.locale
+        : document.documentElement.lang || navigator.language
+    );
+    const stopLocaleChange =
+      widgetApi && typeof widgetApi.onLocaleChange === 'function'
+        ? widgetApi.onLocaleChange((nextLocale) => {
+            applyHostLocale(
+              typeof nextLocale === 'string' ? nextLocale : widgetApi.locale
+            );
+          })
+        : null;
+    let stopConversationStatusChange = null;
+    if (
+      conversationsApi &&
+      typeof conversationsApi.onStatusChange === 'function'
+    ) {
+      stopConversationStatusChange = conversationsApi.onStatusChange(
+        handleConversationStatus
+      );
+    }
+    function cleanupRivePet() {
+      const instance = riveInstance;
+      riveInstance = null;
+      riveLookInputs = new Map();
+      riveActivityInputs = new Map();
+      resetRiveLookDirection();
+      if (!instance) return;
+      try {
+        instance.stopRendering?.();
+      } catch {
+        // Cleanup continues so the WASM instance can still be released.
+      }
+      try {
+        instance.cleanup?.();
+      } catch {
+        // Page teardown must remain best-effort.
+      }
+    }
+    addEventListener('pagehide', (event) => {
+      if (event.persisted) return;
+      cleanupRivePet();
+      if (typeof stopLocaleChange === 'function') stopLocaleChange();
+      if (typeof stopConversationStatusChange === 'function') {
+        stopConversationStatusChange();
+      }
+    });
+    addEventListener('resize', resize);
+    reducedMotion.addEventListener?.('change', () => {
+      clearIdleVariantTimer();
+      render();
+      restartAnimationSchedule();
+      scheduleIdleVariant();
+    });
+    rivePet.addEventListener('mouseover', handleRivePointerMove);
+    rivePet.addEventListener('mousemove', handleRivePointerMove);
+    rivePet.addEventListener('mouseout', handleRivePointerOut);
+
+    function loadRivePet(value) {
+      const riveApi = window.rive;
+      const wasmUrl = window.__DAIMON_RIVE_WASM_URL__;
+      if (!riveApi || typeof riveApi.Rive !== 'function' || typeof wasmUrl !== 'string') {
+        throw new Error('riveUnavailable');
+      }
+      riveApi.RuntimeLoader.setWasmUrl(wasmUrl);
+      rivePet.setAttribute('aria-label', value.name || currentCopy().petAria);
+      rivePet.style.display = 'block';
+      const stateMachine = value.rive.stateMachine;
+      const artboard = value.rive.artboard;
+      riveInstance = limitRiveFrameRate(
+        new riveApi.Rive({
+          canvas: rivePet,
+          src: '/workspace/' + encodeURIComponent(value.rive.file),
+          autoplay: false,
+          autoBind: true,
+          automaticallyHandleEvents: true,
+          ...(typeof artboard === 'string' ? { artboard } : {}),
+          ...(typeof stateMachine === 'string' ? { stateMachines: stateMachine } : {}),
+          layout: new riveApi.Layout({
+            fit: riveApi.Fit.Contain,
+            alignment: riveApi.Alignment.BottomCenter
+          }),
+          onLoad: () => {
+            bindRiveLookInputs(stateMachine);
+            resize();
+            if (riveInstance && typeof riveInstance.play === 'function') {
+              riveInstance.play(stateMachine);
+            }
+          },
+          onLoadError: () => showError('riveLoadFailed')
+        }),
+        () => riveTargetFrameRate
+      );
+      resize();
+    }
+
+    fetch('/workspace/pet.json', { cache: 'no-store' })
+      .then((response) => {
+        if (!response.ok) throw new Error('manifestLoadFailed');
+        return response.json();
+      })
+      .then((value) => {
+        if (!value || typeof value !== 'object') {
+          throw new Error('manifestInvalid');
+        }
+        manifest = value;
+        applyBubbleTheme(value.theme && value.theme.bubble);
+        if (isRiveManifest(value)) {
+          if (!value.rive || value.rive.file !== 'pet.riv') {
+            throw new Error('riveManifestInvalid');
+          }
+          loadRivePet(value);
+          return;
+        }
+        if (!value.atlas || !value.states || !value.states.idle) {
+          throw new Error('spritesheetManifestInvalid');
+        }
+        pet.setAttribute('aria-label', value.name || currentCopy().petAria);
+        pet.style.width = String(value.atlas.frameWidth) + 'px';
+        pet.style.height = String(value.atlas.frameHeight) + 'px';
+        pet.style.backgroundImage = 'url("/workspace/' + encodeURIComponent(value.spritesheet) + '")';
+        pet.style.backgroundSize =
+          String(value.atlas.frameWidth * value.atlas.columns) + 'px ' +
+          String(value.atlas.frameHeight * value.atlas.rows) + 'px';
+        pet.style.display = 'block';
+        resize();
+        measureSpritesheetWhenReady();
+        setState(preferredStateName);
+        render();
+        restartAnimationSchedule();
+        scheduleIdleVariant();
+      })
+      .catch((reason) => showError(reason instanceof Error ? reason.message : String(reason)));
+  
+    /* hover-wave-interaction: pet waves back when the pointer hovers it */
+    let hoverWaveTimer = 0;
+    let hoverWaveCooldownUntil = 0;
+
+    function triggerHoverWave() {
+      if (!manifest || isRiveManifest(manifest)) return;
+      if (interactionStateActive || preferredStateName !== 'idle') return;
+      if (stateName !== 'idle' && stateName !== 'idle_random_2') return;
+      const nowTime = Date.now();
+      if (nowTime < hoverWaveCooldownUntil) return;
+      const wavePool = ['idle_random_1', 'idle_random_3']
+        .filter((name) => Boolean(manifest.states[name]));
+      if (wavePool.length === 0) return;
+      const waveName = wavePool[Math.floor(Math.random() * wavePool.length)];
+      const waveState = manifest.states[waveName];
+      hoverWaveCooldownUntil = nowTime + 6000;
+      interactionStateActive = true;
+      clearIdleVariantTimer();
+      setState(waveName);
+      clearTimeout(hoverWaveTimer);
+      hoverWaveTimer = setTimeout(() => {
+        interactionStateActive = false;
+        setState(preferredStateName);
+        scheduleIdleVariant();
+      }, Math.round((waveState.frames * 1000) / waveState.fps));
+    }
+
+    if (pet) {
+      pet.addEventListener('pointerenter', triggerHoverWave);
+    }
+    const hoverWaveOriginalPointerPresence = handlePointerPresence;
+    handlePointerPresence = function (inside) {
+      hoverWaveOriginalPointerPresence(inside);
+      if (inside === true) triggerHoverWave();
+    };
+
+    /* look-at-cursor: sprite pets lean toward the cursor */
+    let lookRafId = 0;
+    let lookBaseTransform = pet ? (pet.style.transform || '') : '';
+    let lookTargetX = 0;
+    let lookTargetY = 0;
+    let lookCurrentX = 0;
+    let lookCurrentY = 0;
+
+    const lookOriginalResize = resize;
+    resize = function () {
+      lookOriginalResize();
+      if (pet) lookBaseTransform = pet.style.transform || '';
+    };
+
+    function lookApply() {
+      lookRafId = 0;
+      if (!pet || isRiveManifest(manifest)) return;
+      lookCurrentX += (lookTargetX - lookCurrentX) * 0.16;
+      lookCurrentY += (lookTargetY - lookCurrentY) * 0.16;
+      const settled =
+        !lookTargetX && !lookTargetY &&
+        Math.abs(lookCurrentX) < 0.05 && Math.abs(lookCurrentY) < 0.05;
+      pet.style.transform = lookBaseTransform + (settled
+        ? ''
+        : ' translate(' + lookCurrentX.toFixed(2) + 'px,' + lookCurrentY.toFixed(2) +
+          'px) rotate(' + (lookCurrentX * 0.22).toFixed(2) + 'deg)');
+      if (!settled) lookRafId = requestAnimationFrame(lookApply);
+    }
+
+    function lookKick() {
+      if (!lookRafId) lookRafId = requestAnimationFrame(lookApply);
+    }
+
+    function lookOnMove(event) {
+      if (!pet || isRiveManifest(manifest)) return;
+      const rect = pet.getBoundingClientRect();
+      const atlasWidth = manifest.atlas ? manifest.atlas.frameWidth : rect.width;
+      const scale = atlasWidth > 0 ? rect.width / atlasWidth : 1;
+      const dx = event.clientX - (rect.left + rect.width / 2);
+      const dy = event.clientY - (rect.top + rect.height / 2);
+      const deadZone = Math.min(rect.width, rect.height) * 0.15;
+      if (Math.hypot(dx, dy) <= deadZone) {
+        lookTargetX = 0;
+        lookTargetY = 0;
+      } else {
+        const angle = Math.atan2(dy, dx);
+        const magnitude = Math.min(16, 6 + Math.hypot(dx, dy) * 0.03) / Math.max(scale, 0.2);
+        lookTargetX = Math.cos(angle) * magnitude;
+        lookTargetY = Math.sin(angle) * magnitude * 0.45;
+      }
+      lookKick();
+    }
+
+    document.addEventListener('mousemove', lookOnMove);
+    document.addEventListener('mouseleave', () => {
+      lookTargetX = 0;
+      lookTargetY = 0;
+      lookKick();
+    });
+
+    /* pet-display-x2-range: 2x display scale + inflated interactive region */
+    const PET_DISPLAY_SCALE_FACTOR = 2;
+    const PET_INTERACTIVE_MARGIN_PX = 24;
+
+    (function applyPetDisplayScale() {
+      displayScale = Math.min(
+        DISPLAY_SCALE_MAX,
+        Math.max(DISPLAY_SCALE_MIN, displayScale * PET_DISPLAY_SCALE_FACTOR)
+      );
+      resize();
+    })();
+
+    addEventListener('message', (event) => {
+      const data = event.data;
+      if (!data || data.type !== DISPLAY_SCALE_MESSAGE_TYPE) return;
+      // 宿主消息处理完后(监听器按注册顺序执行)再把缩放乘 2
+      queueMicrotask(() => {
+        displayScale = Math.min(
+          DISPLAY_SCALE_MAX,
+          Math.max(DISPLAY_SCALE_MIN, displayScale * PET_DISPLAY_SCALE_FACTOR)
+        );
+        resize();
+      });
+    });
+
+    const rangeOriginalReportInteractiveRegion = reportInteractiveRegion;
+    reportInteractiveRegion = function (dragRect) {
+      const m = PET_INTERACTIVE_MARGIN_PX;
+      rangeOriginalReportInteractiveRegion({
+        x: Math.round(dragRect.x - m),
+        y: Math.round(dragRect.y - m),
+        width: Math.round(dragRect.width + m * 2),
+        height: Math.round(dragRect.height + m * 2)
+      });
+    };
+
+    /* pet-interactions: startup greet, tap-to-jump, long-hover tease */
+    let piTimer = 0;
+    let piTeaseTimer = 0;
+    let piCooldownUntil = 0;
+    let piHoverInside = false;
+
+    function piAvailable(names) {
+      if (!manifest || isRiveManifest(manifest)) return [];
+      return names.filter((name) => Boolean(manifest.states[name]));
+    }
+
+    function piReact(names, cooldownMs, holdLoops) {
+      if (!manifest || isRiveManifest(manifest)) return;
+      if (interactionStateActive || preferredStateName !== 'idle') return;
+      const nowTime = Date.now();
+      if (nowTime < piCooldownUntil) return;
+      const pool = piAvailable(names);
+      if (pool.length === 0) return;
+      const name = pool[Math.floor(Math.random() * pool.length)];
+      const state = manifest.states[name];
+      piCooldownUntil = nowTime + cooldownMs;
+      interactionStateActive = true;
+      clearIdleVariantTimer();
+      setState(name);
+      clearTimeout(piTimer);
+      const loopMs = (state.frames * 1000) / state.fps;
+      piTimer = setTimeout(() => {
+        interactionStateActive = false;
+        setState(preferredStateName);
+        scheduleIdleVariant();
+      }, Math.round(loopMs * (holdLoops || 1)));
+    }
+
+    function onPetTap() {
+      piReact(['idle_random_2', 'idle_random_3'], 3000, 1);
+    }
+
+    function onPetEnterForTease() {
+      piHoverInside = true;
+      clearTimeout(piTeaseTimer);
+      piTeaseTimer = setTimeout(() => {
+        if (piHoverInside) piReact(['failed'], 6000, 2);
+      }, 2600);
+    }
+
+    function onPetLeaveForTease() {
+      piHoverInside = false;
+      clearTimeout(piTeaseTimer);
+    }
+
+    if (pet) {
+      pet.addEventListener('pointerdown', onPetTap);
+      pet.addEventListener('pointerenter', onPetEnterForTease);
+      pet.addEventListener('pointerleave', onPetLeaveForTease);
+    }
+
+    let piGreetTries = 0;
+    function piGreetLoop() {
+      if (manifest && !isRiveManifest(manifest)) {
+        piReact(['idle_random_1', 'idle_random_3'], 0, 1);
+        return;
+      }
+      if (++piGreetTries < 20) setTimeout(piGreetLoop, 500);
+    }
+    setTimeout(piGreetLoop, 1200);
+
+    /* bubble-rich-info: elapsed time + per-turn tool usage in the bubble */
+    const bubbleInfoOriginalBodyText = activityBodyText;
+    const bubbleInfoOriginalNormalize = normalizeConversationStatus;
+    const bubbleInfoSince = new Map();
+    const bubbleInfoToolSets = new Map();
+    let bubbleInfoLastTool = '';
+
+    normalizeConversationStatus = function (status) {
+      const feed = bubbleInfoOriginalNormalize(status);
+      try {
+        const conversations =
+          status && Array.isArray(status.conversations) ? status.conversations : [];
+        for (const conv of conversations) {
+          const part = conv && conv.latestPart;
+          if (
+            !part ||
+            part.kind !== 'tool-call' ||
+            typeof part.toolName !== 'string' ||
+            !part.toolName.trim()
+          ) {
+            continue;
+          }
+          const key = String(conv.id);
+          const turnId = typeof conv.turnId === 'string' ? conv.turnId : '';
+          let entry = bubbleInfoToolSets.get(key);
+          if (!entry || entry.turnId !== turnId) {
+            entry = { turnId: turnId, tools: [] };
+            bubbleInfoToolSets.set(key, entry);
+          }
+          const name = part.toolName.trim();
+          if (entry.tools.indexOf(name) < 0 && entry.tools.length < 8) {
+            entry.tools.push(name);
+          }
+          bubbleInfoLastTool = name;
+        }
+      } catch (bubbleInfoNormalizeErr) { /* noop */ }
+      return feed;
+    };
+
+    function bubbleInfoIsZh() {
+      return String(currentLocaleTag || '').toLowerCase().indexOf('zh') === 0;
+    }
+
+    function bubbleInfoElapsedLabel(totalSeconds) {
+      const minutes = Math.floor(totalSeconds / 60);
+      if (minutes >= 1) {
+        return bubbleInfoIsZh()
+          ? '已工作 ' + minutes + ' 分钟'
+          : 'Worked ' + minutes + ' min';
+      }
+      return bubbleInfoIsZh()
+        ? '已工作 ' + totalSeconds + ' 秒'
+        : 'Worked ' + totalSeconds + 's';
+    }
+
+    activityBodyText = function (activity) {
+      const baseText = bubbleInfoOriginalBodyText(activity);
+      const key =
+        String(activity && activity.id) + ':' +
+        String((activity && activity.turnId) || '');
+      const nowTime = Date.now();
+      if (!activity || activity.runState !== 'running') {
+        bubbleInfoSince.delete(key);
+        return baseText;
+      }
+      if (!bubbleInfoSince.has(key)) bubbleInfoSince.set(key, nowTime);
+      const elapsedSec = Math.max(
+        0,
+        Math.floor((nowTime - bubbleInfoSince.get(key)) / 1000)
+      );
+      const parts = [baseText];
+      const entry = bubbleInfoToolSets.get(String(activity.id));
+      if (entry && entry.tools.length > 0) {
+        const names = entry.tools.slice(0, 3).join(bubbleInfoIsZh() ? '、' : ', ');
+        const more = entry.tools.length > 3 ? '…' : '';
+        parts.push(
+          entry.tools.length === 1
+            ? bubbleInfoIsZh()
+              ? '已用工具 ' + names
+              : 'tool: ' + names
+            : bubbleInfoIsZh()
+              ? '已用 ' + entry.tools.length + ' 种工具 ' + names + more
+              : entry.tools.length + ' tools: ' + names + more
+        );
+      } else if (
+        bubbleInfoLastTool &&
+        baseText.indexOf(bubbleInfoLastTool) < 0
+      ) {
+        parts.push(
+          bubbleInfoIsZh()
+            ? '刚用过 ' + bubbleInfoLastTool
+            : 'last tool: ' + bubbleInfoLastTool
+        );
+      }
+      if (elapsedSec >= 20) parts.push(bubbleInfoElapsedLabel(elapsedSec));
+      return parts.join(' · ');
+    };
+
+    setInterval(function () {
+      try {
+        if (!activities.some(function (a) { return a.runState === 'running'; })) return;
+        // 卡片文本由 renderConversationCenter 负责,render 只画宠物精灵
+        if (typeof renderConversationCenter === 'function') {
+          renderConversationCenter();
+        } else if (typeof render === 'function') {
+          render();
+        }
+      } catch (bubbleInfoErr) { /* noop */ }
+    }, 15000);
+
+  })();
+  </script>
+</body>
+</html>
