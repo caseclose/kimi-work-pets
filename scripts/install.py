@@ -163,6 +163,24 @@ def main() -> None:
         print("⚠️ 气泡补丁注入失败(不影响桌宠使用),可稍后手动运行 "
               "python3 scripts/patch-bubble-info.py", file=sys.stderr)
 
+    print("注入空闲闪烁修复补丁(唤醒补帧钳制)...")
+    patch = Path(__file__).parent / "patch-idle-flicker.py"
+    try:
+        subprocess.run([sys.executable, str(patch)]
+                       + (["--appdata", args.appdata] if args.appdata else []), check=True)
+    except subprocess.CalledProcessError:
+        print("⚠️ 空闲闪烁补丁注入失败(不影响桌宠使用),可稍后手动运行 "
+              "python3 scripts/patch-idle-flicker.py", file=sys.stderr)
+
+    print("注入精灵图 canvas 渲染补丁(消除唤醒空白帧)...")
+    patch = Path(__file__).parent / "patch-sprite-canvas.py"
+    try:
+        subprocess.run([sys.executable, str(patch)]
+                       + (["--appdata", args.appdata] if args.appdata else []), check=True)
+    except subprocess.CalledProcessError:
+        print("⚠️ canvas 渲染补丁注入失败(不影响桌宠使用),可稍后手动运行 "
+              "python3 scripts/patch-sprite-canvas.py", file=sys.stderr)
+
     print()
     print("✅ 安装完成。重启 Kimi 应用(或重新开关桌宠)后生效。")
     print("   回滚: python3 scripts/restore.py")

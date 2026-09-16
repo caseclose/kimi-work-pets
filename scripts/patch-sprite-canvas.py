@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""修复桌宠长时间挂起后播放动画时"人物消失一小会儿"的问题。
+"""patch-sprite-canvas.py — 修复桌宠长时间挂起后播放动画时"人物消失一小会儿"
 
 根因:精灵图通过 CSS background-image + background-position 渲染。macOS 挂起
 不可见 WebView 后,WebKit 会丢弃已解码的图片数据;唤醒后第一次切帧时,CSS 背景
@@ -12,15 +12,16 @@
 1. 新增 ensurePetCanvas / loadSpriteSheetImage 辅助函数,render() 优先走 canvas;
 2. 应用 spritesheet manifest 时初始化 canvas 并预载精灵图;
 3. visibilitychange 唤醒处理里补一次 render(),恢复可见时立即同步重绘。
-"""
-import os
-import sys
 
-WIDGET_WS = os.path.expanduser(
-    "~/Library/Application Support/kimi-desktop/daimon-share/daimon/agents/main/"
-    "blueprint/widgets/widget_d53cf028-d0fd-4751-b955-28e325bd3e01/workspace"
-)
-TARGET = os.path.join(WIDGET_WS, "index.html")
+用法:
+    python3 scripts/patch-sprite-canvas.py [--appdata <Kimi应用数据目录> | <index.html 路径>]
+"""
+import argparse
+import sys
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).parent))
+from petlib import blueprint_dir, bump_widget_updated_at, find_pet_widget_id
 
 OLD_RENDER = (
     "    function render() {\n"
@@ -119,9 +120,24 @@ NEW_WAKE = (
 )
 
 
-def main():
-    with open(TARGET, "rb") as f:
-        text = f.read().decode("utf-8")
+def main() -> int:
+    parser = argparse.ArgumentParser(description="精灵图改 canvas 渲染,消除唤醒空白帧")
+    parser.add_argument("index", nargs="?", default=None, help="直接指定渲染器 index.html 路径")
+    parser.add_argument("--appdata", default=None, help="Kimi 应用数据目录(路径不符时手动指定)")
+    args = parser.parse_args()
+
+    if args.index:
+        target = Path(args.index)
+        base = widget_id = None
+    else:
+        base = blueprint_dir(args.appdata)
+        widget_id = find_pet_widget_id(base)
+        target = base / "widgets" / widget_id / "workspace" / "index.html"
+    if not target.is_file():
+        print(f"错误: 未找到 {target}", file=sys.stderr)
+        return 1
+
+    text = target.read_text(encoding="utf-8")
 
     if "ensurePetCanvas" in text:
         print("补丁已存在,无需重复应用。")
@@ -134,14 +150,15 @@ def main():
     ):
         count = text.count(old)
         if count != 1:
-            print(f"错误: [{name}] 锚点出现 {count} 次,预期 1 次,未修改。")
+            print(f"错误: [{name}] 锚点出现 {count} 次,预期 1 次,未修改。", file=sys.stderr)
             return 1
         text = text.replace(old, new)
         print("已应用:", name)
 
-    with open(TARGET, "wb") as f:
-        f.write(text.encode("utf-8"))
-    print("目标:", TARGET)
+    target.write_text(text, encoding="utf-8")
+    if base is not None:
+        bump_widget_updated_at(base, widget_id)
+    print("目标:", target)
     return 0
 
 

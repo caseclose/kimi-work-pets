@@ -90,13 +90,15 @@ manifest 字段与宿主状态映射详见 [Kimi Work 桌宠机制调研](https:
 部分宠物素材带有第 9 行隐藏动作(眨眼、庆祝等),转换时已映射为 `idle_random_3`
 纳入随机彩蛋池;没有该行的宠物自动跳过,互不影响。
 
-交互由四个安装时自动注入的补丁实现(均幂等,可单独重复运行,
+交互与稳定性由安装时自动注入的补丁实现(均幂等,可单独重复运行,
 可加 `--appdata` 指定应用数据目录):
 [patch-hover-interaction.py](scripts/patch-hover-interaction.py) ·
 [patch-pet-interactions.py](scripts/patch-pet-interactions.py) ·
 [patch-bubble-info.py](scripts/patch-bubble-info.py) ·
 [patch-look-at-cursor.py](scripts/patch-look-at-cursor.py) ·
-[patch-pet-display.py](scripts/patch-pet-display.py)。
+[patch-pet-display.py](scripts/patch-pet-display.py) ·
+[patch-idle-flicker.py](scripts/patch-idle-flicker.py) ·
+[patch-sprite-canvas.py](scripts/patch-sprite-canvas.py)。
 
 ## 已知问题:空闲后闪烁(已修复)
 
@@ -113,8 +115,8 @@ WebKit 挂起后丢弃已解码图片数据,唤醒后第一次切帧时 CSS 背�
 canvas 2d 渲染(`drawImage` 对未解码图片同步重解码,不出空白帧),并在唤醒时
 立即同步重绘;CSS 背景路径保留为图片加载前的回退。
 
-两个补丁均幂等,可重复执行;路径硬编码见脚本。重启 Kimi 应用后生效;
-安装新宠物(`install.py` 重写渲染器页面)后需重跑。
+两个补丁均幂等,支持 `--appdata` 参数;`install.py` 安装时会自动应用,无需手动重跑。
+重启 Kimi 应用后生效。
 
 ## 版权
 
