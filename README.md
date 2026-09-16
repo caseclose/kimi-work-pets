@@ -98,6 +98,20 @@ manifest 字段与宿主状态映射详见 [Kimi Work 桌宠机制调研](https:
 [patch-look-at-cursor.py](scripts/patch-look-at-cursor.py) ·
 [patch-pet-display.py](scripts/patch-pet-display.py)。
 
+## 已知问题:空闲后闪烁(已修复)
+
+长时间不操作鼠标键盘后,桌宠可能在屏幕重新合成时"瞬移闪一下"。原因是渲染器在
+指针离开 1 秒后切到 800ms 慢速动画档;macOS 挂起不可见 WebView 期间计时器冻结,
+唤醒后 `tick()` 按累积时间一次补跳几十上百帧,视觉上是姿势瞬移。
+
+修复:运行 `python3 scripts/patch-idle-flicker.py`(幂等,重复执行安全;不支持
+`--appdata`,路径硬编码见脚本)。补丁做两件事:
+
+1. `tick()` 内挂起超过 4 个帧间隔时只前进 1 帧并把时间轴对齐到当前,不再补帧跳变;
+2. 新增 `visibilitychange` 监听,页面恢复可见时重置时间轴并重启动画调度。
+
+重启 Kimi 应用后生效。安装新宠物(`install.py` 重写渲染器页面)后需重跑一次该补丁。
+
 ## 版权
 
 - 代码:MIT(见 LICENSE)。
@@ -123,5 +137,6 @@ Installation also injects interactions: a startup greeting, random hover/tap rea
 lean toward the cursor as you move the mouse around.
 All scripts accept `--appdata <dir>` if the app data folder is located elsewhere.
 Manifest format and host-state mapping: [how the Kimi Work pet works](https://caseclose.github.io/kimi-work-pets/how-kimi-work-pet-works.html).
+Known issue fixed: after long pointer inactivity the pet could visibly "jump" when the screen recomposited — the renderer clamps frame catch-up after system suspension and resets on visibility recovery; apply `scripts/patch-idle-flicker.py` and restart the app.
 Code is MIT; bundled assets are community fan art (CC BY-NC, personal use only).
 Not affiliated with Moonshot AI or OpenAI.
