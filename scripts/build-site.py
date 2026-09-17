@@ -4,7 +4,7 @@
 用法: python3 scripts/build-site.py
 
 - 拷贝 assets/<pet>/pet-preview.png 到 docs/assets/<pet>/
-- 将 pet-states.gif 压缩为 docs/assets/<pet>/pet-states.webp(宽度上限 360px,保留动画)
+- 拷贝 pet-states.gif,并压缩为 docs/assets/<pet>/pet-states.webp(宽度上限 360px,保留动画)
 - 生成 docs/index.html、docs/robots.txt、docs/sitemap.xml
 
 注意: docs/index.html 在初版生成后经过多轮手工打磨(主题切换、品牌图标、
@@ -56,6 +56,7 @@ def build_assets() -> None:
         shutil.copy2(src_dir / "pet-preview.png", dst_dir / "pet-preview.png")
 
         src_gif = src_dir / "pet-states.gif"
+        shutil.copy2(src_gif, dst_dir / "pet-states.gif")
         dst_webp = dst_dir / "pet-states.webp"
         im = Image.open(src_gif)
         frames, durations = [], []

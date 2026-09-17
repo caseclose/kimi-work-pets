@@ -3,5 +3,6 @@
   "displayName": "Dimo",
   "description": "A playful blue star-tailed Codex companion with bright ears, orange cheeks, and tiny fangs.",
   "spritesheetPath": "spritesheet.webp",
-  "kind": "animal"
+  "kind": "animal",
+  "spriteVersionNumber": 2
 }

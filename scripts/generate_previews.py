@@ -7,7 +7,7 @@
 输出:
     pet-preview.png   待机帧 2x 预览图
     pet-states.gif    各状态带标注的演示动画
-    pet-rows.png      9 行原始动作条带(逐行标注)
+    pet-rows.png      9/11 行原始动作条带(逐行标注)
 """
 import argparse
 import os
@@ -25,7 +25,7 @@ BG = (238, 243, 249)          # 浅色背景
 LABEL_BG = (220, 230, 242)
 TEXT = (45, 62, 82)
 
-COLS, ROWS = 8, 9
+COLS, BASE_ROWS, V2_ROWS = 8, 9, 11
 FW, FH = 192, 208
 
 # 精灵图每行的语义(来自 Codex 社区规范)与 Kimi Work 状态映射
@@ -39,6 +39,8 @@ ROW_META = [
     ("row 6", "waiting 等待张望", "waiting"),
     ("row 7", "running 工作奔跑", "working"),
     ("row 8", "react 互动彩蛋", "idle_random_3"),
+    ("row 9", "look 000°–157.5°", "视线方向 0–7"),
+    ("row 10", "look 180°–337.5°", "视线方向 8–15"),
 ]
 
 # 演示 GIF 中依次展示的状态: (行, 实际帧数, fps, 标注)
@@ -119,6 +121,16 @@ def make_states_gif(sheet: Image.Image, out: Path, scale: int = 2) -> None:
         for _ in range(2):
             frames.append(holder.copy())
             durations.append(300)
+    if sheet.height == V2_ROWS * FH:
+        holder = labeled("look directions · 16 方向视线跟随")
+        for index in range(16):
+            row, column = 9 + index // COLS, index % COLS
+            cell = sheet.crop((column * FW, row * FH, (column + 1) * FW, (row + 1) * FH))
+            cell = cell.resize((wf, hf), Image.NEAREST)
+            canvas = holder.copy()
+            canvas.paste(flatten(cell, (wf, hf)), (0, bar))
+            frames.append(canvas)
+            durations.append(180)
     frames[0].save(
         out / "pet-states.gif",
         save_all=True,
@@ -131,13 +143,14 @@ def make_states_gif(sheet: Image.Image, out: Path, scale: int = 2) -> None:
 
 
 def make_rows_png(sheet: Image.Image, out: Path, scale: float = 0.5) -> None:
+    rows = sheet.height // FH
     tw, th = int(FW * scale), int(FH * scale)
     bar, pad = 30, 6
-    width, height = tw + pad * 2, (th + bar + pad) * ROWS + pad
+    width, height = tw + pad * 2, (th + bar + pad) * rows + pad
     canvas = Image.new("RGB", (width, height), BG)
     draw = ImageDraw.Draw(canvas)
     font_row = font(18)
-    for r in range(ROWS):
+    for r in range(rows):
         y0 = pad + r * (th + bar + pad)
         label, desc, mapped = ROW_META[r]
         draw.rectangle([0, y0, width, y0 + bar], fill=LABEL_BG)
@@ -162,7 +175,10 @@ def main() -> None:
     out = Path(args.out)
     out.mkdir(parents=True, exist_ok=True)
     sheet = Image.open(args.spritesheet).convert("RGBA")
-    assert sheet.size == (COLS * FW, ROWS * FH), f"unexpected spritesheet size {sheet.size}"
+    assert sheet.size in {
+        (COLS * FW, BASE_ROWS * FH),
+        (COLS * FW, V2_ROWS * FH),
+    }, f"unexpected spritesheet size {sheet.size}"
 
     make_preview(sheet, out)
     make_states_gif(sheet, out)

@@ -5,6 +5,8 @@ Kimi Work 桌面端基于 Electron,各平台应用数据目录:
     Windows %APPDATA%\\kimi-desktop  (C:\\Users\\<用户>\\AppData\\Roaming\\kimi-desktop)
     Linux   ~/.config/kimi-desktop  (按 XDG 惯例推断)
 """
+from __future__ import annotations
+
 import json
 import os
 import sys

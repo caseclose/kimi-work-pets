@@ -6,7 +6,7 @@
 
 **在线画廊（GitHub Pages）：** [https://caseclose.github.io/kimi-work-pets/](https://caseclose.github.io/kimi-work-pets/) — 浏览全部 14 款宠物、GIF 演示与安装说明。
 
-Kimi Work 内置桌宠除默认 Rive 形象外,还支持精灵图(spritesheet)模式,与 Codex 社区宠物素材(8×9 网格、192×208 单元格)格式同源。本仓库提供转换、安装、回滚工具;社区画廊里的宠物按同样流程都可以装。
+Kimi Work 内置桌宠除默认 Rive 形象外,还支持精灵图(spritesheet)模式,与 Codex 社区宠物素材(8×9 网格、192×208 单元格)格式同源。本仓库也支持 Codex v2 的 8×11 图集:后两行提供 16 个视线方向。本仓库提供转换、安装、回滚工具;社区画廊里的宠物按同样流程都可以装。
 
 ## 内置宠物
 
@@ -50,7 +50,7 @@ python3 scripts/install.py pets/dimo   # 换成 pets/ 下任意目录名即可
 2. 转换:`python3 scripts/convert-codex-pet.py <目录>`(自动统计每行实际帧数,原清单备份为 `pet.codex.json`);
 3. 安装:`python3 scripts/install.py <目录>`。
 
-转换器按标准 9 行布局映射动作:
+转换器自动识别标准 v1(9 行)和 v2(11 行)布局。前 9 行都按下表映射动作:
 
 | 行 | 语义 | Kimi Work 状态 |
 | --- | --- | --- |
@@ -63,6 +63,10 @@ python3 scripts/install.py pets/dimo   # 换成 pets/ 下任意目录名即可
 | 6 | waiting | 等待确认 |
 | 7 | running | 工作中 |
 | 8 | react/review | 空闲彩蛋 3(互动,全部宠物已映射) |
+
+v2 的第 9、10 行按从正上方 0° 起、顺时针每 22.5° 一帧映射为 16 个
+`lookDirections`。当前内置 Dimo 已升级到 v2;光标越过角色中心死区后会直接切换
+对应方向帧，而不是只做整体倾斜。
 
 布局不符时,用 `scripts/inspect_spritesheet.py` 逐行确认动作后手动调整 `pet.json`;
 manifest 字段与宿主状态映射详见 [Kimi Work 桌宠机制调研](https://caseclose.github.io/kimi-work-pets/how-kimi-work-pet-works.html)。
@@ -77,8 +81,8 @@ manifest 字段与宿主状态映射详见 [Kimi Work 桌宠机制调研](https:
   素材里有的才会被选中),6 秒冷却。
 - **点击跳跃**:点击/轻点桌宠,兴奋地随机跳跃或眨眼,3 秒冷却。
 - **长视撒娇**:鼠标停留在桌宠身上超过 2.6 秒不放,她会撒娇大哭(failed)约两个循环。
-- **视线跟随**:鼠标在桌宠附近移动时,宠物平滑地向光标方向倾斜、偏移,离开后回正
-  (CSS transform 近似"脑袋偏向";仅精灵图宠物,Rive 宠物自带眼动状态机会自动跳过)。
+- **视线跟随**:v2 精灵图宠物根据光标角度切换 16 个方向帧;普通 v1 精灵图继续
+  平滑地向光标方向倾斜、偏移。离开后回正;Rive 宠物自带眼动状态机会自动跳过。
 - **拖动奔跑**:拖动桌宠时朝拖动方向奔跑(应用原生行为)。
 - **气泡信息增强**:任务运行时,头顶气泡在原有状态文案之外追加"已用 N 种工具
   (Bash、WebSearch、Read…)"(按回合累计)和"已工作 X 分钟/秒"(页面本地计时,
@@ -140,7 +144,8 @@ several original chibi characters, Hu Tao from *Genshin Impact*, Hoshimi Miyabi 
 Convert new pets with `scripts/convert-codex-pet.py`, roll back with `scripts/restore.py`.
 Installation also injects interactions: a startup greeting, random hover/tap reactions
 (wave, wink, jump), a long-hover tease where the pet bursts into tears, and sprite pets
-lean toward the cursor as you move the mouse around.
+use 16-direction look frames for Codex v2 atlases (with the original smooth-lean fallback
+for v1 sprites) as you move the mouse around.
 All scripts accept `--appdata <dir>` if the app data folder is located elsewhere.
 Manifest format and host-state mapping: [how the Kimi Work pet works](https://caseclose.github.io/kimi-work-pets/how-kimi-work-pet-works.html).
 Known issue fixed: after long pointer inactivity the pet could visibly "jump" when the screen recomposited — the renderer clamps frame catch-up after system suspension and resets on visibility recovery; apply `scripts/patch-idle-flicker.py` and restart the app.

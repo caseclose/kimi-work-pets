@@ -498,7 +498,7 @@
         <div class="section-head">
           <p class="kicker">Overview</p>
           <h2>从社区画廊到桌面伙伴</h2>
-          <p>Kimi Work 除默认 Rive 形象外，还支持与 Codex 同源的精灵表（8×9 网格、192×208 单元格）。本仓库补齐转换、安装、回滚与互动补丁。</p>
+          <p>Kimi Work 除默认 Rive 形象外，还支持与 Codex 同源的精灵表（v1 为 8×9，v2 为 8×11；192×208 单元格）。v2 的后两行可提供 16 个视线方向。本仓库补齐转换、安装、回滚与互动补丁。</p>
         </div>
         <div class="flow">
           <article>
@@ -821,7 +821,7 @@
           </article>
           <article class="faq">
             <h3>能装画廊里没预置的宠物吗？</h3>
-            <p>可以。先 <code>convert-codex-pet.py</code>，再 <code>install.py</code>。标准 9 行精灵表即可自动映射。</p>
+            <p>可以。先 <code>convert-codex-pet.py</code>，再 <code>install.py</code>。转换器会自动识别标准 v1（9 行）与带 16 方向视线帧的 v2（11 行）精灵表。</p>
           </article>
         </div>
       </section>

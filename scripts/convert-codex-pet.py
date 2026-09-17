@@ -3,9 +3,10 @@
 
 Codex 社区包格式(codexpets.net / petdex.dev / awesome-codex-pet):
     pet.json: { "id", "displayName", "description", "spritesheetPath", "kind" }
-    spritesheet.webp: 8 列 × 9 行,192×208 单元格(1536×1872)
+    v1 spritesheet.webp: 8 列 × 9 行,192×208 单元格(1536×1872)
+    v2 spritesheet.webp: 8 列 × 11 行,后两行是 16 个视线方向(1536×2288)
 
-九行的标准语义:
+前九行的标准语义:
     0 idle        1 running_right  2 running_left  3 waving   4 jumping
     5 failed      6 waiting        7 running       8 review
 
@@ -25,7 +26,7 @@ from pathlib import Path
 import numpy as np
 from PIL import Image
 
-COLS, ROWS = 8, 9
+COLS, BASE_ROWS, V2_ROWS = 8, 9, 11
 CELL_W, CELL_H = 192, 208
 
 # Kimi Work 状态 <- Codex 行号
@@ -59,11 +60,11 @@ def die(msg: str) -> "NoReturn":
     sys.exit(1)
 
 
-def count_frames_per_row(img: np.ndarray) -> list[int]:
+def count_frames_per_row(img: np.ndarray, rows: int) -> list[int]:
     h, w = img.shape[:2]
-    fh, fw = h // ROWS, w // COLS
+    fh, fw = h // rows, w // COLS
     counts = []
-    for r in range(ROWS):
+    for r in range(rows):
         row = []
         for c in range(COLS):
             cell = img[r * fh:(r + 1) * fh, c * fw:(c + 1) * fw]
@@ -78,6 +79,36 @@ def count_frames_per_row(img: np.ndarray) -> list[int]:
                 break
         frames.append(last)
     return frames
+
+
+def make_look_directions() -> dict:
+    """Codex v2 的角度约定:0° 朝上,顺时针每 22.5° 一帧。"""
+    frames = []
+    for index in range(16):
+        frames.append({
+            "angle": index * 22.5,
+            "row": 9 + index // COLS,
+            "column": index % COLS,
+        })
+    return {
+        "zeroDirection": "up",
+        "clockwise": True,
+        "deadZoneRatio": 0.15,
+        "frames": frames,
+    }
+
+
+def has_complete_look_grid(img: np.ndarray) -> bool:
+    """v2 必须包含两个完整的 8 帧方向行，不能只检查最后一格。"""
+    for row in range(BASE_ROWS, V2_ROWS):
+        for column in range(COLS):
+            cell = img[
+                row * CELL_H:(row + 1) * CELL_H,
+                column * CELL_W:(column + 1) * CELL_W,
+            ]
+            if not np.any(cell[..., 3] > 10):
+                return False
+    return True
 
 
 def main() -> None:
@@ -96,11 +127,18 @@ def main() -> None:
         die(f"未找到精灵图 {sheet_path}")
 
     img = Image.open(sheet_path).convert("RGBA")
-    if img.size != (COLS * CELL_W, ROWS * CELL_H):
-        die(f"精灵图尺寸 {img.size} 不符合标准 {COLS*CELL_W}x{ROWS*CELL_H},"
+    valid_sizes = {
+        (COLS * CELL_W, BASE_ROWS * CELL_H): BASE_ROWS,
+        (COLS * CELL_W, V2_ROWS * CELL_H): V2_ROWS,
+    }
+    rows = valid_sizes.get(img.size)
+    if rows is None:
+        expected = ", ".join(f"{COLS * CELL_W}x{r * CELL_H}" for r in (BASE_ROWS, V2_ROWS))
+        die(f"精灵图尺寸 {img.size} 不符合标准尺寸 {expected},"
             f"请先用 scripts/inspect_spritesheet.py 确认布局")
 
-    frames = count_frames_per_row(np.array(img))
+    image_array = np.array(img)
+    frames = count_frames_per_row(image_array, rows)
     print("每行实际帧数:", frames)
 
     if frames[0] == 0:
@@ -117,7 +155,7 @@ def main() -> None:
         "name": codex.get("displayName") or codex.get("name") or d.name,
         "description": codex.get("description", ""),
         "spritesheet": sheet_name,
-        "atlas": {"frameWidth": CELL_W, "frameHeight": CELL_H, "columns": COLS, "rows": ROWS},
+        "atlas": {"frameWidth": CELL_W, "frameHeight": CELL_H, "columns": COLS, "rows": rows},
         "states": states,
         "theme": {
             "bubble": {"background": "#445F7E", "foreground": "#FFFFFF", "border": "#6D829A"}
@@ -127,6 +165,12 @@ def main() -> None:
             "summary": f"Converted from Codex community pet '{codex.get('id', d.name)}'",
         },
     }
+
+    if rows == V2_ROWS:
+        if not has_complete_look_grid(image_array):
+            die("v2 精灵图的 16 个视线方向帧(第 9、10 行)不完整")
+        manifest["spriteVersionNumber"] = 2
+        manifest["lookDirections"] = make_look_directions()
 
     backup = d / "pet.codex.json"
     if not backup.exists():

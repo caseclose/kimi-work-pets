@@ -1,80 +1,55 @@
 {
   "schemaVersion": 1,
+  "spriteVersionNumber": 2,
   "id": "dimo",
   "name": "Dimo",
-  "description": "迪莫:腾讯《洛克王国》光属性明星宠物(社区精灵图 by swrited)",
+  "description": "迪莫:腾讯《洛克王国》光属性明星宠物(社区精灵图 by swrited；v2 方向帧适配)",
   "spritesheet": "spritesheet.webp",
   "atlas": {
     "frameWidth": 192,
     "frameHeight": 208,
     "columns": 8,
-    "rows": 9
+    "rows": 11
   },
   "states": {
-    "idle": {
-      "row": 0,
-      "frames": 6,
-      "fps": 4,
-      "loop": true
-    },
-    "working": {
-      "row": 7,
-      "frames": 6,
-      "fps": 8,
-      "loop": true
-    },
-    "waiting": {
-      "row": 6,
-      "frames": 6,
-      "fps": 5,
-      "loop": true
-    },
-    "running_left": {
-      "row": 2,
-      "frames": 8,
-      "fps": 10,
-      "loop": true
-    },
-    "running_right": {
-      "row": 1,
-      "frames": 8,
-      "fps": 10,
-      "loop": true
-    },
-    "failed": {
-      "row": 5,
-      "frames": 8,
-      "fps": 6,
-      "loop": true
-    },
-    "idle_random_1": {
-      "row": 3,
-      "frames": 4,
-      "fps": 3,
-      "loop": true
-    },
-    "idle_random_2": {
-      "row": 4,
-      "frames": 5,
-      "fps": 6,
-      "loop": true
-    },
-    "idle_random_3": {
-      "row": 8,
-      "frames": 6,
-      "fps": 4,
-      "loop": true
-    }
+    "idle": {"row": 0, "frames": 6, "fps": 4, "loop": true},
+    "working": {"row": 7, "frames": 6, "fps": 8, "loop": true},
+    "waiting": {"row": 6, "frames": 6, "fps": 5, "loop": true},
+    "running_left": {"row": 2, "frames": 8, "fps": 10, "loop": true},
+    "running_right": {"row": 1, "frames": 8, "fps": 10, "loop": true},
+    "failed": {"row": 5, "frames": 8, "fps": 6, "loop": true},
+    "idle_random_1": {"row": 3, "frames": 4, "fps": 3, "loop": true},
+    "idle_random_2": {"row": 4, "frames": 5, "fps": 6, "loop": true},
+    "idle_random_3": {"row": 8, "frames": 6, "fps": 4, "loop": true}
+  },
+  "lookDirections": {
+    "zeroDirection": "up",
+    "clockwise": true,
+    "deadZoneRatio": 0.15,
+    "frames": [
+      {"angle": 0, "row": 9, "column": 0},
+      {"angle": 22.5, "row": 9, "column": 1},
+      {"angle": 45, "row": 9, "column": 2},
+      {"angle": 67.5, "row": 9, "column": 3},
+      {"angle": 90, "row": 9, "column": 4},
+      {"angle": 112.5, "row": 9, "column": 5},
+      {"angle": 135, "row": 9, "column": 6},
+      {"angle": 157.5, "row": 9, "column": 7},
+      {"angle": 180, "row": 10, "column": 0},
+      {"angle": 202.5, "row": 10, "column": 1},
+      {"angle": 225, "row": 10, "column": 2},
+      {"angle": 247.5, "row": 10, "column": 3},
+      {"angle": 270, "row": 10, "column": 4},
+      {"angle": 292.5, "row": 10, "column": 5},
+      {"angle": 315, "row": 10, "column": 6},
+      {"angle": 337.5, "row": 10, "column": 7}
+    ]
   },
   "theme": {
-    "bubble": {
-      "background": "#445F7E",
-      "foreground": "#FFFFFF",
-      "border": "#6D829A"
-    }
+    "bubble": {"background": "#445F7E", "foreground": "#FFFFFF", "border": "#6D829A"}
   },
   "provenance": {
     "provider": "codexpets.net",
-    "summary": "Community pet 'dimo' by swrited, converted to the Kimi spritesheet pet manifest"
+    "summary": "Community pet 'dimo' by swrited, upgraded to Codex sprite v2 and adapted for Kimi Work"
   }
 }

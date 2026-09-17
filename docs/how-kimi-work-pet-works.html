@@ -181,16 +181,17 @@
     <p>校验逻辑：若 <code>renderer === "rive"</code>，强制要求 <code>rive.file === "pet.riv"</code>。状态机 <code>KimiAvator_homepage</code> 的输入包括 <code>click_avator</code>、<code>change_color</code> 以及眼动方向（<code>upper_left</code> 等，跟随鼠标）。</p>
 
     <h3>精灵图（与 Codex 社区宠物格式兼容）</h3>
-    <p>9 行 × 8 列的标准布局（以迪莫为例）：</p>
+    <p>v1 使用 9 行 × 8 列；v2 使用 11 行 × 8 列，新增两行 16 方向视线帧（以下为 v2 迪莫）：</p>
     <figure>
-      <img src="assets/dimo/pet-rows.png" alt="迪莫精灵表 9 行布局示例">
+      <img src="assets/dimo/pet-rows.png" alt="迪莫 v2 精灵表 11 行布局示例">
     </figure>
     <pre><code>{
   "schemaVersion": 1,
   "id": "dimo",
   "name": "Dimo",
   "spritesheet": "spritesheet.webp",
-  "atlas": { "frameWidth": 192, "frameHeight": 208, "columns": 8, "rows": 9 },
+  "spriteVersionNumber": 2,
+  "atlas": { "frameWidth": 192, "frameHeight": 208, "columns": 8, "rows": 11 },
   "states": {
     "idle":          { "row": 0, "frames": 6, "fps": 4,  "loop": true },
     "working":       { "row": 7, "frames": 6, "fps": 8,  "loop": true },
@@ -200,6 +201,14 @@
     "failed":        { "row": 5, "frames": 8, "fps": 6,  "loop": true },
     "idle_random_1": { "row": 3, "frames": 4, "fps": 3,  "loop": true },
     "idle_random_2": { "row": 4, "frames": 5, "fps": 6,  "loop": true }
+  },
+  "lookDirections": {
+    "zeroDirection": "up", "clockwise": true, "deadZoneRatio": 0.15,
+    "frames": [
+      { "angle": 0, "row": 9, "column": 0 },
+      { "angle": 22.5, "row": 9, "column": 1 }
+      // ...到 { "angle": 337.5, "row": 10, "column": 7 }
+    ]
   }
 }</code></pre>
     <p>校验逻辑：<code>atlas</code>、<code>states</code>、<code>states.idle</code> 必须存在。<code>render()</code> 用 <code>background-position</code> 取帧：<code>x = -frame*frameWidth</code>，<code>y = -state.row*frameHeight</code>；<code>loop: false</code> 时播完停在最后一帧并回到首选状态。</p>
@@ -219,7 +228,7 @@
         </tbody>
       </table>
     </div>
-    <p><code>idle_random_1/2</code> 仅在空闲时随机延迟触发，让宠物「自己找事做」（招手、雀跃）。</p>
+    <p><code>idle_random_1/2</code> 仅在空闲时随机延迟触发，让宠物「自己找事做」（招手、雀跃）。v2 的 <code>lookDirections</code> 只在空闲且没有互动动作时生效；任务状态、拖动与彩蛋动作始终优先。</p>
 
     <h2>3. 换形象的最小步骤</h2>
     <ol>
