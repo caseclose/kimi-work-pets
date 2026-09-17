@@ -113,15 +113,15 @@ def build_index() -> str:
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Kimi Work Pets — Kimi Work 桌面宠物合集(迪莫、Hiyuki、宵宫等 15 款)</title>
-  <meta name="description" content="把 Codex Pets 社区桌宠装进 Kimi Work 桌面端:一键安装迪莫、Hiyuki、绯雪、胡桃、宵宫、星见雅、薇尔莉特等 15 款桌面宠物,支持悬停互动、视线跟随、macOS 与 Windows。">
-  <meta name="keywords" content="Kimi Work,桌面宠物,桌宠,Codex Pets,迪莫,Hiyuki,胡桃,宵宫,星见雅,薇尔莉特,desktop pet">
+  <meta name="description" content="把 Codex Pets 社区桌宠装进 Kimi Work 桌面端:15 款宠物一键安装,其中迪莫与宵宫支持 Codex Pet v2 的 16 方向视线跟随,兼容 macOS 与 Windows。">
+  <meta name="keywords" content="Kimi Work,桌面宠物,桌宠,Codex Pets,Codex Pet v2,16方向,迪莫,宵宫,Hiyuki,胡桃,星见雅,薇尔莉特,desktop pet">
   <meta name="robots" content="index, follow">
   <meta name="google-site-verification" content="3O-yG5hm8o7yswYRIP9tyr6y5vBBJ4chKsrCtE2VOIg">
   <link rel="canonical" href="{SITE}/">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Kimi Work Pets">
   <meta property="og:title" content="Kimi Work Pets — Kimi Work 桌面宠物合集">
-  <meta property="og:description" content="15 款 Codex Pets 社区桌宠一键装进 Kimi Work 桌面端,支持悬停互动与视线跟随。">
+  <meta property="og:description" content="15 款 Codex Pets 社区桌宠一键装进 Kimi Work;迪莫与宵宫已支持 v2 的 16 方向视线跟随。">
   <meta property="og:url" content="{SITE}/">
   <meta property="og:image" content="{SITE}/assets/dimo/pet-preview.png">
   <meta name="twitter:card" content="summary_large_image">
@@ -132,7 +132,7 @@ def build_index() -> str:
     "@type": "SoftwareApplication",
     "name": "Kimi Work Pets",
     "url": "{SITE}/",
-    "description": "把 Codex Pets 社区桌宠装进 Kimi Work 桌面端的安装器与素材合集,含 15 款桌面宠物,支持悬停互动、视线跟随,兼容 macOS 与 Windows。",
+    "description": "把 Codex Pets 社区桌宠装进 Kimi Work 桌面端的安装器与素材合集,含 15 款桌面宠物;迪莫与宵宫支持 Codex Pet v2 的 16 方向视线跟随,兼容 macOS 与 Windows。",
     "applicationCategory": "UtilitiesApplication",
     "operatingSystem": "macOS, Windows",
     "offers": {{"@type": "Offer", "price": "0", "priceCurrency": "CNY"}},
@@ -226,7 +226,7 @@ def build_index() -> str:
   <header class="hero">
     <div class="wrap">
       <h1>Kimi Work <span class="em">Pets</span></h1>
-      <p>把 <a href="https://codexpets.net/" rel="noopener">Codex Pets</a> 社区桌宠一键装进 Kimi Work 桌面端。15 款精选宠物,自带悬停互动、视线跟随转头,兼容 macOS 与 Windows。</p>
+      <p>把 <a href="https://codexpets.net/" rel="noopener">Codex Pets</a> 社区桌宠一键装进 Kimi Work 桌面端。15 款精选宠物中,Dimo 与宵宫已支持 v2 的 16 方向视线跟随;兼容 macOS 与 Windows。</p>
       <div class="cta">
         <a class="primary" href="{GITHUB}">GitHub 仓库</a>
         <a href="#pets">浏览宠物</a>
@@ -239,7 +239,7 @@ def build_index() -> str:
       <h2>特性</h2>
       <div class="features">
         <div class="feature"><strong>一键安装</strong><br>一条命令完成转换与注入,自动备份原桌宠,可随时回滚。</div>
-        <div class="feature"><strong>悬停互动</strong><br>鼠标悬停时宠物主动打招呼(Hiyuki 挥剑、Dimo 挥爪)。</div>
+        <div class="feature"><strong>v2 视线跟随</strong><br>Dimo 与宵宫使用完整 16 方向帧看向光标;v1 宠物继续平滑倾斜。</div>
         <div class="feature"><strong>视线跟随</strong><br>宠物会根据鼠标位置转动头部,时刻「看」着你。</div>
         <div class="feature"><strong>双平台</strong><br>支持 macOS 与 Windows,处理 Rive 动画与精灵表自动转换。</div>
       </div>

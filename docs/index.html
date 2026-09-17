@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Kimi Work 桌宠 — 把 Codex Pets 装进 Kimi Work（迪莫、宵宫等 15 款）</title>
-  <meta name="description" content="把 Codex Pets 社区桌宠装进 Kimi Work 桌面端:一键安装迪莫、Hiyuki、绯雪、胡桃、宵宫、星见雅、薇尔莉特等 15 款桌面宠物,支持悬停互动、视线跟随、macOS 与 Windows。">
-  <meta name="keywords" content="Kimi Work,Kimi Work 桌宠,桌面宠物,桌宠,Codex Pets,迪莫,Hiyuki,胡桃,宵宫,星见雅,薇尔莉特,desktop pet">
+  <meta name="description" content="把 Codex Pets 社区桌宠装进 Kimi Work 桌面端:15 款宠物一键安装,其中迪莫与宵宫支持 Codex Pet v2 的 16 方向视线跟随,兼容 macOS 与 Windows。">
+  <meta name="keywords" content="Kimi Work,Kimi Work 桌宠,桌面宠物,桌宠,Codex Pets,Codex Pet v2,16方向,迪莫,宵宫,Hiyuki,胡桃,星见雅,薇尔莉特,desktop pet">
   <meta name="robots" content="index, follow">
   <meta name="google-site-verification" content="3O-yG5hm8o7yswYRIP9tyr6y5vBBJ4chKsrCtE2VOIg">
   <link rel="canonical" href="https://caseclose.github.io/kimi-work-pets/">
@@ -14,13 +14,13 @@
   <meta property="og:locale" content="zh_CN">
   <meta property="og:site_name" content="Kimi Work 桌宠">
   <meta property="og:title" content="Kimi Work 桌宠 — 把 Codex Pets 装进 Kimi Work">
-  <meta property="og:description" content="15 款 Codex Pets 社区桌宠一键装进 Kimi Work 桌面端,支持悬停互动与视线跟随。">
+  <meta property="og:description" content="15 款 Codex Pets 社区桌宠一键装进 Kimi Work;迪莫与宵宫已支持 v2 的 16 方向视线跟随。">
   <meta property="og:url" content="https://caseclose.github.io/kimi-work-pets/">
   <meta property="og:image" content="https://caseclose.github.io/kimi-work-pets/assets/brand.png">
   <meta property="og:image:alt" content="Kimi Work 桌宠品牌图标">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Kimi Work 桌宠">
-  <meta name="twitter:description" content="15 款 Codex Pets 社区桌宠一键装进 Kimi Work 桌面端。">
+  <meta name="twitter:description" content="15 款 Codex Pets 社区桌宠一键装进 Kimi Work,含两只 v2 / 16 方向宠物。">
   <meta name="twitter:image" content="https://caseclose.github.io/kimi-work-pets/assets/brand.png">
   <meta name="color-scheme" content="light dark">
   <meta name="theme-color" content="#f4efe4">
@@ -64,7 +64,7 @@
         "alternateName": "Kimi Work Pets",
         "url": "https://caseclose.github.io/kimi-work-pets/",
         "image": "https://caseclose.github.io/kimi-work-pets/assets/brand.png",
-        "description": "把 Codex Pets 社区桌宠装进 Kimi Work 桌面端的安装器与素材合集,含 15 款桌面宠物,支持悬停互动、视线跟随,兼容 macOS 与 Windows。",
+        "description": "把 Codex Pets 社区桌宠装进 Kimi Work 桌面端的安装器与素材合集,含 15 款桌面宠物;迪莫与宵宫支持 Codex Pet v2 的 16 方向视线跟随,兼容 macOS 与 Windows。",
         "applicationCategory": "UtilitiesApplication",
         "operatingSystem": "macOS, Windows",
         "offers": {"@type": "Offer", "price": "0", "priceCurrency": "CNY"},
@@ -266,7 +266,7 @@
     .showcase h2 { font-size: 1.2rem; margin: 0 0 4px; border: 0; padding: 0; }
     .showcase p { margin: 0; color: var(--muted); font-size: 0.92rem; }
 
-    section { padding: 56px 0 8px; }
+    section { padding: 56px 0 8px; scroll-margin-top: 84px; }
     .section-head { margin-bottom: 24px; max-width: 720px; }
     .kicker {
       color: var(--accent); font-size: 0.75rem; font-weight: 800;
@@ -298,6 +298,30 @@
       background: var(--accent-soft); color: var(--accent); font-weight: 800;
     }
 
+    .v2-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
+    .v2-card {
+      display: grid; grid-template-columns: minmax(150px, .85fr) 1.15fr; gap: 18px;
+      align-items: center; min-width: 0; padding: 18px;
+      background: var(--panel); border: 1px solid var(--border);
+      border-radius: 20px; box-shadow: var(--shadow);
+    }
+    .v2-card img {
+      width: 100%; max-height: 230px; object-fit: contain; image-rendering: pixelated;
+      border-radius: 15px; border: 1px solid var(--border); background: #fff;
+    }
+    .v2-card h3 { margin: 8px 0 4px; font-size: 1.2rem; }
+    .v2-card p { margin: 0 0 12px; color: var(--muted); font-size: .9rem; }
+    .v2-specs {
+      display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px;
+      margin-top: 16px;
+    }
+    .v2-spec {
+      padding: 12px; text-align: center; border-radius: 14px;
+      border: 1px solid var(--border); background: var(--accent-soft);
+    }
+    .v2-spec b { display: block; color: var(--accent); font-size: 1.02rem; }
+    .v2-spec span { color: var(--muted); font-size: .76rem; }
+
     .toolbar {
       display: flex; flex-wrap: wrap; gap: 10px; align-items: center;
       justify-content: space-between; margin-bottom: 18px;
@@ -321,7 +345,7 @@
     .card {
       background: var(--panel); border: 1px solid var(--border);
       border-radius: 20px; padding: 16px; box-shadow: var(--shadow);
-      display: flex; flex-direction: column; min-width: 0;
+      display: flex; flex-direction: column; min-width: 0; scroll-margin-top: 84px;
     }
     .card:hover { transform: translateY(-3px); box-shadow: var(--shadow-hover); }
     .card:target { box-shadow: 0 0 0 3px var(--ring), var(--shadow); }
@@ -405,7 +429,7 @@
     .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
     @media (max-width: 900px) {
-      .hero-grid, .flow, .features, .split, .faq-grid, .license-grid, .foot { grid-template-columns: 1fr; }
+      .hero-grid, .flow, .features, .v2-grid, .split, .faq-grid, .license-grid, .foot { grid-template-columns: 1fr; }
       .stats { grid-template-columns: repeat(2, 1fr); }
       .menu-toggle { display: grid; place-items: center; }
       .nav-inner { flex-wrap: wrap; }
@@ -420,6 +444,8 @@
     @media (max-width: 720px) {
       .card-media, .showcase-media { grid-template-columns: 1fr; display: grid; }
       .card-media .preview, .card-media .states { width: 100%; }
+      .v2-card { grid-template-columns: 1fr; }
+      .v2-specs { grid-template-columns: repeat(2, 1fr); }
     }
     @media (prefers-reduced-motion: reduce) {
       html { scroll-behavior: auto; }
@@ -442,6 +468,7 @@
       </a>
       <div class="nav-links" id="site-nav">
         <a href="#overview">概览</a>
+        <a href="#v2-pets">v2 更新</a>
         <a href="#interact">互动</a>
         <a href="#pets">画廊</a>
         <a href="#quickstart">安装</a>
@@ -468,27 +495,27 @@
   <header class="hero">
     <div class="wrap hero-grid">
       <div>
-        <div class="eyebrow">Codex Pets × Kimi Work · 开源安装器</div>
+        <div class="eyebrow">Codex Pets × Kimi Work · v2 16 方向已适配</div>
         <h1>Kimi Work <em>桌宠</em></h1>
-        <p class="lead">精选 15 款 <a href="https://codexpets.net/" rel="noopener">Codex Pets</a> 社区形象，自动转换精灵表、注入悬停招手与视线跟随，兼容 macOS 与 Windows，随时回滚默认桌宠。</p>
+        <p class="lead">精选 15 款 <a href="https://codexpets.net/" rel="noopener">Codex Pets</a> 社区形象。Dimo 与宵宫已升级为 v2，用 16 个方向帧跟随鼠标；安装器同时注入互动与稳定性补丁，兼容 macOS 与 Windows。</p>
         <div class="cta">
           <a class="btn primary" href="#quickstart">开始安装</a>
           <a class="btn" href="#pets">浏览 15 款宠物</a>
         </div>
         <div class="stats" aria-label="项目数据">
           <div class="stat"><b>15</b><span>内置宠物</span></div>
-          <div class="stat"><b>2</b><span>桌面平台</span></div>
+          <div class="stat"><b>2</b><span>v2 宠物</span></div>
           <div class="stat"><b>1 条</b><span>命令安装</span></div>
           <div class="stat"><b>MIT</b><span>代码开源</span></div>
         </div>
       </div>
       <aside class="showcase">
         <div class="showcase-media">
-          <img src="assets/dimo/pet-preview.png" alt="Dimo(迪莫) 预览">
-          <img class="states" src="assets/dimo/pet-states.gif" alt="Dimo(迪莫) 动作演示">
+          <img class="states" src="assets/dimo/pet-states.gif" alt="Dimo(迪莫) v2 动作与方向演示">
+          <img class="states" src="assets/yoimiya/pet-states.gif" alt="宵宫(Yoimiya) v2 动作与方向演示">
         </div>
-        <h2>Dimo（迪莫）</h2>
-        <p>洛克王国光属性明星宠物的社区二创。安装后可悬停挥爪、跟随鼠标转头。</p>
+        <h2>Dimo × 宵宫 · v2</h2>
+        <p>两只宠物均使用 8×11 图集与完整 16 方向帧,会依据光标角度自然转头。</p>
       </aside>
     </div>
   </header>
@@ -520,11 +547,45 @@
         </div>
       </section>
 
+      <section id="v2-pets">
+        <div class="section-head">
+          <p class="kicker">New · Codex Pet v2</p>
+          <h2>两只真正会“看向你”的 v2 宠物</h2>
+          <p>Dimo 已从 v1 升级,宵宫则作为全新的 Kimi Work 适配加入。两份包都保留 9 行标准动作,并用最后两行提供从正上方 0° 起、顺时针每 22.5° 一帧的完整方向环。</p>
+        </div>
+        <div class="v2-grid">
+          <article class="v2-card" data-v2-pet="dimo">
+            <img src="assets/dimo/pet-states.gif" alt="Dimo v2 的动作与 16 方向演示" loading="lazy">
+            <div>
+              <div class="tags"><span class="tag">v2 · 16 方向</span><span class="tag">升级</span></div>
+              <h3>Dimo（迪莫）</h3>
+              <p>《洛克王国》光属性明星宠物。升级后不再只做整体倾斜,而是直接切换与光标角度匹配的方向帧。</p>
+              <div class="install"><code>python3 scripts/install.py pets/dimo</code></div>
+            </div>
+          </article>
+          <article class="v2-card" data-v2-pet="yoimiya">
+            <img src="assets/yoimiya/pet-states.gif" alt="宵宫 v2 的动作与 16 方向演示" loading="lazy">
+            <div>
+              <div class="tags"><span class="tag">v2 · 16 方向</span><span class="tag">新增</span></div>
+              <h3>Yoimiya（宵宫）</h3>
+              <p>《原神》长野原烟花店店主。完整适配 Kimi Work 状态、互动动作与 16 方向视线跟随。</p>
+              <div class="install"><code>python3 scripts/install.py pets/yoimiya</code></div>
+            </div>
+          </article>
+        </div>
+        <div class="v2-specs" aria-label="v2 图集规格">
+          <div class="v2-spec"><b>8 × 11</b><span>图集网格</span></div>
+          <div class="v2-spec"><b>192 × 208</b><span>单帧像素</span></div>
+          <div class="v2-spec"><b>16</b><span>视线方向</span></div>
+          <div class="v2-spec"><b>22.5°</b><span>方向步进</span></div>
+        </div>
+      </section>
+
       <section id="interact">
         <div class="section-head">
           <p class="kicker">Interactions</p>
           <h2>安装即用的六种互动</h2>
-          <p>由五个幂等补丁自动注入，无需额外配置；<code>restore.py</code> 会一并撤销。所有互动只在宠物空闲时触发，不影响工作/等待等任务状态。</p>
+          <p>由安装器自动注入的一组幂等补丁实现,无需额外配置；<code>restore.py</code> 会一并撤销。所有互动只在宠物空闲时触发,不影响工作/等待等任务状态。</p>
         </div>
         <div class="features">
           <article class="feature">
@@ -582,7 +643,7 @@
               <img class="preview" src="assets/dimo/pet-preview.png" alt="Dimo(迪莫) 桌宠预览图" loading="lazy">
               <img class="states" src="assets/dimo/pet-preview.png" data-gif="assets/dimo/pet-states.gif" data-static="assets/dimo/pet-preview.png" alt="Dimo(迪莫) 逐行动作演示" loading="lazy">
             </div>
-            <div class="tags"><span class="tag">IP 二创</span><span class="tag">洛克王国</span></div>
+            <div class="tags"><span class="tag">IP 二创</span><span class="tag">洛克王国</span><span class="tag">v2 · 16 方向</span></div>
             <h3>Dimo(迪莫)</h3>
             <p class="desc">《洛克王国》光属性明星宠物（社区二创）</p>
             <p class="author">作者 <a href="https://codexpets.net/gallery/dimo" rel="noopener">swrited</a> · <a href="https://codexpets.net/gallery/dimo" rel="noopener">画廊</a></p>
@@ -811,6 +872,10 @@
             </tbody>
           </table>
         </div>
+        <aside class="aside" style="margin-top:18px">
+          <h3>v2 的两行方向帧如何映射？</h3>
+          <p>第 9 行依次对应 0°–157.5°,第 10 行对应 180°–337.5°,均按顺时针每 22.5° 一帧。转换器会把 16 帧写入 <code>lookDirections</code>;当前内置的 Dimo 与宵宫均已完成这套映射和方向语义验证。</p>
+        </aside>
         <p class="section-head" style="margin-top:18px">布局不符时，用 <code>scripts/inspect_spritesheet.py</code> 逐行确认后再改 <code>pet.json</code>。机制说明见 <a href="how-kimi-work-pet-works.html">桌宠机制调研</a>。</p>
       </section>
 
@@ -875,6 +940,7 @@
       </div>
       <div>
         <strong>页面</strong>
+        <a href="#v2-pets">v2 更新</a>
         <a href="#pets">画廊</a>
         <a href="#quickstart">安装</a>
         <a href="#custom">自定义</a>

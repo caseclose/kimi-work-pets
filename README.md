@@ -1,6 +1,8 @@
 # kimi-work-pets
 
 [![Kimi Work 桌宠](https://img.shields.io/badge/在线画廊-Kimi%20Work%20桌宠-0c7c6e)](https://caseclose.github.io/kimi-work-pets/)
+[![内置宠物](https://img.shields.io/badge/内置宠物-15-0c7c6e)](#内置宠物)
+[![Codex Pet v2](https://img.shields.io/badge/Codex%20Pet%20v2-16%20方向-d8893d)](#v2-视线跟随更新)
 
 把 [Codex 社区桌宠](https://codexpets.net/)装进 **Kimi Work 桌面端**(macOS / Windows)。
 
@@ -8,13 +10,30 @@
 
 Kimi Work 内置桌宠除默认 Rive 形象外,还支持精灵图(spritesheet)模式,与 Codex 社区宠物素材(8×9 网格、192×208 单元格)格式同源。本仓库也支持 Codex v2 的 8×11 图集:后两行提供 16 个视线方向。本仓库提供转换、安装、回滚工具;社区画廊里的宠物按同样流程都可以装。
 
+## v2 视线跟随更新
+
+本轮已把 **Dimo(迪莫)** 升级为 Codex Pet v2,并新增 **Yoimiya(宵宫)** 的
+Kimi Work 适配。两只宠物都保留 9 行标准动作,再用第 9、10 行承载 16 个
+视线方向:以正上方为 0°,顺时针每 22.5° 一帧。鼠标越过角色中心死区后,
+桌宠会直接切换对应方向帧;其余 v1 宠物继续使用平滑倾斜兼容模式。
+
+| v2 宠物 | 预览 | 安装命令 |
+| --- | --- | --- |
+| **Dimo(迪莫)** · 《洛克王国》 | <img src="assets/dimo/pet-states.gif" width="150" alt="Dimo v2 动作与方向演示"> | `python3 scripts/install.py pets/dimo` |
+| **Yoimiya(宵宫)** · 《原神》 | <img src="assets/yoimiya/pet-states.gif" width="150" alt="宵宫 v2 动作与方向演示"> | `python3 scripts/install.py pets/yoimiya` |
+
+两份 v2 包均采用 `1536×2288` 的 8×11 图集、`192×208` 单帧,并在
+`pet.json` 中显式声明 `spriteVersionNumber: 2` 与全部 16 个
+`lookDirections`。安装器会自动注入视线跟随、悬停互动、唤醒防闪烁和
+canvas 渲染补丁;无需另行运行补丁脚本。
+
 ## 内置宠物
 
 `pets/` 下每只宠物一个目录,安装命令为 `python3 scripts/install.py pets/<目录名>`:
 
 | 宠物 | 预览 | 状态演示 |
 | --- | --- | --- |
-| **Dimo(迪莫)**,《洛克王国》光属性明星宠物([角色背景](https://baike.baidu.com/item/%E8%BF%AA%E8%8E%AB/10570042);社区二创,作者 [swrited](https://codexpets.net/gallery/dimo)) | <img src="assets/dimo/pet-preview.png" width="150"> | <img src="assets/dimo/pet-states.gif" width="130"> |
+| **Dimo(迪莫)** · **v2 / 16 方向**,《洛克王国》光属性明星宠物([角色背景](https://baike.baidu.com/item/%E8%BF%AA%E8%8E%AB/10570042);社区二创,作者 [swrited](https://codexpets.net/gallery/dimo)) | <img src="assets/dimo/pet-preview.png" width="150"> | <img src="assets/dimo/pet-states.gif" width="130"> |
 | **Siam(暹罗猫)**,小体型暹罗猫(作者 [allen](https://codexpets.net/gallery/siam)) | <img src="assets/siam/pet-preview.png" width="150"> | <img src="assets/siam/pet-states.gif" width="130"> |
 | **Maomao(大开门)**,戴蓝色钩针帽的三花猫(作者 [kyle](https://codexpets.net/gallery/maomao)) | <img src="assets/maomao/pet-preview.png" width="150"> | <img src="assets/maomao/pet-states.gif" width="130"> |
 | **Hiyuki**,持冰剑的银发红瞳 Q 版少女(作者 [foxibu](https://codexpets.net/gallery/hiyuki)) | <img src="assets/hiyuki/pet-preview.png" width="150"> | <img src="assets/hiyuki/pet-states.gif" width="130"> |
@@ -28,7 +47,7 @@ Kimi Work 内置桌宠除默认 Rive 形象外,还支持精灵图(spritesheet)�
 | **星见雅(Miyabi)**,《绝区零》对空六课狐耳剑士(作者 [Eric-Terminal](https://codexpets.net/gallery/miyabi);形象版权归米哈游) | <img src="assets/miyabi/pet-preview.png" width="150"> | <img src="assets/miyabi/pet-states.gif" width="130"> |
 | **薇尔莉特(Violet)**,《紫罗兰永恒花园》自动手记人偶(作者 [Lazenca](https://codexpets.net/gallery/violet);形象版权归京都动画) | <img src="assets/violet/pet-preview.png" width="150"> | <img src="assets/violet/pet-states.gif" width="130"> |
 | **咕嘎(Guga)**,圆润版企鹅装连帽少女(作者 [CIRCUS](https://codexpets.net/gallery/guga)) | <img src="assets/guga/pet-preview.png" width="150"> | <img src="assets/guga/pet-states.gif" width="130"> |
-| **宵宫(Yoimiya)**,《原神》长野原烟花店店主与火花骑士(社区二创,作者 [Ruller](https://codexpets.net/gallery/yoimiya);形象版权归米哈游) | <img src="assets/yoimiya/pet-preview.png" width="150"> | <img src="assets/yoimiya/pet-states.gif" width="130"> |
+| **宵宫(Yoimiya)** · **v2 / 16 方向**,《原神》长野原烟花店店主与火花骑士(社区二创,作者 [Ruller](https://codexpets.net/gallery/yoimiya);形象版权归米哈游) | <img src="assets/yoimiya/pet-preview.png" width="150"> | <img src="assets/yoimiya/pet-states.gif" width="130"> |
 
 ## 快速开始
 

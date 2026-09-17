@@ -72,6 +72,8 @@ class DocsUITests(unittest.TestCase):
         self.assertEqual(search, "显示 1 / 15 款")
         copies = self._eval(env, "() => document.querySelectorAll('.copy-btn').length")
         self.assertGreaterEqual(copies, 15)
+        v2_pets = self._eval(env, "() => document.querySelectorAll('[data-v2-pet]').length")
+        self.assertEqual(v2_pets, 2)
 
         self._cli(env, "open", self.base + "/#dimo")
         hash_count = self._eval(env, "() => document.getElementById('pet-count').textContent")
@@ -136,6 +138,8 @@ class DocsUITests(unittest.TestCase):
             page.get_by_role("button", name="全部").click()
             page.locator("#pet-search").fill("胡桃")
             self.assertEqual(page.locator("#pet-count").inner_text(), "显示 1 / 15 款")
+            self.assertEqual(page.locator("[data-v2-pet]").count(), 2)
+            self.assertTrue(page.locator("#v2-pets").is_visible())
             page.goto(self.base + "/#dimo", wait_until="domcontentloaded")
             page.wait_for_function(
                 "() => !document.getElementById('dimo').classList.contains('hidden')"

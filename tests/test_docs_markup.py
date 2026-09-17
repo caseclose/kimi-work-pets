@@ -45,6 +45,20 @@ class DocsMarkupTests(unittest.TestCase):
             INDEX,
         )
 
+    def test_v2_update_is_prominent_and_actionable(self):
+        self.assertIn('<section id="v2-pets">', INDEX)
+        self.assertEqual(INDEX.count('data-v2-pet="'), 2)
+        self.assertIn('data-v2-pet="dimo"', INDEX)
+        self.assertIn('data-v2-pet="yoimiya"', INDEX)
+        self.assertIn("Dimo × 宵宫 · v2", INDEX)
+        self.assertIn("8 × 11", INDEX)
+        self.assertIn("192 × 208", INDEX)
+        self.assertIn("22.5°", INDEX)
+        self.assertGreaterEqual(INDEX.count("v2 · 16 方向"), 4)
+        self.assertGreaterEqual(
+            INDEX.count("python3 scripts/install.py pets/yoimiya"), 2
+        )
+
     def test_font_weights_are_standard(self):
         self.assertNotIn("font-weight: 750", INDEX)
         self.assertNotIn("font-weight: 650", INDEX)
