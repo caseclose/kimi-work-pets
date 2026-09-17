@@ -24,6 +24,7 @@ class DocsMarkupTests(unittest.TestCase):
         self.assertIn("how-kimi-work-pet-works.html", SITEMAP)
         self.assertTrue((ROOT / "docs" / ".nojekyll").is_file())
         self.assertTrue((ROOT / "docs" / "assets" / "dimo" / "pet-rows.png").is_file())
+        self.assertTrue((ROOT / "docs" / "assets" / "yoimiya" / "pet-rows.png").is_file())
 
     def test_filters_are_toggle_buttons_not_tabs(self):
         self.assertNotIn('role="tablist"', INDEX)
@@ -33,12 +34,16 @@ class DocsMarkupTests(unittest.TestCase):
 
     def test_gallery_gifs_are_lazy_data_attributes(self):
         gifs = re.findall(r'data-gif="assets/[^"]+/pet-states\.gif"', INDEX)
-        self.assertEqual(len(gifs), 14)
+        self.assertEqual(len(gifs), 15)
         self.assertIn(
             'src="assets/dimo/pet-preview.png" data-gif="assets/dimo/pet-states.gif"',
             INDEX,
         )
         self.assertIn('src="assets/dimo/pet-states.gif"', INDEX)
+        self.assertIn(
+            'src="assets/yoimiya/pet-preview.png" data-gif="assets/yoimiya/pet-states.gif"',
+            INDEX,
+        )
 
     def test_font_weights_are_standard(self):
         self.assertNotIn("font-weight: 750", INDEX)

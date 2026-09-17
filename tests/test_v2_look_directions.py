@@ -69,12 +69,16 @@ class V2ConversionTests(unittest.TestCase):
         self.assertNotIn("lookDirections", manifest)
         self.assertNotIn("spriteVersionNumber", manifest)
 
-    def test_bundled_dimo_is_a_complete_v2_pet(self):
-        manifest = json.loads((ROOT / "pets" / "dimo" / "pet.json").read_text(encoding="utf-8"))
-        with Image.open(ROOT / "pets" / "dimo" / "spritesheet.webp") as image:
-            self.assertEqual(image.size, (1536, 2288))
-        self.assertEqual(manifest["atlas"]["rows"], 11)
-        self.assertEqual(len(manifest["lookDirections"]["frames"]), 16)
+    def test_bundled_v2_pets_are_complete(self):
+        for pet_id in ("dimo", "yoimiya"):
+            with self.subTest(pet_id=pet_id):
+                pet_dir = ROOT / "pets" / pet_id
+                manifest = json.loads((pet_dir / "pet.json").read_text(encoding="utf-8"))
+                with Image.open(pet_dir / "spritesheet.webp") as image:
+                    self.assertEqual(image.size, (1536, 2288))
+                self.assertEqual(manifest["spriteVersionNumber"], 2)
+                self.assertEqual(manifest["atlas"]["rows"], 11)
+                self.assertEqual(len(manifest["lookDirections"]["frames"]), 16)
 
 
 class LookPatchTests(unittest.TestCase):

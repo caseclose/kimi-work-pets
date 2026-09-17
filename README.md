@@ -4,7 +4,7 @@
 
 把 [Codex 社区桌宠](https://codexpets.net/)装进 **Kimi Work 桌面端**(macOS / Windows)。
 
-**在线画廊（GitHub Pages）：** [https://caseclose.github.io/kimi-work-pets/](https://caseclose.github.io/kimi-work-pets/) — 浏览全部 14 款宠物、GIF 演示与安装说明。
+**在线画廊（GitHub Pages）：** [https://caseclose.github.io/kimi-work-pets/](https://caseclose.github.io/kimi-work-pets/) — 浏览全部 15 款宠物、GIF 演示与安装说明。
 
 Kimi Work 内置桌宠除默认 Rive 形象外,还支持精灵图(spritesheet)模式,与 Codex 社区宠物素材(8×9 网格、192×208 单元格)格式同源。本仓库也支持 Codex v2 的 8×11 图集:后两行提供 16 个视线方向。本仓库提供转换、安装、回滚工具;社区画廊里的宠物按同样流程都可以装。
 
@@ -28,6 +28,7 @@ Kimi Work 内置桌宠除默认 Rive 形象外,还支持精灵图(spritesheet)�
 | **星见雅(Miyabi)**,《绝区零》对空六课狐耳剑士(作者 [Eric-Terminal](https://codexpets.net/gallery/miyabi);形象版权归米哈游) | <img src="assets/miyabi/pet-preview.png" width="150"> | <img src="assets/miyabi/pet-states.gif" width="130"> |
 | **薇尔莉特(Violet)**,《紫罗兰永恒花园》自动手记人偶(作者 [Lazenca](https://codexpets.net/gallery/violet);形象版权归京都动画) | <img src="assets/violet/pet-preview.png" width="150"> | <img src="assets/violet/pet-states.gif" width="130"> |
 | **咕嘎(Guga)**,圆润版企鹅装连帽少女(作者 [CIRCUS](https://codexpets.net/gallery/guga)) | <img src="assets/guga/pet-preview.png" width="150"> | <img src="assets/guga/pet-states.gif" width="130"> |
+| **宵宫(Yoimiya)**,《原神》长野原烟花店店主与火花骑士(社区二创,作者 [Ruller](https://codexpets.net/gallery/yoimiya);形象版权归米哈游) | <img src="assets/yoimiya/pet-preview.png" width="150"> | <img src="assets/yoimiya/pet-states.gif" width="130"> |
 
 ## 快速开始
 
@@ -65,7 +66,7 @@ python3 scripts/install.py pets/dimo   # 换成 pets/ 下任意目录名即可
 | 8 | react/review | 空闲彩蛋 3(互动,全部宠物已映射) |
 
 v2 的第 9、10 行按从正上方 0° 起、顺时针每 22.5° 一帧映射为 16 个
-`lookDirections`。当前内置 Dimo 已升级到 v2;光标越过角色中心死区后会直接切换
+`lookDirections`。当前内置 Dimo 与宵宫已升级到 v2;光标越过角色中心死区后会直接切换
 对应方向帧，而不是只做整体倾斜。
 
 布局不符时,用 `scripts/inspect_spritesheet.py` 逐行确认动作后手动调整 `pet.json`;
@@ -129,7 +130,7 @@ canvas 2d 渲染(`drawImage` 对未解码图片同步重解码,不出空白帧),
   来自 Codex 社区画廊,版权以各来源页面为准,**仅供个人非商业使用**。
 - **含第三方 IP 形象**:
   - dimo:社区二创(作者 swrited,CC BY-NC 类协议);迪莫形象来自腾讯《洛克王国》,权利归原版权方。
-  - hu-tao-pet:胡桃形象来自米哈游《原神》;miyabi:星见雅形象来自米哈游《绝区零》;
+  - hu-tao-pet 与 yoimiya:胡桃、宵宫形象来自米哈游《原神》;miyabi:星见雅形象来自米哈游《绝区零》;
     violet:薇尔莉特形象来自京都动画《紫罗兰永恒花园》——权利均归原版权方。
 - **戏仿内容**(kimlet/kimlet-move-wave):含真实公众人物形象,**仅供个人非商业使用**,介意者可不安装。
 - 本仓库与 Moonshot AI、OpenAI 无任何隶属或授权关系。
@@ -137,9 +138,9 @@ canvas 2d 渲染(`drawImage` 对未解码图片同步重解码,不出空白帧),
 ## English
 
 Install Codex community pets as the desktop pet of the Kimi Work desktop app (macOS/Windows).
-Run `python3 scripts/install.py pets/<dir>` for any of the 14 bundled pets (see the gallery
+Run `python3 scripts/install.py pets/<dir>` for any of the 15 bundled pets (see the gallery
 table above; includes Dimo from Tencent's *Roco Kingdom*, a Siamese cat, a calico cat,
-several original chibi characters, Hu Tao from *Genshin Impact*, Hoshimi Miyabi from
+several original chibi characters, Hu Tao and Yoimiya from *Genshin Impact*, Hoshimi Miyabi from
 *Zenless Zone Zero*, Violet Evergarden, and two pixel-art public-figure parodies).
 Convert new pets with `scripts/convert-codex-pet.py`, roll back with `scripts/restore.py`.
 Installation also injects interactions: a startup greeting, random hover/tap reactions

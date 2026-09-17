@@ -63,22 +63,22 @@ class DocsUITests(unittest.TestCase):
             env,
             "() => { document.querySelector('[data-filter=parody]').click(); return document.getElementById('pet-count').textContent; }",
         )
-        self.assertEqual(parody, "显示 2 / 14 款")
+        self.assertEqual(parody, "显示 2 / 15 款")
 
         search = self._eval(
             env,
             "() => { document.querySelector('[data-filter=all]').click(); const s=document.getElementById('pet-search'); s.value='胡桃'; s.dispatchEvent(new Event('input')); return document.getElementById('pet-count').textContent; }",
         )
-        self.assertEqual(search, "显示 1 / 14 款")
+        self.assertEqual(search, "显示 1 / 15 款")
         copies = self._eval(env, "() => document.querySelectorAll('.copy-btn').length")
-        self.assertGreaterEqual(copies, 14)
+        self.assertGreaterEqual(copies, 15)
 
         self._cli(env, "open", self.base + "/#dimo")
         hash_count = self._eval(env, "() => document.getElementById('pet-count').textContent")
         dimo_hidden = self._eval(
             env, "() => document.getElementById('dimo').classList.contains('hidden')"
         )
-        self.assertEqual(hash_count, "显示 14 / 14 款")
+        self.assertEqual(hash_count, "显示 15 / 15 款")
         self.assertIs(dimo_hidden, False)
 
         self._cli(env, "resize", "390", "844")
@@ -132,10 +132,10 @@ class DocsUITests(unittest.TestCase):
             page.locator("#theme-toggle").click()
             self.assertNotEqual(page.get_attribute("html", "data-theme"), theme)
             page.get_by_role("button", name="戏仿").click()
-            self.assertEqual(page.locator("#pet-count").inner_text(), "显示 2 / 14 款")
+            self.assertEqual(page.locator("#pet-count").inner_text(), "显示 2 / 15 款")
             page.get_by_role("button", name="全部").click()
             page.locator("#pet-search").fill("胡桃")
-            self.assertEqual(page.locator("#pet-count").inner_text(), "显示 1 / 14 款")
+            self.assertEqual(page.locator("#pet-count").inner_text(), "显示 1 / 15 款")
             page.goto(self.base + "/#dimo", wait_until="domcontentloaded")
             page.wait_for_function(
                 "() => !document.getElementById('dimo').classList.contains('hidden')"

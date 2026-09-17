@@ -43,6 +43,9 @@ PETS = [
     {"id": "miyabi", "name": "星见雅(Miyabi)", "desc": "《绝区零》对空六课狐耳剑士", "author": "Eric-Terminal", "ip": "形象版权归米哈游"},
     {"id": "violet", "name": "薇尔莉特(Violet)", "desc": "《紫罗兰永恒花园》自动手记人偶", "author": "Lazenca", "ip": "形象版权归京都动画"},
     {"id": "guga", "name": "咕嘎(Guga)", "desc": "圆润版企鹅装连帽少女", "author": "CIRCUS", "ip": ""},
+    {"id": "yoimiya", "name": "宵宫(Yoimiya)",
+     "desc": "《原神》长野原烟花店店主与火花骑士",
+     "author": "Ruller", "ip": "形象版权归米哈游"},
 ]
 
 
@@ -109,16 +112,16 @@ def build_index() -> str:
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Kimi Work Pets — Kimi Work 桌面宠物合集(迪莫、Hiyuki、胡桃等 14 款)</title>
-  <meta name="description" content="把 Codex Pets 社区桌宠装进 Kimi Work 桌面端:一键安装迪莫、Hiyuki、绯雪、胡桃、星见雅、薇尔莉特等 14 款桌面宠物,支持悬停互动、视线跟随、macOS 与 Windows。">
-  <meta name="keywords" content="Kimi Work,桌面宠物,桌宠,Codex Pets,迪莫,Hiyuki,胡桃,星见雅,薇尔莉特,desktop pet">
+  <title>Kimi Work Pets — Kimi Work 桌面宠物合集(迪莫、Hiyuki、宵宫等 15 款)</title>
+  <meta name="description" content="把 Codex Pets 社区桌宠装进 Kimi Work 桌面端:一键安装迪莫、Hiyuki、绯雪、胡桃、宵宫、星见雅、薇尔莉特等 15 款桌面宠物,支持悬停互动、视线跟随、macOS 与 Windows。">
+  <meta name="keywords" content="Kimi Work,桌面宠物,桌宠,Codex Pets,迪莫,Hiyuki,胡桃,宵宫,星见雅,薇尔莉特,desktop pet">
   <meta name="robots" content="index, follow">
   <meta name="google-site-verification" content="3O-yG5hm8o7yswYRIP9tyr6y5vBBJ4chKsrCtE2VOIg">
   <link rel="canonical" href="{SITE}/">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Kimi Work Pets">
   <meta property="og:title" content="Kimi Work Pets — Kimi Work 桌面宠物合集">
-  <meta property="og:description" content="14 款 Codex Pets 社区桌宠一键装进 Kimi Work 桌面端,支持悬停互动与视线跟随。">
+  <meta property="og:description" content="15 款 Codex Pets 社区桌宠一键装进 Kimi Work 桌面端,支持悬停互动与视线跟随。">
   <meta property="og:url" content="{SITE}/">
   <meta property="og:image" content="{SITE}/assets/dimo/pet-preview.png">
   <meta name="twitter:card" content="summary_large_image">
@@ -129,7 +132,7 @@ def build_index() -> str:
     "@type": "SoftwareApplication",
     "name": "Kimi Work Pets",
     "url": "{SITE}/",
-    "description": "把 Codex Pets 社区桌宠装进 Kimi Work 桌面端的安装器与素材合集,含 14 款桌面宠物,支持悬停互动、视线跟随,兼容 macOS 与 Windows。",
+    "description": "把 Codex Pets 社区桌宠装进 Kimi Work 桌面端的安装器与素材合集,含 15 款桌面宠物,支持悬停互动、视线跟随,兼容 macOS 与 Windows。",
     "applicationCategory": "UtilitiesApplication",
     "operatingSystem": "macOS, Windows",
     "offers": {{"@type": "Offer", "price": "0", "priceCurrency": "CNY"}},
@@ -223,7 +226,7 @@ def build_index() -> str:
   <header class="hero">
     <div class="wrap">
       <h1>Kimi Work <span class="em">Pets</span></h1>
-      <p>把 <a href="https://codexpets.net/" rel="noopener">Codex Pets</a> 社区桌宠一键装进 Kimi Work 桌面端。14 款精选宠物,自带悬停互动、视线跟随转头,兼容 macOS 与 Windows。</p>
+      <p>把 <a href="https://codexpets.net/" rel="noopener">Codex Pets</a> 社区桌宠一键装进 Kimi Work 桌面端。15 款精选宠物,自带悬停互动、视线跟随转头,兼容 macOS 与 Windows。</p>
       <div class="cta">
         <a class="primary" href="{GITHUB}">GitHub 仓库</a>
         <a href="#pets">浏览宠物</a>
@@ -243,7 +246,7 @@ def build_index() -> str:
     </section>
 
     <section id="pets">
-      <h2>宠物画廊(14 款)</h2>
+      <h2>宠物画廊(15 款)</h2>
       <div class="grid">
 {chr(10).join(cards)}
       </div>
