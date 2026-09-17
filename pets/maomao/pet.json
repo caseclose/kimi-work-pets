@@ -64,6 +64,18 @@
       "frames": 6,
       "fps": 8,
       "loop": true
+    },
+    "dragLeft": {
+      "row": 2,
+      "frames": 8,
+      "fps": 10,
+      "loop": true
+    },
+    "dragRight": {
+      "row": 1,
+      "frames": 8,
+      "fps": 10,
+      "loop": true
     }
   },
   "theme": {
@@ -74,7 +86,7 @@
     }
   },
   "provenance": {
-    "provider": "codex-pets-community",
-    "summary": "Converted from Codex community pet 'maomao'"
+    "provider": "other",
+    "summary": "Converted from Codex community pet 'maomao' (codexpets.net)"
   }
 }

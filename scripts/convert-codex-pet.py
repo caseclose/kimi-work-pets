@@ -30,6 +30,8 @@ COLS, BASE_ROWS, V2_ROWS = 8, 9, 11
 CELL_W, CELL_H = 192, 208
 
 # Kimi Work 状态 <- Codex 行号
+# 注:新版 Kimi Work 应用(2026-09 起)校验 manifest 时强制要求
+# states.dragLeft / states.dragRight,这里与 running_left/right 共用行。
 STATE_ROWS = {
     "idle": 0,
     "running_right": 1,
@@ -40,6 +42,12 @@ STATE_ROWS = {
     "waiting": 6,
     "working": 7,         # codex "running"
     "idle_random_3": 8,   # codex "review"/react,互动彩蛋(眨眼/庆祝)
+}
+
+# 应用校验强制要求的拖拽状态 -> 复用的方向状态
+DRAG_STATE_ALIAS = {
+    "dragLeft": "running_left",
+    "dragRight": "running_right",
 }
 
 FPS = {
@@ -148,6 +156,9 @@ def main() -> None:
     for name, row in STATE_ROWS.items():
         if frames[row] > 0:
             states[name] = {"row": row, "frames": frames[row], "fps": FPS[name], "loop": True}
+    for drag_name, base_name in DRAG_STATE_ALIAS.items():
+        if base_name in states:
+            states[drag_name] = dict(states[base_name])
 
     manifest = {
         "schemaVersion": 1,
@@ -161,8 +172,8 @@ def main() -> None:
             "bubble": {"background": "#445F7E", "foreground": "#FFFFFF", "border": "#6D829A"}
         },
         "provenance": {
-            "provider": "codex-pets-community",
-            "summary": f"Converted from Codex community pet '{codex.get('id', d.name)}'",
+            "provider": "other",
+            "summary": f"Converted from Codex community pet '{codex.get('id', d.name)}' (codexpets.net)",
         },
     }
 

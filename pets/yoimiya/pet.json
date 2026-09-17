@@ -17,6 +17,8 @@
     "waiting": {"row": 6, "frames": 6, "fps": 5, "loop": true},
     "running_left": {"row": 2, "frames": 8, "fps": 10, "loop": true},
     "running_right": {"row": 1, "frames": 8, "fps": 10, "loop": true},
+    "dragLeft": {"row": 2, "frames": 8, "fps": 10, "loop": true},
+    "dragRight": {"row": 1, "frames": 8, "fps": 10, "loop": true},
     "failed": {"row": 5, "frames": 8, "fps": 6, "loop": true},
     "idle_random_1": {"row": 3, "frames": 4, "fps": 3, "loop": true},
     "idle_random_2": {"row": 4, "frames": 5, "fps": 6, "loop": true},
@@ -49,7 +51,7 @@
     "bubble": {"background": "#7F3524", "foreground": "#FFF8E8", "border": "#D8893D"}
   },
   "provenance": {
-    "provider": "codexpets.net",
-    "summary": "Community pet 'yoimiya' by Ruller, upgraded to Codex sprite v2 and adapted for Kimi Work"
+    "provider": "other",
+    "summary": "Community pet 'yoimiya' by Ruller (codexpets.net), upgraded to Codex sprite v2 and adapted for Kimi Work"
   }
 }

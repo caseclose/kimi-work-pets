@@ -88,6 +88,12 @@ v2 的第 9、10 行按从正上方 0° 起、顺时针每 22.5° 一帧映射�
 `lookDirections`。当前内置 Dimo 与宵宫已升级到 v2;光标越过角色中心死区后会直接切换
 对应方向帧，而不是只做整体倾斜。
 
+注意:新版 Kimi Work 应用(2026-09 起)启用桌宠前会校验 manifest——
+`states.dragLeft` / `states.dragRight` 必填(与 `running_left` / `running_right`
+共用行即可),`provenance.provider` 限 `image_generation` / `pixellab` / `manual` /
+`other`。仓库内全部宠物与转换器输出均已满足;缺字段时应用设置页会报
+"读取桌面宠物状态失败"且无法启用桌宠。
+
 布局不符时,用 `scripts/inspect_spritesheet.py` 逐行确认动作后手动调整 `pet.json`;
 manifest 字段与宿主状态映射详见 [Kimi Work 桌宠机制调研](https://caseclose.github.io/kimi-work-pets/how-kimi-work-pet-works.html)。
 

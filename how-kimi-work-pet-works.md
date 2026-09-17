@@ -65,6 +65,8 @@
     "waiting":       { "row": 6, "frames": 6, "fps": 5,  "loop": true },
     "running_left":  { "row": 2, "frames": 8, "fps": 10, "loop": true },
     "running_right": { "row": 1, "frames": 8, "fps": 10, "loop": true },
+    "dragLeft":      { "row": 2, "frames": 8, "fps": 10, "loop": true },
+    "dragRight":     { "row": 1, "frames": 8, "fps": 10, "loop": true },
     "failed":        { "row": 5, "frames": 8, "fps": 6,  "loop": true },
     "idle_random_1": { "row": 3, "frames": 4, "fps": 3,  "loop": true },
     "idle_random_2": { "row": 4, "frames": 5, "fps": 6,  "loop": true }
@@ -73,6 +75,10 @@
 ```
 
 校验逻辑(渲染器源码):`atlas`、`states`、`states.idle` 必须存在。
+新版应用(2026-09 起)在设置页读取桌宠时还会强制校验:`states.dragLeft` /
+`states.dragRight` 必填(通常与 `running_left` / `running_right` 共用行),且
+`provenance.provider` 只能是 `image_generation` / `pixellab` / `manual` / `other`
+——不满足时设置页显示"读取桌面宠物状态失败",桌宠无法启用。
 `render()` 用 `background-position` 取帧:`x = -frame*frameWidth`,
 `y = -state.row*frameHeight`;`loop: false` 时播完停在最后一帧并回到首选状态。
 
