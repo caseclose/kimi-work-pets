@@ -198,6 +198,8 @@
     "waiting":       { "row": 6, "frames": 6, "fps": 5,  "loop": true },
     "running_left":  { "row": 2, "frames": 8, "fps": 10, "loop": true },
     "running_right": { "row": 1, "frames": 8, "fps": 10, "loop": true },
+    "dragLeft":      { "row": 2, "frames": 8, "fps": 10, "loop": true },
+    "dragRight":     { "row": 1, "frames": 8, "fps": 10, "loop": true },
     "failed":        { "row": 5, "frames": 8, "fps": 6,  "loop": true },
     "idle_random_1": { "row": 3, "frames": 4, "fps": 3,  "loop": true },
     "idle_random_2": { "row": 4, "frames": 5, "fps": 6,  "loop": true }
@@ -212,6 +214,7 @@
   }
 }</code></pre>
     <p>校验逻辑：<code>atlas</code>、<code>states</code>、<code>states.idle</code> 必须存在。<code>render()</code> 用 <code>background-position</code> 取帧：<code>x = -frame*frameWidth</code>，<code>y = -state.row*frameHeight</code>；<code>loop: false</code> 时播完停在最后一帧并回到首选状态。</p>
+    <p>新版应用（2026-09 起）在设置页读取桌宠时还会强制校验：<code>states.dragLeft</code> / <code>states.dragRight</code> 必填（通常与 <code>running_left</code> / <code>running_right</code> 共用行），且 <code>provenance.provider</code> 只能是 <code>image_generation</code> / <code>pixellab</code> / <code>manual</code> / <code>other</code>——不满足时设置页显示「读取桌面宠物状态失败」，桌宠无法启用。</p>
     <p>宿主状态映射（<code>resolveStateName</code>）：</p>
     <div class="table-wrap">
       <table>
