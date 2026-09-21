@@ -128,6 +128,9 @@ manifest 字段与宿主状态映射详见 [Kimi Work 桌宠机制调研](https:
   例:`正在思考… · 已用 5 种工具(Bash、WebSearch、Read…) · 已工作 2 分钟`。
 - **显示与响应范围**:宠物显示为默认的 2 倍大小;悬停/点击的响应范围在宠物轮廓外
   再外扩 24px,不用精确对准(由页面主动上报可交互区域实现)。
+- **任务完成提示音**:Agent 回合结束(桌宠从 working 回到 idle)时播放一声短促的
+  双音 chime;等待确认(working → waiting)不触发。音效为 AI 生成
+  ([task-done.mp3](assets/sounds/task-done.mp3)),补丁脚本会自动拷入每个桌宠组件。
 
 部分宠物素材带有第 9 行隐藏动作(眨眼、庆祝等),转换时已映射为 `idle_random_3`
 纳入随机彩蛋池;没有该行的宠物自动跳过,互不影响。
@@ -140,7 +143,8 @@ manifest 字段与宿主状态映射详见 [Kimi Work 桌宠机制调研](https:
 [patch-look-at-cursor.py](scripts/patch-look-at-cursor.py) ·
 [patch-pet-display.py](scripts/patch-pet-display.py) ·
 [patch-idle-flicker.py](scripts/patch-idle-flicker.py) ·
-[patch-sprite-canvas.py](scripts/patch-sprite-canvas.py)。
+[patch-sprite-canvas.py](scripts/patch-sprite-canvas.py) ·
+[patch-task-done-sound.py](scripts/patch-task-done-sound.py)。
 
 ## 已知问题:空闲后闪烁(已修复)
 

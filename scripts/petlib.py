@@ -35,7 +35,18 @@ def blueprint_dir(override: str | None = None) -> Path:
 
 
 def find_pet_widget_id(base: Path) -> str:
-    """扫描 widgets/*/widget.json,返回 kind == "pet" 的组件 ID。"""
+    """扫描 widgets/*/widget.json,返回第一个 kind == "pet" 的组件 ID。"""
+    ids = find_pet_widget_ids(base)
+    if ids:
+        return ids[0]
+    print("⚠️ 未能自动发现桌宠组件,回退到内置组件 ID;若桌宠未生效请用 "
+          "--appdata 指定应用数据目录", file=sys.stderr)
+    return FALLBACK_PET_WIDGET_ID
+
+
+def find_pet_widget_ids(base: Path) -> list[str]:
+    """扫描 widgets/*/widget.json,返回全部 kind == "pet" 的组件 ID(可能有多个桌宠)。"""
+    found: list[str] = []
     widgets = base / "widgets"
     if widgets.is_dir():
         for d in sorted(widgets.iterdir()):
@@ -47,10 +58,8 @@ def find_pet_widget_id(base: Path) -> str:
             except (json.JSONDecodeError, OSError):
                 continue
             if meta.get("kind") == "pet":
-                return d.name
-    print("⚠️ 未能自动发现桌宠组件,回退到内置组件 ID;若桌宠未生效请用 "
-          "--appdata 指定应用数据目录", file=sys.stderr)
-    return FALLBACK_PET_WIDGET_ID
+                found.append(d.name)
+    return found
 
 
 def backup_dir() -> Path:

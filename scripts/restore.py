@@ -41,6 +41,8 @@ def main() -> None:
     shutil.copy2(bk / "current.json", base / "pet" / "current.json")
     for extra in ws.glob("spritesheet.*"):
         extra.unlink()
+    # 任务完成提示音补丁的音效文件(patch-task-done-sound.py 拷入)
+    (ws / "task-done.mp3").unlink(missing_ok=True)
 
     if (bk / "widget.json").is_file():
         shutil.copy2(bk / "widget.json", base / "widgets" / widget_id / "widget.json")

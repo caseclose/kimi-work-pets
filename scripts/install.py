@@ -181,6 +181,15 @@ def main() -> None:
         print("⚠️ canvas 渲染补丁注入失败(不影响桌宠使用),可稍后手动运行 "
               "python3 scripts/patch-sprite-canvas.py", file=sys.stderr)
 
+    print("注入任务完成提示音补丁(回合结束时播放 chime)...")
+    patch = Path(__file__).parent / "patch-task-done-sound.py"
+    try:
+        subprocess.run([sys.executable, str(patch)]
+                       + (["--appdata", args.appdata] if args.appdata else []), check=True)
+    except subprocess.CalledProcessError:
+        print("⚠️ 提示音补丁注入失败(不影响桌宠使用),可稍后手动运行 "
+              "python3 scripts/patch-task-done-sound.py", file=sys.stderr)
+
     print()
     print("✅ 安装完成。重启 Kimi 应用(或重新开关桌宠)后生效。")
     print("   回滚: python3 scripts/restore.py")
