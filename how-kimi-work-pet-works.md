@@ -120,3 +120,22 @@
 4. 重启 Kimi 应用(渲染器只在加载时读取配置)。
 
 `scripts/install.py` 实现了以上全部步骤并自动备份;Codex 社区包先用 `scripts/convert-codex-pet.py` 转换。
+
+## 4. 桌宠窗口的层级与全屏可见性(主进程行为)
+
+桌宠以组件 pin 窗口(`widgetKind: "pet"`)存在,窗口属性由宿主主进程
+`out/main/index.js` 的 `WidgetPin` 管理器控制:
+
+- `#applyWindowLevel(win, pin)`:`win.setAlwaysOnTop(pin.widgetKind === "pet" || pin.alwaysOnTop)` ——
+  只有默认 floating 层级,**其他应用全屏时桌宠会被盖住**;
+- `#applyWorkspaceVisibility(win)`:`win.setVisibleOnAllWorkspaces(true)` ——
+  跨桌面可见,但缺 `{ visibleOnFullScreen: true }`,**不进全屏空间**;
+- 对照组:宿主的图片 pin 窗口创建处用的是
+  `setAlwaysOnTop(true, "screen-saver")` +
+  `setVisibleOnAllWorkspaces(true, { visibleOnFullScreen: true, skipTransformProcessType: true })`,
+  所以图片 pin 全屏可见而桌宠不可见。
+
+`scripts/patch-fullscreen-level.py` 把组件 pin 窗口对齐到图片 pin 的行为
+(3 处锚点,含 IPC 置顶开关 `#setAlwaysOnTop`),并自动重算
+`Info.plist` 的 `ElectronAsarIntegrity` 哈希——宿主启用了
+`EnableEmbeddedAsarIntegrityValidation`,不改哈希应用无法启动。

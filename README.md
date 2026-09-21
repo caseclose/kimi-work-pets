@@ -160,6 +160,23 @@ canvas 2d 渲染(`drawImage` 对未解码图片同步重解码,不出空白帧),
 两个补丁均幂等,支持 `--appdata` 参数;`install.py` 安装时会自动应用,无需手动重跑。
 重启 Kimi 应用后生效。
 
+## 全屏时置顶(宿主应用补丁)
+
+macOS 上其他应用全屏后,桌宠默认不会浮到全屏空间之上:宿主给组件 pin 窗口
+只用默认 floating 层级,且未开 `visibleOnFullScreen`。修复:
+
+```bash
+python3 scripts/patch-fullscreen-level.py
+```
+
+该补丁直接修改 `Kimi.app` 主进程(与宿主图片 pin 窗口同款行为):
+置顶层级提升为 `screen-saver`,并开启
+`setVisibleOnAllWorkspaces(true, { visibleOnFullScreen: true, skipTransformProcessType: true })`。
+脚本自动重算并写回 `ElectronAsarIntegrity` 哈希(否则应用无法启动),
+修改前备份 `app.asar` / `app.asar.unpacked` / `Info.plist`(后缀
+`.bak-pet-fullscreen`);`--check` 只检查不修改,`--restore` 一键还原。
+**完全退出 Kimi(⌘Q)再重开后生效;应用升级会覆盖补丁,升级后重跑即可。**
+
 ## 版权
 
 - 代码:MIT(见 LICENSE)。

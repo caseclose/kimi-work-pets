@@ -250,6 +250,15 @@
       <li>重启 Kimi 应用（渲染器只在加载时读取配置）。</li>
     </ol>
     <p><code>scripts/install.py</code> 实现了以上全部步骤并自动备份；Codex 社区包先用 <code>scripts/convert-codex-pet.py</code> 转换。</p>
+
+    <h2>4. 桌宠窗口的层级与全屏可见性（主进程行为）</h2>
+    <p>桌宠以组件 pin 窗口（<code>widgetKind: "pet"</code>）存在，窗口属性由宿主主进程 <code>out/main/index.js</code> 的 <code>WidgetPin</code> 管理器控制：</p>
+    <ul>
+      <li><code>#applyWindowLevel(win, pin)</code>：<code>win.setAlwaysOnTop(pin.widgetKind === "pet" || pin.alwaysOnTop)</code> —— 只有默认 floating 层级，<strong>其他应用全屏时桌宠会被盖住</strong>；</li>
+      <li><code>#applyWorkspaceVisibility(win)</code>：<code>win.setVisibleOnAllWorkspaces(true)</code> —— 跨桌面可见，但缺 <code>{ visibleOnFullScreen: true }</code>，<strong>不进全屏空间</strong>；</li>
+      <li>对照组：宿主的图片 pin 窗口创建处用的是 <code>setAlwaysOnTop(true, "screen-saver")</code> + <code>setVisibleOnAllWorkspaces(true, { visibleOnFullScreen: true, skipTransformProcessType: true })</code>，所以图片 pin 全屏可见而桌宠不可见。</li>
+    </ul>
+    <p><code>scripts/patch-fullscreen-level.py</code> 把组件 pin 窗口对齐到图片 pin 的行为（3 处锚点，含 IPC 置顶开关 <code>#setAlwaysOnTop</code>），并自动重算 <code>Info.plist</code> 的 <code>ElectronAsarIntegrity</code> 哈希——宿主启用了 <code>EnableEmbeddedAsarIntegrityValidation</code>，不改哈希应用无法启动。</p>
   </article>
   <footer>
     <div class="wrap"><a href="./">返回 Kimi Work Pets 首页</a> · <a href="https://github.com/caseclose/kimi-work-pets">GitHub</a></div>
