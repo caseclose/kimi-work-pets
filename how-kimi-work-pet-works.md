@@ -25,6 +25,23 @@
 `current.json` 的 `installed[].widgetId` 指向桌宠组件;渲染器加载时请求
 `/workspace/pet.json`,据此决定渲染方式。
 
+## 1.1 多宠物切换机制(2026-09 起的新版应用)
+
+- `pet/library/<pet-id>/` 是**素材库**:install.py 安装时会把清单与精灵图拷入,
+  「设置 → 桌面宠物 → 选择桌面宠物」的列表 = `current.json` 的 `installed[]`
+  与素材库经 manifest 校验后的并集(校验失败的条目会被过滤,不显示)。
+- 对素材库里的宠物点「切换」:应用(`selectBlueprintPet` → `applyPetAssets`)
+  会为它**创建专属 widget 组件**,把当前渲染器 `index.html` 复制进新组件的
+  `workspace/`(已注入的交互补丁随之携带),写入 `installed[]` 并设为
+  `selectedPetId`,桌面窗口重新挂载到新组件。
+- 对已在 `installed[]` 里的宠物点「切换」:仅改 `selectedPetId` 并重新挂载,
+  不再复制文件。
+- 每只宠物一个组件,因此不同宠物的渲染器补丁互不影响;应用升级可能把组件
+  渲染器重置为官方版本,补丁丢失时重跑 install.py 即可。
+- 自 2026-09-18 的应用版本起,官方渲染器已内置唤醒补帧钳制
+  (`resumedFromSuspension`)与 canvas 精灵渲染(`ensurePetCanvas`),
+  对应两个仓库补丁在新版本上无需再注入(脚本会检测并跳过)。
+
 ## 2. Manifest 格式(`pet.json`)
 
 两种渲染器,由 `renderer` 字段区分(缺省走精灵图分支):

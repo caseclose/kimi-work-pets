@@ -64,6 +64,18 @@ python3 scripts/install.py pets/dimo   # 换成 pets/ 下任意目录名即可
 重启 Kimi 应用(或重新开关桌宠)后生效,桌宠已带悬停交互(见下节)。
 回滚默认形象:`python3 scripts/restore.py`(原配置自动备份在用户目录的 `.kimi-work-pet-backup/`)。
 
+### 在多个宠物之间切换
+
+安装过的宠物会进入应用的宠物素材库,之后**不必重跑 install.py**:
+打开「设置 → 桌面宠物 → 选择桌面宠物」,列表里点「切换」即可——应用会为选中的
+宠物创建专属渲染组件(并复制当前渲染器,已注入的交互补丁随之保留)。
+切换列表只显示通过应用 manifest 校验的宠物,所以请确保清单是本仓库最新版本
+(见上文的校验要求);重跑 `install.py` 会同时刷新素材库里的对应文件。
+
+注意:**应用升级可能重置渲染器**,导致交互补丁丢失。发现悬停/视线跟随等
+行为消失时,重跑一次 `python3 scripts/install.py pets/<当前宠物>` 即可重新注入
+(空闲闪烁修复与 canvas 渲染自 2026-09-18 的应用版本起已官方内置,无需补丁)。
+
 ## 安装其他社区宠物
 
 1. 从 [CodexPets.net](https://codexpets.net/)(或 petdex.dev 等画廊)下载宠物包并解压(内含 `pet.json` + `spritesheet.webp`);
